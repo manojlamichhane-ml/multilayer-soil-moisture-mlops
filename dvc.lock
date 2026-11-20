@@ -247,16 +247,16 @@ stages:
       size: 58120
     - path: reports/figures/drivers_by_depth.png
       hash: md5
-      md5: 4c52e0e0ae9a7b66cdab9a2822c7fb56
-      size: 98725
+      md5: ae9baba4e41431716c7b4c441c6182cb
+      size: 104495
     - path: reports/figures/r2_by_depth.png
       hash: md5
-      md5: 1dfb389057c4f73b567873e3e2227982
-      size: 82895
+      md5: e414645e82044a26b50efecde34fde35
+      size: 88665
     - path: reports/figures/validation_profile.png
       hash: md5
-      md5: f13e1ace55c2dcf87ab70f42f779820f
-      size: 136611
+      md5: 8e6d74678bc0ce32174144a39cd1438b
+      size: 142381
     - path: reports/metrics.json
       hash: md5
       md5: c05b3842129f5ff2660dd08a629cf6f3
