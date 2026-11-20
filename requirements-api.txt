@@ -4,3 +4,4 @@ uvicorn
 pandas==2.3.3
 numpy==2.2.6
 xgboost-cpu==3.4.1
+scikit-learn==1.7.2   # xgboost's XGBRegressor wrapper needs it to load the models
