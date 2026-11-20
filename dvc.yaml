@@ -10,15 +10,16 @@ stages:
     params:
       - seed
       - depths
+      - variants
       - chain_mode
       - split
       - features
       - hyperparameters
       - learning_rate
     outs:
-      - models/independent:
+      - models/with_soil:
           cache: false
-      - models/chained:
+      - models/no_soil:
           cache: false
       - reports/train_info.json:
           cache: false
@@ -30,8 +31,8 @@ stages:
       - src/chain.py
       - src/config.py
       - src/metrics.py
-      - models/independent
-      - models/chained
+      - models/with_soil
+      - models/no_soil
       - data/model_input.csv
     params:
       - evaluation

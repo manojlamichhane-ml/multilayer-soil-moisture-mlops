@@ -1,6 +1,7 @@
 """The layer-by-layer model chain from the paper.
 
-For every depth there are two XGBoost models:
+Two versions of the chain are trained (see `variants` in params.yaml): with and
+without soil properties. In each version, every depth has two XGBoost models:
   independent : uses only that depth's own inputs
   chained     : uses the same inputs PLUS the predicted soil moisture of the
                 layer directly above (30 → 60 → 90 → 120 → 150 → 180 cm)
@@ -85,10 +86,10 @@ def _oof(params, name, X, y, folds, seed):
     return pred
 
 
-def fit_chain(train, params, mode=None):
-    """Train the independent and chained models for all depths on `train`."""
+def fit_chain(train, params, variant="with_soil", mode=None):
+    """Train the independent and chained models for all depths on `train`, using one variant's inputs."""
     mode = mode or params["chain_mode"]
-    depths, feats = params["depths"], params["features"]
+    depths, feats = params["depths"], params["features"][variant]
     chain, feed = Chain(depths, feats), None
     folds, seed = params["split"]["cv_folds"], params["seed"]
 

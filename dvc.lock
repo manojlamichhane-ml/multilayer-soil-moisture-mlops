@@ -9,16 +9,16 @@ stages:
       size: 15781255
     - path: src/chain.py
       hash: md5
-      md5: 9040c2ec80e31aa7b1f3d2dc6e1f33c2
-      size: 4718
+      md5: 666d06fc97f5969751cdfb46239c668c
+      size: 4888
     - path: src/config.py
       hash: md5
-      md5: f95711677a414fe1d0678140c068f27a
-      size: 1710
+      md5: e572719621dab169ab52545e42fd415b
+      size: 2117
     - path: src/train.py
       hash: md5
-      md5: 13ab345785f38b0406d5c2aca3f59385
-      size: 1094
+      md5: 620cd36eba2c4580d4560b11d3f76b25
+      size: 1287
     params:
       params.yaml:
         chain_mode: strict
@@ -30,64 +30,85 @@ stages:
         - S150
         - S180
         features:
-          S30:
-          - 10-day antecedent Pcp
-          - Ts
-          - Blue
-          - 7-day antecedent Pcp
-          - VARI
-          - Sand (90-120 cm)
-          - NDVIgb
-          - NIR
-          - pH (15-30 cm)
-          - Tmax
-          - Silt (60-90 cm)
-          S60:
-          - Clay (30-60 cm)
-          - Rn
-          - Ts
-          - OM (0-15 cm)
-          - ETo
-          - Tmin
-          - Clay (90-120 cm)
-          - OM (15-30 cm)
-          - Silt (60-90 cm)
-          - SIPI
-          S90:
-          - Rn
-          - Clay (90-120 cm)
-          - Ts
-          - Clay (60-90 cm)
-          - Elevation
-          S120:
-          - Clay (60-90 cm)
-          - Sand (15-30 cm)
-          - Ts
-          - Rn
-          - Carbon (15-30 cm)
-          - Tmin
-          - Sand (60-90 cm)
-          - Clay (90-120 cm)
-          - Silt (0-15 cm)
-          - Sand (30-60 cm)
-          S150:
-          - Silt (60-90 cm)
-          - Carbon (15-30 cm)
-          - pH (15-30 cm)
-          - OM (15-30 cm)
-          - Clay (30-60 cm)
-          - Silt (90-120 cm)
-          - Tmin
-          S180:
-          - Silt (30-60 cm)
-          - Silt (90-120 cm)
-          - OM (15-30 cm)
-          - Clay (60-90 cm)
-          - Clay (15-30 cm)
-          - Elevation
-          - pH (0-15 cm)
-          - Clay (90-120 cm)
-          - Ts
+          with_soil:
+            S30:
+            - 10-day antecedent Pcp
+            - Ts
+            - Blue
+            - 7-day antecedent Pcp
+            - VARI
+            - Sand (90-120 cm)
+            - NDVIgb
+            - NIR
+            - pH (15-30 cm)
+            - Tmax
+            - Silt (60-90 cm)
+            S60:
+            - Clay (30-60 cm)
+            - Rn
+            - Ts
+            - OM (0-15 cm)
+            - ETo
+            - Tmin
+            - Clay (90-120 cm)
+            - OM (15-30 cm)
+            - Silt (60-90 cm)
+            - SIPI
+            S90:
+            - Rn
+            - Clay (90-120 cm)
+            - Ts
+            - Clay (60-90 cm)
+            - Elevation
+            S120:
+            - Clay (60-90 cm)
+            - Sand (15-30 cm)
+            - Ts
+            - Rn
+            - Carbon (15-30 cm)
+            - Tmin
+            - Sand (60-90 cm)
+            - Clay (90-120 cm)
+            - Silt (0-15 cm)
+            - Sand (30-60 cm)
+            S150:
+            - Silt (60-90 cm)
+            - Carbon (15-30 cm)
+            - pH (15-30 cm)
+            - OM (15-30 cm)
+            - Clay (30-60 cm)
+            - Silt (90-120 cm)
+            - Tmin
+            S180:
+            - Silt (30-60 cm)
+            - Silt (90-120 cm)
+            - OM (15-30 cm)
+            - Clay (60-90 cm)
+            - Clay (15-30 cm)
+            - Elevation
+            - pH (0-15 cm)
+            - Clay (90-120 cm)
+            - Ts
+          no_soil:
+            S30: &id001
+            - 10-day antecedent Pcp
+            - 7-day antecedent Pcp
+            - Ts
+            - Tmax
+            - Tmin
+            - Rn
+            - ETo
+            - Blue
+            - NIR
+            - VARI
+            - NDVIgb
+            - SIPI
+            - Elevation
+            S60: *id001
+            S90: *id001
+            S120: *id001
+            S150: *id001
+            S180: *id001
         hyperparameters:
           S30:
           - 250
@@ -161,21 +182,24 @@ stages:
           test_size: 0.25
           random_state: 10
           cv_folds: 5
+        variants:
+        - with_soil
+        - no_soil
     outs:
-    - path: models/chained
+    - path: models/no_soil
       hash: md5
-      md5: 50d60d40f6c204f0675ecabf5415ea35.dir
-      size: 3602061
-      nfiles: 6
-    - path: models/independent
+      md5: 5f8901e13fd01ddf6a6765ea6f22f322.dir
+      size: 6241339
+      nfiles: 12
+    - path: models/with_soil
       hash: md5
-      md5: 913aca08ca71b821eb0c0db97b32718e.dir
-      size: 2576894
-      nfiles: 6
+      md5: ad14695faba87b668f832dc4371b71cb.dir
+      size: 6178955
+      nfiles: 12
     - path: reports/train_info.json
       hash: md5
-      md5: bdabc7164bd5eb9a39acabefff690138
-      size: 142
+      md5: 433f60bc8f87fe89a2f408bb76829bb2
+      size: 194
   evaluate:
     cmd: python src/evaluate.py
     deps:
@@ -183,28 +207,28 @@ stages:
       hash: md5
       md5: 789ba2365c44813108fdd2d3f3aec5d2
       size: 15781255
-    - path: models/chained
+    - path: models/no_soil
       hash: md5
-      md5: 50d60d40f6c204f0675ecabf5415ea35.dir
-      size: 3602061
-      nfiles: 6
-    - path: models/independent
+      md5: 5f8901e13fd01ddf6a6765ea6f22f322.dir
+      size: 6241339
+      nfiles: 12
+    - path: models/with_soil
       hash: md5
-      md5: 913aca08ca71b821eb0c0db97b32718e.dir
-      size: 2576894
-      nfiles: 6
+      md5: ad14695faba87b668f832dc4371b71cb.dir
+      size: 6178955
+      nfiles: 12
     - path: src/chain.py
       hash: md5
-      md5: 9040c2ec80e31aa7b1f3d2dc6e1f33c2
-      size: 4718
+      md5: 666d06fc97f5969751cdfb46239c668c
+      size: 4888
     - path: src/config.py
       hash: md5
-      md5: f95711677a414fe1d0678140c068f27a
-      size: 1710
+      md5: e572719621dab169ab52545e42fd415b
+      size: 2117
     - path: src/evaluate.py
       hash: md5
-      md5: 650caa9e24424f9a3d83f6e6d44bdcea
-      size: 14133
+      md5: 88e3f52d54ae70a0ee890e44356cf5bd
+      size: 16437
     - path: src/metrics.py
       hash: md5
       md5: 73543187f71973e44d657a60738d44f9
@@ -219,29 +243,29 @@ stages:
     outs:
     - path: models/registry.json
       hash: md5
-      md5: f773fc7cd0ae846deba62e8da771f956
-      size: 27109
+      md5: 6914a94d1190c96140d9d994748646f0
+      size: 58067
     - path: reports/figures/drivers_by_depth.png
       hash: md5
-      md5: a1c6b24a976f8577931fcbb9743f1c8b
-      size: 103440
+      md5: 97fdb532e15d15cf54e42692c1c402c7
+      size: 104495
     - path: reports/figures/r2_by_depth.png
       hash: md5
-      md5: 37074c0d2d5188bc6ace7699941d2602
-      size: 57076
+      md5: 4c4e2a790b3f7c39f673588b6379a0bd
+      size: 75208
     - path: reports/figures/validation_profile.png
       hash: md5
-      md5: 1e04e3e70e6e7c1b14dac0224bdc7eb5
-      size: 90296
+      md5: 08b0e4d7fb92ab6577465975135b9acf
+      size: 135264
     - path: reports/metrics.json
       hash: md5
-      md5: 99d59c8921c1a6c00441afce229fdd24
-      size: 492
+      md5: c05b3842129f5ff2660dd08a629cf6f3
+      size: 1384
     - path: reports/upper_layer_gain.csv
       hash: md5
-      md5: 07522381edb06427450a1611fe4ec02c
-      size: 111
+      md5: 82a2580efe852cbf53b06d0e9cbf3b08
+      size: 285
     - path: reports/validation.csv
       hash: md5
-      md5: 8ab0682a837a22c29db179cffd83aef4
-      size: 2772
+      md5: d874894a7dbbc20c4b8cce89126af193
+      size: 8891

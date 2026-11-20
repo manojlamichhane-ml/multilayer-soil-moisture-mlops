@@ -3,18 +3,23 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Root-zone soil moisture, layer by layer</title>
+<title>Multilayer soil moisture, layer by layer</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27%3E%3Crect width=%2716%27 height=%275%27 fill=%27%23C8A97E%27/%3E%3Crect y=%275%27 width=%2716%27 height=%275%27 fill=%27%237E5E3C%27/%3E%3Crect y=%2710%27 width=%2716%27 height=%276%27 fill=%27%234F3722%27/%3E%3Ccircle cx=%278%27 cy=%278%27 r=%273%27 fill=%27%232F9BDB%27/%3E%3C/svg%3E">
-<meta name="description" content="Predict soil moisture at six depths (30–180 cm) from PlanetScope, weather and soil data. Each layer's prediction feeds the layer below.">
+<meta name="description" content="Predict soil moisture at six depths (30–180 cm) from PlanetScope imagery, climate and soil data. Choose between four models: with or without soil properties, with or without the layer above.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,600;12..96,800&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --sky:#E6EEF0; --sky-2:#D3E2E6; --loess:#EFE7DC; --loam:#2B2019; --bedrock:#19120D;
+  --sky:#E4EEF1; --sky-2:#D2E2E7; --loess:#EFE7DC; --loam:#2B2019; --bedrock:#19120D;
   --ink:#1E1914; --ink-soft:#5D5248; --paper-ink:#F3EBDD; --paper-soft:#BFAF9B;
-  --water:#2F9BDB; --water-glow:#8FD3FF; --sand:#C7A26B; --rule:#D6CDBF; --rule-dark:#4A3A2D;
+  --water:#2F9BDB; --water-deep:#1F6FA0; --water-glow:#8FD3FF; --rule:#D6CDBF;
+  --clay:#A0521D; --clay-soft:#C98A55;
   --l1:#C8A97E; --l2:#B08D62; --l3:#97744D; --l4:#7E5E3C; --l5:#664A2E; --l6:#4F3722;
+  /* input groups */
+  --g-sat:#5E9A45; --g-clim:#D39B2A; --g-soil:#A86A3D; --g-topo:#7D6FA6; --g-up:#2F9BDB;
+  /* models: hue = soil properties (orange used / blue not used); texture = layer above */
+  --m-soil:#C4621B; --m-nosoil:#1F78B4; --m-soil-d:#CC7834; --m-nosoil-d:#2E95D3;
   --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
   --ui:"Instrument Sans", "Segoe UI", system-ui, sans-serif;
 }
@@ -24,6 +29,7 @@ body{margin:0;font:400 16px/1.55 var(--ui);color:var(--ink);background:var(--bed
 a{color:inherit;text-underline-offset:3px}
 :focus-visible{outline:3px solid var(--water);outline-offset:2px;border-radius:4px}
 .wrap{max-width:1280px;margin:0 auto;padding:0 32px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
 /* ---------- depth gauge (fixed) ---------- */
 .gauge{position:fixed;right:18px;top:50%;transform:translateY(-50%);z-index:20;display:flex;align-items:center;gap:10px;pointer-events:none}
@@ -31,36 +37,81 @@ a{color:inherit;text-underline-offset:3px}
 .gauge-dot{position:absolute;left:50%;width:14px;height:14px;margin-left:-7px;border-radius:50%;background:var(--water);box-shadow:0 0 0 4px rgba(47,155,219,.25);top:0}
 .gauge-label{font:600 12px var(--ui);color:#fff;background:rgba(25,18,13,.72);padding:3px 8px;border-radius:12px;font-variant-numeric:tabular-nums;white-space:nowrap}
 
-/* ---------- surface: hero ---------- */
-.surface{background:linear-gradient(180deg,var(--sky) 0%,var(--sky-2) 70%,#CDBB9D 100%);padding:40px 0 56px}
-.top{display:flex;justify-content:space-between;align-items:baseline;gap:20px;flex-wrap:wrap;margin-bottom:26px}
+/* ---------- surface ---------- */
+.surface{background:linear-gradient(180deg,var(--sky) 0%,var(--sky-2) 55%,#D9D2C2 82%,#CDBB9D 100%);padding:36px 0 64px}
+.top{display:flex;justify-content:space-between;align-items:baseline;gap:20px;flex-wrap:wrap;margin-bottom:46px}
 .brand{font:600 14px var(--ui);color:var(--ink-soft)}
 .top nav{display:flex;gap:22px;font-size:14px}
-h1{font:800 clamp(2.4rem,5.6vw,4.6rem)/.95 var(--display);letter-spacing:-.03em;margin:0 0 14px;max-width:16ch}
-.lede{font-size:1.1rem;color:var(--ink-soft);max-width:60ch;margin:0 0 30px}
 
-.instrument{display:grid;grid-template-columns:330px minmax(0,1fr) 330px;gap:28px;align-items:start}
-.panel{background:rgba(255,255,255,.55);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.7);border-radius:16px;padding:18px}
-.panel h2{font:600 1.05rem var(--display);margin:0 0 10px}
+/* hero */
+.hero{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:56px;align-items:start;margin-bottom:84px}
+h1{margin:0;font:800 clamp(3rem,7.4vw,6.2rem)/.9 var(--display);letter-spacing:-.045em;color:var(--ink)}
+.subtitle{display:block;margin:18px 0 30px;font:300 clamp(1.45rem,2.7vw,2.25rem)/1.12 var(--display);letter-spacing:-.015em;color:var(--clay)}
+.summary{font-size:1.13rem;line-height:1.7;color:#3E352D;max-width:60ch;margin:0 0 22px}
+.term{font-weight:600;color:var(--ink);background-image:linear-gradient(var(--c),var(--c));background-size:100% 3px;background-position:0 100%;background-repeat:no-repeat;padding-bottom:1px}
+.facts{display:flex;flex-wrap:wrap;gap:8px 26px;font-size:14px;color:var(--ink-soft);margin:0;padding:0;list-style:none}
+.facts b{font:800 1.35rem/1 var(--display);color:var(--ink);margin-right:6px;font-variant-numeric:tabular-nums}
 
-/* presets */
-.presets{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
-.chip{font:500 13px var(--ui);border:1px solid var(--rule);background:#fff;color:var(--ink);border-radius:20px;padding:6px 12px;cursor:pointer}
+/* model picker */
+.picker{background:rgba(255,255,255,.62);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.8);border-radius:22px;padding:22px 22px 18px;box-shadow:0 24px 50px -28px rgba(43,32,25,.35)}
+.picker h2{font:600 1.3rem var(--display);margin:0 0 4px}
+.picker .hint{font-size:13.5px;color:var(--ink-soft);margin:0 0 16px}
+.matrix{display:grid;grid-template-columns:auto 1fr 1fr;gap:8px;align-items:stretch}
+.axis{font:600 12.5px var(--ui);color:var(--ink-soft);display:flex;align-items:flex-end;justify-content:center;text-align:center;padding:0 4px 2px}
+.axis.row{justify-content:flex-start;align-items:center;text-align:left;width:76px;line-height:1.3}
+.cell{position:relative;text-align:left;border:1.5px solid var(--rule);background:#fff;border-radius:14px;padding:12px 12px 10px;cursor:pointer;font:inherit;color:var(--ink);transition:border-color .2s,background .2s,transform .2s}
+.cell:hover{border-color:#B9AC99;transform:translateY(-1px)}
+.cell[aria-checked=true]{background:var(--ink);border-color:var(--ink);color:#fff}
+.cell .nm{display:block;font:600 15px/1.2 var(--display)}
+.cell .paper{display:inline-block;font:600 10.5px var(--ui);color:var(--clay);margin-top:3px}
+.cell[aria-checked=true] .paper{color:#F2B98A}
+.cell .r2{display:block;font-size:12.5px;color:var(--ink-soft);margin-top:6px;font-variant-numeric:tabular-nums}
+.cell[aria-checked=true] .r2{color:#CFC3B3}
+.spark{display:flex;align-items:flex-end;gap:3px;height:26px;margin-top:8px}
+.spark i{flex:1;border-radius:2px 2px 0 0;background:var(--c)}
+.spark.striped i{background:repeating-linear-gradient(135deg,var(--c) 0 3px,transparent 3px 5px);box-shadow:inset 0 0 0 1px var(--c)}
+.chosen{margin:14px 0 0;font-size:13.5px;color:var(--ink-soft);min-height:2.6em}
+.chosen strong{color:var(--ink)}
+
+/* ---------- inputs ---------- */
+.block-head{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap;margin-bottom:20px}
+h2.mid{font:800 clamp(1.8rem,3.4vw,2.6rem)/1 var(--display);letter-spacing:-.025em;margin:0 0 8px}
+.block-head p{margin:0;color:var(--ink-soft);max-width:58ch}
+.presets{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font:500 13.5px var(--ui);border:1px solid var(--rule);background:#fff;color:var(--ink);border-radius:20px;padding:7px 14px;cursor:pointer}
+.chip:hover{border-color:#B9AC99}
 .chip[aria-pressed=true]{background:var(--ink);color:#fff;border-color:var(--ink)}
-/* input groups */
-details{border-top:1px solid var(--rule);padding:8px 0}
-summary{cursor:pointer;font:600 14px var(--ui);display:flex;justify-content:space-between;list-style:none}
-summary::-webkit-details-marker{display:none}
-summary .count{color:var(--ink-soft);font-weight:400}
-.ctrl{margin:10px 0 2px}
-.ctrl-top{display:flex;justify-content:space-between;gap:8px;font-size:13px}
-.ctrl-top span:first-child{color:var(--ink)}
-.ctrl-top output{font-variant-numeric:tabular-nums;color:var(--ink-soft)}
-input[type=range]{width:100%;accent-color:var(--water);margin:4px 0 0}
-.run{width:100%;margin-top:14px;border:0;border-radius:12px;background:var(--water);color:#fff;font:600 15px var(--ui);padding:12px;cursor:pointer}
-.run:hover{background:#2486C2}
+.groups{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:18px;margin-bottom:84px}
+.group[data-group=Satellite],.group[data-group=Climate]{grid-column:span 3}
+.group[data-group=Topography]{grid-column:span 2}
+.group[data-group=Soil]{grid-column:span 4}
+.group{background:rgba(255,255,255,.66);border:1px solid rgba(255,255,255,.85);border-radius:18px;padding:18px 20px 16px;border-top:5px solid var(--c);transition:opacity .35s,filter .35s;display:flex;flex-direction:column}
+.group.off{opacity:.42;filter:saturate(.2)}
+.g-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:6px}
+.g-head h3{margin:0;font:600 1.15rem var(--display)}
+.g-head .count{font-size:13px;color:var(--ink-soft)}
+.g-desc{font-size:13px;color:var(--ink-soft);margin:0 0 6px}
+.badge{display:none;font:600 12px var(--ui);color:#fff;background:var(--ink-soft);border-radius:10px;padding:2px 9px}
+.group.off .badge{display:inline-block}
+.ctrls{display:grid;grid-template-columns:repeat(auto-fill,minmax(var(--min,215px),1fr));gap:4px 20px}
+.ctrl{padding:9px 0 4px;border-top:1px solid rgba(214,205,191,.7)}
+.ctrl label{display:block;font-size:13px;color:var(--ink);margin-bottom:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ctrl .row{display:flex;align-items:center;gap:10px}
+.ctrl input[type=range]{flex:1;min-width:0;accent-color:var(--c);margin:0}
+.num{display:flex;align-items:center;border:1px solid var(--rule);border-radius:8px;background:#fff;padding:0 6px 0 0;flex:none;width:122px}
+.num input{width:0;flex:1;min-width:0;border:0;background:transparent;font:500 13.5px var(--ui);color:var(--ink);padding:5px 4px 5px 8px;text-align:right;font-variant-numeric:tabular-nums;-moz-appearance:textfield}
+.num input::-webkit-outer-spin-button,.num input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.num input:focus{outline:none}
+.num:focus-within{border-color:var(--water);box-shadow:0 0 0 3px rgba(47,155,219,.2)}
+.num .u{font-size:11.5px;color:var(--ink-soft);white-space:nowrap}
+.num.bad{border-color:#B3261E;box-shadow:0 0 0 3px rgba(179,38,30,.15)}
+.err{font-size:12px;color:#B3261E;margin-top:3px;min-height:0}
+.terrain{flex:1;min-height:120px;margin-top:12px;display:flex;flex-direction:column;justify-content:flex-end}
+.terrain svg{width:100%;height:auto;display:block}
+.terrain p{font-size:12.5px;color:var(--ink-soft);margin:8px 0 0}
 
-/* the soil column */
+/* ---------- result ---------- */
+.result{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:40px;align-items:start}
 .column-wrap{position:relative}
 #column{width:100%;height:auto;display:block;filter:drop-shadow(0 18px 30px rgba(43,32,25,.25))}
 #rain{position:absolute;left:0;top:0;width:100%;pointer-events:none}
@@ -68,29 +119,40 @@ input[type=range]{width:100%;accent-color:var(--water);margin:4px 0 0}
 .band-val{font:800 30px var(--display);fill:#fff;font-variant-numeric:tabular-nums}
 .band-unit{font:500 11px var(--ui);fill:rgba(255,248,236,.85)}
 .feed-tag{font:600 12px var(--ui)}
+#feeds{transition:opacity .4s}
 .wave{animation:drift 6s linear infinite}
 @keyframes drift{from{transform:translateX(0)}to{transform:translateX(-120px)}}
-.band-glow{transition:opacity .4s}
-.status{font-size:13px;color:var(--ink-soft);text-align:center;margin-top:8px;min-height:1.4em}
-
-/* profile chart */
+.status{font-size:13.5px;color:var(--ink-soft);text-align:center;margin-top:10px;min-height:1.4em}
+.panel{background:rgba(255,255,255,.62);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.8);border-radius:18px;padding:22px}
+.panel h3{font:600 1.25rem var(--display);margin:0 0 2px}
+.panel .sub{font-size:13.5px;color:var(--ink-soft);margin:0 0 10px}
 #profile{width:100%;height:auto;display:block}
-.legend{display:flex;gap:16px;font-size:13px;margin:4px 0 12px;flex-wrap:wrap}
-.key{display:inline-flex;align-items:center;gap:6px}
-.swatch{width:18px;height:3px;border-radius:2px;background:var(--water);display:inline-block}
-.swatch.dash{background:repeating-linear-gradient(90deg,var(--sand) 0 5px,transparent 5px 8px);height:3px}
-.layers{list-style:none;padding:0;margin:12px 0 0;font-size:13px}
-.layers li{display:grid;grid-template-columns:52px 1fr auto;gap:8px;padding:6px 0;border-top:1px solid var(--rule);font-variant-numeric:tabular-nums}
-.layers .d{font-weight:600}
-.layers .e{color:var(--ink-soft)}
+.legend{display:grid;grid-template-columns:1fr 1fr;gap:6px 14px;font-size:12.5px;margin:4px 0 8px}
+.key{display:flex;align-items:center;gap:8px;cursor:pointer;border:0;background:none;padding:2px 0;font:inherit;color:var(--ink-soft);text-align:left}
+.key[aria-pressed=true]{color:var(--ink);font-weight:600}
+.key svg{flex:none}
+table.layers{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:10px;font-variant-numeric:tabular-nums}
+.layers th{font-weight:600;font-size:12px;color:var(--ink-soft);text-align:right;padding:6px 6px;border-bottom:1px solid var(--rule)}
+.layers th:first-child,.layers td:first-child{text-align:left}
+.layers td{text-align:right;padding:7px 6px;border-bottom:1px solid rgba(214,205,191,.6)}
+.layers td.sel,.layers th.sel{font-weight:700;color:var(--ink);background:rgba(47,155,219,.08)}
 .warn{font-size:12.5px;color:#7A4B0E;background:#F6E9D2;border-radius:8px;padding:8px 10px;margin-top:10px}
 
-/* ---------- method (loess) ---------- */
+/* live strip */
+.strip{position:fixed;left:50%;bottom:18px;transform:translate(-50%,140%);z-index:30;background:rgba(30,25,20,.92);color:#fff;border-radius:16px;padding:10px 14px 10px 18px;display:flex;align-items:center;gap:18px;box-shadow:0 18px 40px -12px rgba(0,0,0,.5);transition:transform .35s cubic-bezier(.2,.8,.2,1);max-width:calc(100vw - 24px)}
+.strip.show{transform:translate(-50%,0)}
+.strip .m{font:600 13px var(--display);white-space:nowrap}
+.strip ol{display:flex;gap:12px;margin:0;padding:0;list-style:none;font-variant-numeric:tabular-nums}
+.strip li{white-space:nowrap;font-size:12px;color:#CFC3B3;text-align:center;line-height:1.2}
+.strip li b{display:block;font:700 14px var(--ui);color:#fff}
+.strip a{font:600 13px var(--ui);color:#8FD3FF;white-space:nowrap}
+
+/* ---------- method ---------- */
 .method{background:var(--loess);padding:84px 0 76px}
 .section-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:40px;align-items:end;margin-bottom:28px}
 h2.big{font:800 clamp(2rem,4vw,3.2rem)/1 var(--display);letter-spacing:-.025em;margin:0}
 .section-head p{margin:0;color:var(--ink-soft);max-width:62ch}
-#method{width:100%;height:auto;display:block}
+#method-svg{width:100%;height:auto;display:block}
 .m-card{fill:#fff;stroke:#D9CDBB}
 .m-title{font:600 15px var(--display);fill:var(--ink)}
 .m-text{font:400 12.5px var(--ui);fill:var(--ink-soft)}
@@ -102,36 +164,40 @@ h2.big{font:800 clamp(2rem,4vw,3.2rem)/1 var(--display);letter-spacing:-.025em;m
 .m-loop{font:600 13.5px var(--ui);fill:#1F6FA0}
 .plate{transition:transform .5s, filter .5s}
 .plate.lit{filter:brightness(1.18) drop-shadow(0 0 10px rgba(143,211,255,.9))}
-.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;margin-top:30px;counter-reset:s}
+.steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:22px;margin-top:30px;counter-reset:s}
 .steps div{counter-increment:s;font-size:14.5px;color:var(--ink-soft)}
 .steps div::before{content:counter(s);display:block;font:800 2rem/1 var(--display);color:var(--l3);margin-bottom:6px}
 .steps strong{display:block;color:var(--ink);margin-bottom:2px}
 
-/* ---------- results (loam, dark) ---------- */
+/* ---------- results (dark) ---------- */
 .results{background:linear-gradient(180deg,#3A2B20,var(--loam) 30%);color:var(--paper-ink);padding:84px 0}
 .results .section-head p{color:var(--paper-soft)}
 .res-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:46px;margin-top:10px}
 .res-grid h3{font:600 1.35rem var(--display);margin:0 0 6px}
-.res-grid .sub{color:var(--paper-soft);font-size:14px;margin:0 0 18px}
-.gain-row{display:grid;grid-template-columns:62px 1fr 70px;gap:12px;align-items:center;margin:12px 0}
-.gain-row .d{font:600 15px var(--display)}
-.bars{display:grid;gap:4px}
-.bar{height:12px;border-radius:0 6px 6px 0;width:0;transition:width 1.1s cubic-bezier(.2,.8,.2,1)}
-.bar.ind{background:var(--sand)} .bar.chn{background:var(--water)}
-.bar-val{font-size:11px;color:var(--paper-soft);margin-left:6px;vertical-align:middle}
-.delta{font:600 13px var(--ui);text-align:right;font-variant-numeric:tabular-nums}
-.delta.up{color:var(--water-glow)} .delta.down{color:#E2B48A}
-.res-legend{display:flex;gap:18px;font-size:13px;color:var(--paper-soft);margin-bottom:6px}
+.res-grid .sub{color:var(--paper-soft);font-size:14px;margin:0 0 14px}
+.res-legend{display:grid;grid-template-columns:1fr 1fr;gap:6px 16px;font-size:13px;color:var(--paper-soft);margin-bottom:8px}
+.res-legend span{display:flex;align-items:center;gap:8px}
+.sw{display:inline-block;width:22px;height:10px;border-radius:2px;background:var(--c);flex:none}
+.sw.striped{background:repeating-linear-gradient(135deg,var(--c) 0 3px,transparent 3px 6px);box-shadow:inset 0 0 0 1.5px var(--c)}
+.cmp-row{display:grid;grid-template-columns:62px 1fr;gap:12px;align-items:center;margin:14px 0}
+.cmp-row .d{font:600 15px var(--display)}
+.bars{display:grid;gap:3px}
+.bars div{display:flex;align-items:center}
+.bar{display:inline-block;height:10px;border-radius:0 5px 5px 0;width:0;background:var(--c);transition:width 1.1s cubic-bezier(.2,.8,.2,1)}
+.bar.striped{background:repeating-linear-gradient(135deg,var(--c) 0 3px,transparent 3px 6px);box-shadow:inset 0 0 0 1.5px var(--c)}
+.bars div.sel .bar-val{color:#fff;font-weight:700}
+.bar-val{font-size:11px;color:var(--paper-soft);margin-left:6px;font-variant-numeric:tabular-nums}
 .drv-row{display:grid;grid-template-columns:62px 1fr;gap:12px;align-items:center;margin:11px 0}
-.stack{display:flex;height:22px;border-radius:6px;overflow:hidden;background:#3D2E23}
+.stack{display:flex;height:22px;border-radius:6px;overflow:hidden;background:#3D2E23;gap:2px}
 .stack span{display:block;height:100%;width:0;transition:width 1.1s cubic-bezier(.2,.8,.2,1)}
 .drv-key{display:flex;flex-wrap:wrap;gap:12px;font-size:12.5px;color:var(--paper-soft);margin-top:12px}
 .drv-key i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
 .top-feats{font-size:12px;color:var(--paper-soft);margin:3px 0 0 74px}
+.model-name{color:var(--paper-ink);font-weight:600}
 table.val{width:100%;border-collapse:separate;border-spacing:4px;margin-top:6px;font-variant-numeric:tabular-nums}
 .val th{font:600 13px var(--ui);color:var(--paper-soft);text-align:left;padding:4px 6px}
 .val td{text-align:center;border-radius:6px;padding:10px 4px;font-weight:600;font-size:14px}
-.note{font-size:13.5px;color:var(--paper-soft);margin-top:14px;max-width:70ch}
+.note{font-size:13.5px;color:var(--paper-soft);margin-top:14px;max-width:76ch}
 .full{grid-column:1/-1}
 
 footer{background:var(--bedrock);color:var(--paper-soft);padding:46px 0 60px;font-size:14px}
@@ -139,19 +205,24 @@ footer .row{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap}
 footer a{color:var(--paper-ink)}
 
 @media (max-width:1100px){
-  .instrument{grid-template-columns:1fr 1fr}
-  .column-wrap{grid-column:1/-1;order:-1;max-width:520px;margin:0 auto;width:100%}
+  .hero{grid-template-columns:1fr;gap:36px}
+  .result{grid-template-columns:1fr}
+  .column-wrap{max-width:520px;margin:0 auto;width:100%}
   .section-head,.res-grid{grid-template-columns:1fr}
+  .steps{grid-template-columns:1fr 1fr}
 }
-@media (max-width:700px){
+@media (max-width:760px){
   .wrap{padding:0 18px}
-  .instrument{grid-template-columns:1fr}
+  .groups{grid-template-columns:1fr}
+  .groups .group{grid-column:auto !important}
   .steps{grid-template-columns:1fr}
   .gauge{display:none}
+  .axis.row{width:58px;font-size:11.5px}
+  .strip ol{gap:7px}.strip .m,.strip a{display:none}
 }
 @media (prefers-reduced-motion:reduce){
   .wave,.flow,.feedback{animation:none}
-  .bar,.stack span{transition:none}
+  .bar,.stack span,.strip,.cell{transition:none}
 }
 </style>
 </head>
@@ -168,23 +239,51 @@ footer a{color:var(--paper-ink)}
     <div class="top">
       <span class="brand">Lamichhane, Mehan &amp; Mankin (2025), Vadose Zone Journal</span>
       <nav aria-label="Project links">
-        <a href="#method">Method</a><a href="#results">Results</a>
+        <a href="#inputs">Try it</a><a href="#method">Method</a><a href="#results">Results</a>
         <a href="https://doi.org/10.1002/vzj2.70047">Paper</a><a href="/docs">API</a>
       </nav>
     </div>
-    <h1>Root-zone soil moisture, layer by layer</h1>
-    <p class="lede">Satellites see the top few centimetres of soil. This model reaches 180 cm: it predicts the 30 cm layer from PlanetScope imagery, weather and soil data, then passes each answer down to the layer below.</p>
 
-    <div class="instrument">
-      <!-- controls -->
-      <form class="panel" id="controls" aria-labelledby="ctrl-title">
-        <h2 id="ctrl-title">Conditions at the surface</h2>
+    <div class="hero">
+      <div>
+        <h1>Multilayer soil moisture</h1>
+        <span class="subtitle">from the surface down to 180 cm, one layer at a time</span>
+        <p class="summary">
+          Satellites only see the top few centimetres of soil, so we start there. The moisture of the top layer (30&nbsp;cm) is predicted from
+          <span class="term" style="--c:var(--g-sat)">PlanetScope satellite imagery</span> and
+          <span class="term" style="--c:var(--g-clim)">climate data</span> such as rain, temperature and evapotranspiration.
+          That prediction is then <span class="term" style="--c:var(--g-up)">passed down</span> as an input to the 60&nbsp;cm model,
+          whose answer feeds 90&nbsp;cm, and so on to 180&nbsp;cm. Each depth is also modelled with and without
+          <span class="term" style="--c:var(--g-soil)">soil properties</span> (texture, organic matter, pH),
+          which gives four models you can switch between and compare.
+        </p>
+        <ul class="facts" id="facts"></ul>
+      </div>
+
+      <div class="picker">
+        <h2 id="pick-title">Choose a model</h2>
+        <p class="hint">Two questions: does it know the soil, and does it use the layer above? Bars show hold-out R² from 30 to 180 cm.</p>
+        <div class="matrix" role="radiogroup" aria-labelledby="pick-title" id="matrix">
+          <span></span><span class="axis">Uses layer above</span><span class="axis">Each layer alone</span>
+        </div>
+        <p class="chosen" id="chosen" aria-live="polite"></p>
+      </div>
+    </div>
+
+    <!-- inputs -->
+    <div id="inputs">
+      <div class="block-head">
+        <div>
+          <h2 class="mid">Set the conditions</h2>
+          <p>Drag a slider or type a number. Start from a preset, then change anything. The profile updates as you go.</p>
+        </div>
         <div class="presets" id="presets" role="group" aria-label="Preset conditions"></div>
-        <div id="groups"></div>
-        <button class="run" type="submit" id="run">Drop it through the profile</button>
-      </form>
+      </div>
+      <form class="groups" id="groups" novalidate></form>
+    </div>
 
-      <!-- soil column -->
+    <!-- result -->
+    <div class="result" id="result">
       <div class="column-wrap">
         <canvas id="rain" aria-hidden="true"></canvas>
         <svg id="column" viewBox="0 0 440 780" role="img" aria-labelledby="col-title col-desc">
@@ -208,17 +307,24 @@ footer a{color:var(--paper-ink)}
         <p class="status" id="status" aria-live="polite"></p>
       </div>
 
-      <!-- profile -->
       <div class="panel" aria-labelledby="prof-title">
-        <h2 id="prof-title">Moisture profile</h2>
-        <div class="legend"><span class="key"><span class="swatch"></span>With layer above (chain)</span><span class="key"><span class="swatch dash"></span>Each layer alone</span></div>
-        <svg id="profile" viewBox="0 0 300 330" role="img" aria-label="Soil moisture against depth"></svg>
-        <ul class="layers" id="layer-list"></ul>
+        <h3 id="prof-title">Moisture profile</h3>
+        <p class="sub">All four models for the same conditions. The bold line is the model you chose; click a name to switch.</p>
+        <div class="legend" id="legend"></div>
+        <svg id="profile" viewBox="0 0 420 340" role="img" aria-label="Soil moisture against depth for four models"></svg>
+        <table class="layers" id="layer-table"></table>
         <div id="warnings"></div>
       </div>
     </div>
   </div>
 </section>
+
+<!-- live strip while editing inputs -->
+<div class="strip" id="strip" aria-hidden="true">
+  <span class="m" id="strip-model"></span>
+  <ol id="strip-vals"></ol>
+  <a href="#result" tabindex="-1">See the profile</a>
+</div>
 
 <!-- ================= METHOD ================= -->
 <section class="method" id="method">
@@ -235,6 +341,7 @@ footer a{color:var(--paper-ink)}
       <div><strong>Data fusion</strong>PlanetScope bands and indices at 3 m, daily weather with antecedent rain, lab soil texture, organic matter and pH in five layers, and elevation.</div>
       <div><strong>Feature selection</strong>For each depth, inputs are ranked by SHAP and added one by one until the test score stops improving: 5 to 11 inputs per depth.</div>
       <div><strong>Chained prediction</strong>The predicted moisture of the layer directly above is added as an input. Near the surface the sky drives moisture; deeper down, the layer above and the soil itself take over.</div>
+      <div><strong>Four versions</strong>Every depth is trained with and without soil properties, and with and without the layer above. Comparing them shows what each piece of information is worth.</div>
     </div>
   </div>
 </section>
@@ -243,24 +350,25 @@ footer a{color:var(--paper-ink)}
 <section class="results" id="results">
   <div class="wrap">
     <div class="section-head">
-      <h2 class="big">What the chain buys you</h2>
-      <p id="results-lede">Scores on observations the models never saw. During training, the layer-above input is an out-of-fold prediction, so the chain is judged exactly as it will run on new data.</p>
+      <h2 class="big">What each piece of information buys you</h2>
+      <p>Scores on observations the models never saw. During training, the layer-above input is an out-of-fold prediction, so the chain is judged exactly as it will run on new data.</p>
     </div>
     <div class="res-grid">
       <div>
-        <h3>Hold-out R² at each depth</h3>
-        <p class="sub">Sand: each layer predicted on its own. Blue: with the predicted layer above.</p>
-        <div id="gain"></div>
+        <h3>Hold-out R², four models</h3>
+        <p class="sub">Orange knows the soil, blue does not. Solid bars use the layer above, striped bars predict each layer alone.</p>
+        <div class="res-legend" id="res-legend"></div>
+        <div id="compare"></div>
       </div>
       <div>
         <h3>What drives each layer</h3>
-        <p class="sub">Share of each prediction explained by each kind of input (chained models).</p>
+        <p class="sub">Share of each prediction explained by each kind of input, for <span class="model-name" id="drv-model"></span>.</p>
         <div id="drivers"></div>
         <div class="drv-key" id="drv-key"></div>
       </div>
       <div class="full">
         <h3>How far it travels</h3>
-        <p class="sub">R² of the chained models under four tests, from easiest to hardest.</p>
+        <p class="sub">R² of <span class="model-name" id="val-model"></span> under four tests, from easiest to hardest.</p>
         <table class="val" id="val"></table>
         <p class="note" id="val-note"></p>
       </div>
@@ -280,24 +388,166 @@ const $ = (s) => document.querySelector(s);
 const NS = "http://www.w3.org/2000/svg";
 const REDUCED = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const LAYER_COLORS = ["#C8A97E","#B08D62","#97744D","#7E5E3C","#664A2E","#4F3722"];
-const GROUP_COLORS = {"Upper layer":"#2F9BDB","PlanetScope":"#7FB069","Weather":"#E3B04B","Soil":"#B9825A","Terrain":"#9C8FB5"};
-const GROUP_ORDER = ["Weather","PlanetScope","Soil","Terrain"];
-const state = { meta:null, values:{}, preset:"Typical day", last:null, busy:false };
+const GROUP_COLORS = {"Upper layer":"#2F9BDB","Satellite":"#5E9A45","Climate":"#D39B2A","Soil":"#A86A3D","Topography":"#7D6FA6"};
+const GROUP_LAYOUT = [
+  ["Satellite", "PlanetScope reflectance and vegetation indices at 3 m.", "215px"],
+  ["Climate", "Rain, temperature, radiation and evapotranspiration.", "215px"],
+  ["Topography", "Ground elevation from a field DEM.", "215px"],
+  ["Soil", "Lab-measured texture, organic matter and pH by depth.", "200px"],
+];
+const SOIL_PROPS = ["Sand","Silt","Clay","OM","Carbon","pH"];
+const SOIL_NAMES = {OM:"Organic matter", Carbon:"Organic carbon"};
+const COLORS = { light: { with_soil:"#C4621B", no_soil:"#1F78B4" }, dark: { with_soil:"#CC7834", no_soil:"#2E95D3" } };
+const state = { meta:null, values:{}, preset:"Typical day", model:"with_soil_chained", last:null, anim:0, valid:{} };
 const el = (tag, attrs={}, parent) => { const n = document.createElementNS(NS, tag); for (const [k,v] of Object.entries(attrs)) n.setAttribute(k, v); if (parent) parent.appendChild(n); return n; };
 const fmt = (x, d=3) => Number(x).toFixed(d);
 const sleep = (ms) => new Promise(r => setTimeout(r, REDUCED ? 0 : ms));
+const idOf = (f) => "in-" + f.replace(/[^a-z0-9]/gi, "_");
+const model = (key = state.model) => state.meta.models.find((m) => m.key === key);
+const meanR2 = (key) => { const d = state.meta.depths; return d.reduce((s, x) => s + state.meta.metrics[key][x].holdout.r2, 0) / d.length; };
 
-/* ---------------- geometry of the soil column ---------------- */
+/* ---------------- labels ---------------- */
+function prettyLabel(f) {
+  const m = f.match(/^(\w+) \((\d+)-(\d+) cm\)$/);
+  if (m) return `${SOIL_NAMES[m[1]] || m[1]}, ${m[2]}–${m[3]} cm`;
+  return state.meta.input_meta[f].label;
+}
+function decimals(f) { const [lo, hi] = state.meta.input_meta[f].range, s = hi - lo; return s < 1.5 ? 3 : s < 30 ? 2 : 1; }
+
+/* ---------------- hero ---------------- */
+function buildHero() {
+  const m = state.meta, n = m.n_rows;
+  $("#facts").innerHTML = [[n.total.toLocaleString(), "measurements"], [n.fields, "fields"],
+    [`${n.years[0]}–${String(n.years.at(-1)).slice(2)}`, "seasons"], [m.depths.length, "depths"]]
+    .map(([a, b]) => `<li><b>${a}</b>${b}</li>`).join("");
+  const mx = $("#matrix");
+  [["with_soil", "With soil properties"], ["no_soil", "Without soil properties"]].forEach(([v, lab]) => {
+    const a = document.createElement("span"); a.className = "axis row"; a.textContent = lab; mx.appendChild(a);
+    ["chained", "independent"].forEach((k) => {
+      const md = model(`${v}_${k}`), c = COLORS.light[v];
+      const b = document.createElement("button"); b.type = "button"; b.className = "cell"; b.setAttribute("role", "radio");
+      b.dataset.key = md.key;
+      b.innerHTML = `<span class="nm">${md.short}</span>${md.key === m.default_model ? '<span class="paper">The paper’s model</span>' : ""}
+        <span class="r2">mean R² ${meanR2(md.key).toFixed(2)}</span>
+        <span class="spark ${k === "independent" ? "striped" : ""}" style="--c:${c}" aria-hidden="true">${m.depths.map((d) =>
+          `<i style="height:${Math.max(8, (m.metrics[md.key][d].holdout.r2 - 0.4) / 0.6 * 100)}%"></i>`).join("")}</span>`;
+      b.addEventListener("click", () => setModel(md.key));
+      b.addEventListener("keydown", (e) => {
+        const keys = m.models.map((x) => x.key), i = keys.indexOf(md.key);
+        const move = { ArrowRight: 1, ArrowDown: 2, ArrowLeft: -1, ArrowUp: -2 }[e.key];
+        if (move) { e.preventDefault(); const nk = keys[(i + move + 4) % 4]; setModel(nk); mx.querySelector(`[data-key=${nk}]`).focus(); }
+      });
+      mx.appendChild(b);
+    });
+  });
+}
+function setModel(key) {
+  state.model = key;
+  const md = model();
+  document.querySelectorAll("#matrix .cell").forEach((c) => {
+    const on = c.dataset.key === key; c.setAttribute("aria-checked", on); c.tabIndex = on ? 0 : -1; });
+  $("#chosen").innerHTML = `<strong>${md.label}.</strong> ${md.note}. Mean hold-out R² ${meanR2(key).toFixed(2)} across six depths.`;
+  document.querySelectorAll(".group").forEach((g) => {
+    const off = g.dataset.group === "Soil" && !md.uses_soil;
+    g.classList.toggle("off", off);
+    g.querySelectorAll("input").forEach((i) => (i.disabled = off));
+  });
+  $("#feeds").style.opacity = md.uses_upper_layer ? 1 : 0.12;
+  document.querySelectorAll("#legend .key").forEach((k) => k.setAttribute("aria-pressed", k.dataset.key === key));
+  $("#strip-model").textContent = md.short;
+  renderModelResults();
+  if (state.meta && Object.keys(state.values).length) run(true);
+}
+
+/* ---------------- controls ---------------- */
+function buildControls() {
+  const m = state.meta;
+  Object.keys(m.presets).forEach((name) => {
+    const b = document.createElement("button"); b.type = "button"; b.className = "chip"; b.textContent = name;
+    b.setAttribute("aria-pressed", name === state.preset);
+    b.addEventListener("click", () => applyPreset(name, true)); $("#presets").appendChild(b);
+  });
+  const groups = {};
+  m.inputs.forEach((f) => (groups[m.input_meta[f].group] ??= []).push(f));
+  groups.Soil?.sort((a, b) => {
+    const pa = SOIL_PROPS.indexOf(a.split(" ")[0]), pb = SOIL_PROPS.indexOf(b.split(" ")[0]);
+    return pa - pb || parseInt(a.match(/\((\d+)/)[1]) - parseInt(b.match(/\((\d+)/)[1]);
+  });
+  GROUP_LAYOUT.forEach(([g, desc, min]) => {
+    if (!groups[g]) return;
+    const box = document.createElement("div"); box.className = "group"; box.dataset.group = g;
+    box.setAttribute("role", "group"); box.setAttribute("aria-labelledby", `grp-${g}`);
+    box.style.setProperty("--c", GROUP_COLORS[g]); box.style.setProperty("--min", min);
+    box.innerHTML = `<div class="g-head"><h3 id="grp-${g}">${g}</h3>
+      <span><span class="badge">Not used by this model</span> <span class="count">${groups[g].length} input${groups[g].length > 1 ? "s" : ""}</span></span></div>
+      <p class="g-desc">${desc}</p><div class="ctrls"></div>`;
+    const wrap = box.querySelector(".ctrls");
+    groups[g].forEach((f) => {
+      const meta = m.input_meta[f], [lo, hi] = meta.range, id = idOf(f), dp = decimals(f);
+      const c = document.createElement("div"); c.className = "ctrl";
+      c.innerHTML = `<label for="${id}-n" title="${prettyLabel(f)}">${prettyLabel(f)}</label>
+        <div class="row"><input type="range" id="${id}" min="${lo}" max="${hi}" step="${((hi - lo) / 400).toPrecision(2)}" aria-label="${prettyLabel(f)} slider">
+        <span class="num"><input type="number" id="${id}-n" step="any" inputmode="decimal">${meta.unit ? `<span class="u">${meta.unit}</span>` : ""}</span></div>
+        <div class="err" id="${id}-e" aria-live="polite"></div>`;
+      wrap.appendChild(c);
+      const r = c.querySelector("input[type=range]"), n = c.querySelector("input[type=number]");
+      r.addEventListener("input", () => { setValue(f, parseFloat(r.value), "range"); markCustom(); schedule(); });
+      n.addEventListener("input", () => {
+        const v = parseFloat(n.value), [L, H] = meta.limits, box = n.parentElement, err = $(`#${CSS.escape(id)}-e`);
+        if (n.value.trim() === "" || !isFinite(v)) { box.classList.add("bad"); err.textContent = "Enter a number."; state.valid[f] = false; return; }
+        if (v < L || v > H) { box.classList.add("bad"); err.textContent = `Must be between ${L} and ${H}.`; state.valid[f] = false; return; }
+        box.classList.remove("bad"); err.textContent = (v < lo || v > hi) ? "Outside the training range: treat with care." : "";
+        state.valid[f] = true; setValue(f, v, "number"); markCustom(); schedule();
+      });
+      n.addEventListener("blur", () => { if (state.valid[f] !== false) n.value = fmt(state.values[f], dp); });
+    });
+    if (g === "Topography") {
+      const t = document.createElement("div"); t.className = "terrain";
+      t.innerHTML = `<svg viewBox="0 0 300 90" aria-hidden="true"><path id="terrain-fill" fill="rgba(125,111,166,.22)" stroke="#7D6FA6" stroke-width="2"/>
+        <circle id="terrain-dot" r="6" fill="#2F9BDB" stroke="#fff" stroke-width="2"/></svg>
+        <p>The 18 fields sit within about ${(m.input_meta.Elevation.range[1] - m.input_meta.Elevation.range[0]).toFixed(0)} m of each other, so elevation mostly marks which part of the landscape a tube is in.</p>`;
+      box.appendChild(t);
+    }
+    $("#groups").appendChild(box);
+  });
+  $("#groups").addEventListener("submit", (e) => e.preventDefault());
+}
+function setValue(f, v, from) {
+  state.values[f] = v; state.valid[f] = true;
+  const id = idOf(f), r = $(`#${CSS.escape(id)}`), n = $(`#${CSS.escape(id)}-n`);
+  if (from !== "range") r.value = v;
+  if (from !== "number") { n.value = fmt(v, decimals(f)); n.parentElement.classList.remove("bad"); $(`#${CSS.escape(id)}-e`).textContent = ""; }
+  if (f === "Elevation") drawTerrain();
+}
+function drawTerrain() {
+  const [lo, hi] = state.meta.input_meta.Elevation.range, k = Math.max(0, Math.min(1, (state.values.Elevation - lo) / (hi - lo)));
+  const pts = [[0, 70], [40, 62], [80, 66], [125, 44], [170, 50], [215, 26], [255, 38], [300, 30]];
+  $("#terrain-fill").setAttribute("d", `M0 90 ` + pts.map(([x, y]) => `L${x} ${y}`).join(" ") + " L300 90 Z");
+  // place the dot on the profile at the height matching the elevation
+  const y = 70 - k * 44; let best = pts[0], bd = 1e9;
+  for (let x = 0; x <= 300; x += 2) { const i = pts.findIndex((p) => p[0] >= x), a = pts[Math.max(0, i - 1)], b = pts[i];
+    const yy = a[1] + (b[1] - a[1]) * ((x - a[0]) / ((b[0] - a[0]) || 1)); if (Math.abs(yy - y) < bd) { bd = Math.abs(yy - y); best = [x, yy]; } }
+  $("#terrain-dot").setAttribute("cx", best[0]); $("#terrain-dot").setAttribute("cy", best[1]);
+}
+function applyPreset(name, animate) {
+  state.preset = name;
+  document.querySelectorAll("#presets .chip").forEach((c) => c.setAttribute("aria-pressed", c.textContent === name));
+  Object.entries(state.meta.presets[name].values).forEach(([f, v]) => setValue(f, v));
+  run(animate);
+}
+function markCustom() { document.querySelectorAll("#presets .chip").forEach((c) => c.setAttribute("aria-pressed", false)); }
+let timer; function schedule() { clearTimeout(timer); timer = setTimeout(() => run(false), 220); }
+
+/* ---------------- soil column ---------------- */
 const COL = { x:40, w:300, top:120, band:105 };
 const bandY = (i) => COL.top + i*COL.band;
-
 function buildColumn() {
   const s = $("#surfaceG");
   el("rect", {x:COL.x, y:COL.top-22, width:COL.w, height:22, fill:"#7A6A4E"}, s);
-  const grass = el("g", {id:"grass"}, s);
+  const grass = el("g", {}, s);
   for (let i=0;i<46;i++){
     const x = COL.x + 4 + i*6.4, h = 10 + (i*37 % 13);
-    el("path", {d:`M${x} ${COL.top-22} q ${(i%3)-1} ${-h*0.6} ${(i%2?3:-3)} ${-h}`, stroke:"#6F8F3C", "stroke-width":2, fill:"none", "stroke-linecap":"round", class:"blade"}, grass);
+    el("path", {d:`M${x} ${COL.top-22} q ${(i%3)-1} ${-h*0.6} ${(i%2?3:-3)} ${-h}`, stroke:"#6F8F3C", "stroke-width":2, fill:"none", "stroke-linecap":"round"}, grass);
   }
   const bands = $("#bands");
   state.meta.depths.forEach((d, i) => {
@@ -309,72 +559,26 @@ function buildColumn() {
     const wy = el("g", {id:`water-${d}`, style:`transform:translateY(${COL.band}px);transition:transform 0.9s cubic-bezier(.2,.8,.2,1)`}, water);
     const inner = el("g", {class:"wave"}, wy);
     el("path", {d: wavePath(y), fill:"url(#waterGrad)", opacity:.78}, inner);
-    el("rect", {x:COL.x, y, width:COL.w, height:COL.band, fill:"none", stroke:"rgba(255,255,255,.0)", class:"band-glow", id:`glow-${d}`, "stroke-width":3}, g);
+    el("rect", {x:COL.x, y, width:COL.w, height:COL.band, fill:"none", stroke:"rgba(255,255,255,0)", id:`glow-${d}`, "stroke-width":3}, g);
     el("line", {x1:COL.x, x2:COL.x+COL.w, y1:y, y2:y, stroke:"rgba(30,25,20,.25)"}, g);
-    const t1 = el("text", {x:COL.x+14, y:y+26, class:"band-depth"}, g); t1.textContent = `${d.slice(1)} cm`;
-    const v = el("text", {x:COL.x+COL.w-14, y:y+COL.band/2+10, class:"band-val", "text-anchor":"end", id:`val-${d}`}, g); v.textContent = "–";
-    const u = el("text", {x:COL.x+COL.w-14, y:y+COL.band/2+28, class:"band-unit", "text-anchor":"end"}, g); u.textContent = "cm³/cm³";
+    el("text", {x:COL.x+14, y:y+26, class:"band-depth"}, g).textContent = `${d.slice(1)} cm`;
+    el("text", {x:COL.x+COL.w-14, y:y+COL.band/2+10, class:"band-val", "text-anchor":"end", id:`val-${d}`}, g).textContent = "–";
+    el("text", {x:COL.x+COL.w-14, y:y+COL.band/2+28, class:"band-unit", "text-anchor":"end"}, g).textContent = "cm³/cm³";
   });
   el("rect", {x:COL.x, y:COL.top-22, width:COL.w, height:COL.band*6+22, fill:"none", stroke:"rgba(30,25,20,.35)", rx:2}, bands);
-  // feed arrows on the right, from layer i to layer i+1
   const feeds = $("#feeds");
   state.meta.depths.slice(0, -1).forEach((d, i) => {
     const y1 = bandY(i)+COL.band*0.55, y2 = bandY(i+1)+COL.band*0.45, x = COL.x+COL.w;
     el("path", {id:`feed-${i}`, d:`M ${x+4} ${y1} C ${x+58} ${y1}, ${x+58} ${y2}, ${x+4} ${y2}`, stroke:"rgba(47,155,219,.45)", "stroke-width":2, fill:"none", "stroke-dasharray":"4 5"}, feeds);
     el("path", {d:`M ${x+4} ${y2} l 8 -5 m -8 5 l 8 5`, stroke:"rgba(47,155,219,.6)", "stroke-width":2, fill:"none"}, feeds);
-    const t = el("text", {x:x+44, y:(y1+y2)/2+4, class:"feed-tag", id:`feedtag-${i}`, fill:"#2F6F95", "text-anchor":"start"}, feeds); t.textContent = "";
+    el("text", {x:x+44, y:(y1+y2)/2+4, class:"feed-tag", id:`feedtag-${i}`, fill:"#2F6F95"}, feeds).textContent = "";
   });
 }
 function wavePath(y) {
-  // a wide wavy sheet; the group is translated so its top sits at the water level
   let d = `M ${COL.x-130} ${y+6}`;
   for (let x = COL.x-130; x <= COL.x+COL.w+130; x += 30) d += ` q 15 -7 30 0`;
   return d + ` V ${y+COL.band+10} H ${COL.x-130} Z`;
 }
-
-/* ---------------- controls ---------------- */
-function buildControls() {
-  const m = state.meta, presets = $("#presets");
-  Object.keys(m.presets).forEach((name) => {
-    const b = document.createElement("button"); b.type = "button"; b.className = "chip"; b.textContent = name;
-    b.setAttribute("aria-pressed", name === state.preset);
-    b.addEventListener("click", () => applyPreset(name, true)); presets.appendChild(b);
-  });
-  const groups = {};
-  m.inputs.forEach((f) => (groups[m.input_meta[f].group] ??= []).push(f));
-  GROUP_ORDER.forEach((g) => {
-    if (!groups[g]) return;
-    const det = document.createElement("details"); if (g !== "Soil") det.open = true;
-    det.innerHTML = `<summary><span>${g}</span><span class="count">${groups[g].length} inputs</span></summary>`;
-    groups[g].forEach((f) => {
-      const meta = m.input_meta[f], [lo, hi] = meta.range, id = "in-" + f.replace(/[^a-z0-9]/gi, "_");
-      const step = ((hi - lo) / 200).toPrecision(2);
-      const c = document.createElement("div"); c.className = "ctrl";
-      c.innerHTML = `<div class="ctrl-top"><label for="${id}">${meta.label}</label><output for="${id}" id="${id}-o"></output></div>
-        <input type="range" id="${id}" min="${lo}" max="${hi}" step="${step}" data-f="${f}">`;
-      det.appendChild(c);
-      const r = c.querySelector("input");
-      r.addEventListener("input", () => { state.values[f] = parseFloat(r.value); showValue(f); markCustom(); schedule(); });
-    });
-    $("#groups").appendChild(det);
-  });
-  $("#controls").addEventListener("submit", (e) => { e.preventDefault(); run(true); });
-}
-function showValue(f) {
-  const meta = state.meta.input_meta[f], id = "in-" + f.replace(/[^a-z0-9]/gi, "_");
-  const v = state.values[f], d = Math.abs(v) >= 100 ? 1 : Math.abs(v) >= 10 ? 1 : 3;
-  $(`#${CSS.escape(id)}-o`).textContent = `${Number(v).toFixed(d)} ${meta.unit}`.trim();
-}
-function applyPreset(name, animate) {
-  state.preset = name;
-  document.querySelectorAll("#presets .chip").forEach((c) => c.setAttribute("aria-pressed", c.textContent === name));
-  Object.entries(state.meta.presets[name].values).forEach(([f, v]) => {
-    state.values[f] = v; const id = "in-" + f.replace(/[^a-z0-9]/gi, "_"); $(`#${CSS.escape(id)}`).value = v; showValue(f);
-  });
-  run(animate);
-}
-function markCustom() { document.querySelectorAll("#presets .chip").forEach((c) => c.setAttribute("aria-pressed", false)); }
-let timer; function schedule() { clearTimeout(timer); timer = setTimeout(() => run(false), 220); }
 
 /* ---------------- rain ---------------- */
 const rain = { drops: [], ctx: null, w: 0, h: 0 };
@@ -403,52 +607,68 @@ function tickRain() {
 }
 
 /* ---------------- predict + animate ---------------- */
+let seq = 0;
 async function run(animate) {
+  if (Object.values(state.valid).includes(false)) { $("#status").textContent = "Fix the highlighted input first."; return; }
   setRainAmount();
-  const body = JSON.stringify({ inputs: state.values });
+  const mine = ++seq;
   let res;
-  try { res = await fetch("/predict", { method:"POST", headers:{ "Content-Type":"application/json" }, body }); }
+  try { res = await fetch("/predict", { method:"POST", headers:{ "Content-Type":"application/json" },
+                                         body: JSON.stringify({ inputs: state.values, model: state.model }) }); }
   catch { $("#status").textContent = "The service did not respond. If it was idle it may take a minute to wake up."; return; }
   const out = await res.json();
+  if (mine !== seq) return;
   if (!res.ok) { $("#status").textContent = out.detail || "The inputs could not be used."; return; }
   state.last = out;
-  if (animate && !REDUCED) await cascade(out); else paint(out, true);
-  drawProfile(out); listLayers(out);
+  drawProfile(out); layerTable(out); fillStrip(out);
   $("#warnings").innerHTML = out.warnings.map((w) => `<div class="warn">${w}</div>`).join("");
+  const token = ++state.anim;
+  if (animate && !REDUCED) await cascade(out, token); else paint(out);
 }
-
 function level(d, v) { const [lo, hi] = state.meta.observed_range[d]; return Math.max(0.04, Math.min(0.98, (v - lo) / (hi - lo))); }
 function setWater(d, v) { $(`#water-${d}`).style.transform = `translateY(${(1 - level(d, v)) * COL.band}px)`; }
-function setVal(d, v) { $(`#val-${d}`).textContent = fmt(v); }
 function setFeedTag(i, layer) {
   const t = $(`#feedtag-${i}`), e = layer.upper_layer_effect;
+  if (e == null) { t.textContent = ""; return; }
   t.textContent = `${e >= 0 ? "+" : "−"}${fmt(Math.abs(e))}`; t.setAttribute("fill", e >= 0 ? "#1F6FA0" : "#8A5A2B");
 }
-function paint(out, instant) {
-  out.layers.forEach((L, i) => { setWater(L.depth, L.chained); setVal(L.depth, L.chained); if (i > 0) setFeedTag(i - 1, L); });
-  $("#status").textContent = "Numbers on the right arrows: how much the layer above changed the next layer's prediction.";
+function doneText(out) {
+  return model(out.model).uses_upper_layer
+    ? "Numbers on the right arrows: how much the layer above changed the next layer's prediction."
+    : "This model predicts each layer on its own, so nothing is passed down.";
 }
-async function cascade(out) {
-  if (state.busy) { paint(out); return; } state.busy = true;
-  const drop = $("#drop");
+function paint(out) {
+  $("#drop").setAttribute("opacity", 0);
+  out.layers.forEach((L) => $(`#glow-${L.depth}`).setAttribute("stroke", "rgba(255,255,255,0)"));
+  out.layers.forEach((L, i) => { setWater(L.depth, L.value); $(`#val-${L.depth}`).textContent = fmt(L.value); if (i > 0) setFeedTag(i - 1, L); });
+  $("#status").textContent = doneText(out);
+}
+async function cascade(out, token) {
+  const stale = () => token !== state.anim;
+  const drop = $("#drop"), chained = model(out.model).uses_upper_layer;
   out.layers.forEach((L) => { $(`#val-${L.depth}`).textContent = "…"; });
   document.querySelectorAll("[id^=feedtag-]").forEach((t) => (t.textContent = ""));
   for (let i = 0; i < out.layers.length; i++) {
     const L = out.layers[i];
-    $("#status").textContent = i === 0 ? "Predicting 30 cm from the surface inputs…" : `Feeding ${out.layers[i-1].depth_cm} cm into the ${L.depth_cm} cm model…`;
-    if (i > 0) { await travel(drop, $(`#feed-${i-1}`), 520); setFeedTag(i - 1, L); }
-    else { await fall(drop, 420); }
+    if (chained) {
+      $("#status").textContent = i === 0 ? "Predicting 30 cm from the surface inputs…" : `Feeding ${out.layers[i-1].depth_cm} cm into the ${L.depth_cm} cm model…`;
+      if (i > 0) { await travel(drop, $(`#feed-${i-1}`), 520); setFeedTag(i - 1, L); } else await fall(drop, 0, 420);
+    } else {
+      $("#status").textContent = `Predicting ${L.depth_cm} cm on its own…`;
+      await fall(drop, i, 300);
+    }
+    if (stale()) return;
     const glow = $(`#glow-${L.depth}`); glow.setAttribute("stroke", "rgba(143,211,255,.95)");
-    countUp(L.depth, L.chained, 420); setWater(L.depth, L.chained);
-    await sleep(380); glow.setAttribute("stroke", "rgba(255,255,255,0)");
+    countUp(L.depth, L.value, 420, token); setWater(L.depth, L.value);
+    await sleep(chained ? 380 : 220); glow.setAttribute("stroke", "rgba(255,255,255,0)");
+    if (stale()) return;
   }
   drop.setAttribute("opacity", 0);
-  $("#status").textContent = "Done. Numbers on the right arrows show how much each layer changed the one below.";
-  state.busy = false;
+  $("#status").textContent = doneText(out);
 }
-function fall(drop, ms) {
+function fall(drop, i, ms) {
   return new Promise((resolve) => {
-    const x = COL.x + COL.w / 2, y0 = 10, y1 = bandY(0) + COL.band / 2, t0 = performance.now();
+    const x = COL.x + 70 + i * 6, y0 = 10, y1 = bandY(i) + COL.band / 2, t0 = performance.now();
     drop.setAttribute("opacity", 1);
     const step = (t) => { const k = Math.min(1, (t - t0) / ms), e = k * k;
       drop.setAttribute("cx", x); drop.setAttribute("cy", y0 + (y1 - y0) * e);
@@ -459,46 +679,70 @@ function fall(drop, ms) {
 function travel(drop, path, ms) {
   return new Promise((resolve) => {
     const len = path.getTotalLength(), t0 = performance.now(); drop.setAttribute("opacity", 1);
-    path.setAttribute("stroke", "rgba(47,155,219,.95)");
+    const base = path.getAttribute("stroke"); path.setAttribute("stroke", "rgba(47,155,219,.95)");
     const step = (t) => { const k = Math.min(1, (t - t0) / ms), p = path.getPointAtLength(len * (0.5 - Math.cos(Math.PI * k) / 2));
       drop.setAttribute("cx", p.x); drop.setAttribute("cy", p.y);
-      if (k < 1) requestAnimationFrame(step); else { path.setAttribute("stroke", "rgba(47,155,219,.45)"); resolve(); } };
+      if (k < 1) requestAnimationFrame(step); else { path.setAttribute("stroke", base); resolve(); } };
     requestAnimationFrame(step);
   });
 }
-function countUp(d, target, ms) {
+function countUp(d, target, ms, token) {
   const t0 = performance.now(), node = $(`#val-${d}`);
-  const step = (t) => { const k = Math.min(1, (t - t0) / ms); node.textContent = fmt(target * (0.6 + 0.4 * k)); if (k < 1) requestAnimationFrame(step); else node.textContent = fmt(target); };
+  const step = (t) => { if (token !== state.anim) return; const k = Math.min(1, (t - t0) / ms); node.textContent = fmt(target * (0.6 + 0.4 * k)); if (k < 1) requestAnimationFrame(step); else node.textContent = fmt(target); };
   requestAnimationFrame(step);
 }
 
-/* ---------------- profile chart ---------------- */
-function drawProfile(out) {
-  const svg = $("#profile"); svg.innerHTML = "";
-  const P = { l: 44, r: 286, t: 14, b: 300 }, xmin = 0.05, xmax = 0.40;
-  const X = (v) => P.l + (Math.max(xmin, Math.min(xmax, v)) - xmin) / (xmax - xmin) * (P.r - P.l);
-  const Y = (cm) => P.t + (cm - 15) / 180 * (P.b - P.t);
-  [0.1, 0.2, 0.3, 0.4].forEach((v) => { el("line", { x1: X(v), x2: X(v), y1: P.t, y2: P.b, stroke: "#D6CDBF" }, svg);
-    const t = el("text", { x: X(v), y: P.b + 16, "text-anchor": "middle", "font-size": 11, fill: "#5D5248" }, svg); t.textContent = v.toFixed(1); });
-  out.layers.forEach((L) => { const t = el("text", { x: P.l - 8, y: Y(L.depth_cm) + 4, "text-anchor": "end", "font-size": 11, fill: "#5D5248" }, svg); t.textContent = L.depth_cm; });
-  const lab = el("text", { x: (P.l + P.r) / 2, y: P.b + 30, "text-anchor": "middle", "font-size": 11, fill: "#5D5248" }, svg); lab.textContent = "cm³/cm³";
-  const line = (key, attrs) => {
-    const d = out.layers.map((L, i) => `${i ? "L" : "M"} ${X(L[key])} ${Y(L.depth_cm)}`).join(" ");
-    const p = el("path", { d, fill: "none", ...attrs }, svg);
-    if (!REDUCED) { const len = p.getTotalLength(); p.style.strokeDasharray = attrs["stroke-dasharray"] || `${len}`; if (!attrs["stroke-dasharray"]) { p.style.strokeDashoffset = len; p.getBoundingClientRect(); p.style.transition = "stroke-dashoffset 1s ease"; p.style.strokeDashoffset = 0; } }
-    return p;
-  };
-  line("independent", { stroke: "#C7A26B", "stroke-width": 2, "stroke-dasharray": "5 4" });
-  line("chained", { stroke: "#2F9BDB", "stroke-width": 3 });
-  out.layers.forEach((L) => {
-    el("circle", { cx: X(L.independent), cy: Y(L.depth_cm), r: 3.5, fill: "#C7A26B" }, svg);
-    el("circle", { cx: X(L.chained), cy: Y(L.depth_cm), r: 5, fill: "#2F9BDB", stroke: "#fff", "stroke-width": 1.5 }, svg);
+/* ---------------- profile chart (four models) ---------------- */
+function lineStyle(md) { return { stroke: COLORS.light[md.variant], "stroke-dasharray": md.uses_upper_layer ? "" : "6 5" }; }
+function buildLegend() {
+  $("#legend").innerHTML = "";
+  state.meta.models.forEach((md) => {
+    const b = document.createElement("button"); b.type = "button"; b.className = "key"; b.dataset.key = md.key;
+    const s = lineStyle(md);
+    b.innerHTML = `<svg width="26" height="10" aria-hidden="true"><line x1="1" x2="25" y1="5" y2="5" stroke="${s.stroke}" stroke-width="3" stroke-dasharray="${s["stroke-dasharray"]}" stroke-linecap="round"/></svg>${md.label}`;
+    b.addEventListener("click", () => setModel(md.key));
+    $("#legend").appendChild(b);
   });
 }
-function listLayers(out) {
-  $("#layer-list").innerHTML = out.layers.map((L) => `<li><span class="d">${L.depth_cm} cm</span>
-    <span class="e">${L.fed_from_above == null ? "from surface inputs" : `fed ${fmt(L.fed_from_above)} from above`}</span>
-    <span>${fmt(L.chained)}</span></li>`).join("");
+function drawProfile(out) {
+  const svg = $("#profile"); svg.innerHTML = "";
+  const P = { l: 44, r: 404, t: 14, b: 300 };
+  const all = Object.values(out.compare).flat();
+  const xmin = Math.max(0, Math.floor((Math.min(...all) - 0.03) * 20) / 20), xmax = Math.ceil((Math.max(...all) + 0.03) * 20) / 20;
+  const X = (v) => P.l + (v - xmin) / (xmax - xmin) * (P.r - P.l);
+  const Y = (cm) => P.t + (cm - 15) / 180 * (P.b - P.t);
+  for (let v = xmin; v <= xmax + 1e-9; v += 0.05) {
+    el("line", { x1: X(v), x2: X(v), y1: P.t, y2: P.b, stroke: "#D6CDBF" }, svg);
+    el("text", { x: X(v), y: P.b + 16, "text-anchor": "middle", "font-size": 11, fill: "#5D5248" }, svg).textContent = v.toFixed(2);
+  }
+  out.layers.forEach((L) => { el("text", { x: P.l - 8, y: Y(L.depth_cm) + 4, "text-anchor": "end", "font-size": 11, fill: "#5D5248" }, svg).textContent = `${L.depth_cm}`; });
+  el("text", { x: (P.l + P.r) / 2, y: P.b + 32, "text-anchor": "middle", "font-size": 11, fill: "#5D5248" }, svg).textContent = "Soil moisture (cm³/cm³)";
+  el("text", { x: 12, y: P.t + 2, "font-size": 11, fill: "#5D5248", transform: `rotate(-90 12 ${P.t + 2})`, "text-anchor": "end" }, svg).textContent = "Depth (cm)";
+  const cms = out.layers.map((L) => L.depth_cm);
+  const order = state.meta.models.map((m) => m.key).filter((k) => out.compare[k] && k !== out.model).concat([out.model]);
+  order.forEach((key) => {
+    const md = model(key), sel = key === out.model, vals = out.compare[key];
+    const d = vals.map((v, i) => `${i ? "L" : "M"} ${X(v)} ${Y(cms[i])}`).join(" ");
+    const p = el("path", { d, fill: "none", ...lineStyle(md), "stroke-width": sel ? 3.5 : 1.8, opacity: sel ? 1 : 0.55, "stroke-linejoin": "round" }, svg);
+    if (sel && !REDUCED) {
+      const len = p.getTotalLength(); p.style.strokeDasharray = md.uses_upper_layer ? `${len}` : "";
+      if (md.uses_upper_layer) { p.style.strokeDashoffset = len; p.getBoundingClientRect(); p.style.transition = "stroke-dashoffset .9s ease"; p.style.strokeDashoffset = 0; }
+    }
+    vals.forEach((v, i) => el("circle", { cx: X(v), cy: Y(cms[i]), r: sel ? 5 : 3, fill: sel ? COLORS.light[md.variant] : "#fff",
+      stroke: sel ? "#fff" : COLORS.light[md.variant], "stroke-width": sel ? 2 : 1.5 }, svg));
+  });
+}
+function layerTable(out) {
+  const ms = state.meta.models.filter((m) => out.compare[m.key]);
+  let h = `<caption class="sr">Predicted soil moisture (cm³/cm³) by depth for each model</caption><thead><tr><th>Depth</th>${ms.map((m) =>
+    `<th class="${m.key === out.model ? "sel" : ""}">${m.short}</th>`).join("")}</tr></thead><tbody>`;
+  out.layers.forEach((L, i) => {
+    h += `<tr><td>${L.depth_cm} cm</td>${ms.map((m) => `<td class="${m.key === out.model ? "sel" : ""}">${fmt(out.compare[m.key][i])}</td>`).join("")}</tr>`;
+  });
+  $("#layer-table").innerHTML = h + "</tbody>";
+}
+function fillStrip(out) {
+  $("#strip-vals").innerHTML = out.layers.map((L) => `<li>${L.depth_cm} cm<b>${fmt(L.value)}</b></li>`).join("");
 }
 
 /* ---------------- method diagram ---------------- */
@@ -507,58 +751,50 @@ function buildMethod() {
   const card = (x, y, w, h, title, lines, color) => {
     el("rect", { x, y, width: w, height: h, rx: 14, class: "m-card" }, svg);
     el("rect", { x, y, width: 6, height: h, rx: 3, fill: color }, svg);
-    const t = el("text", { x: x + 20, y: y + 28, class: "m-title" }, svg); t.textContent = title;
-    lines.forEach((l, i) => { const s = el("text", { x: x + 20, y: y + 50 + i * 17, class: "m-text" }, svg); s.textContent = l; });
+    el("text", { x: x + 20, y: y + 28, class: "m-title" }, svg).textContent = title;
+    lines.forEach((l, i) => { el("text", { x: x + 20, y: y + 50 + i * 17, class: "m-text" }, svg).textContent = l; });
   };
-  card(20, 20, 270, 104, "PlanetScope, 3 m", ["Blue, green, red, NIR", "NDVI, EVI, SAVI, OSAVI,", "SIPI, VARI, NDVIgb"], GROUP_COLORS.PlanetScope);
-  card(310, 20, 270, 104, "Soil properties", ["Sand, silt, clay, OM, carbon, pH", "five layers, 0 to 120 cm"], GROUP_COLORS.Soil);
-  card(600, 20, 270, 104, "Weather", ["Precipitation, 3 to 10 day rain,", "ET, soil and air temperature,", "net radiation"], GROUP_COLORS.Weather);
-  card(890, 20, 290, 104, "Elevation", ["From a field DEM"], GROUP_COLORS.Terrain);
-  // flows into processing bar
+  card(20, 20, 270, 104, "PlanetScope, 3 m", ["Blue, green, red, NIR", "NDVI, EVI, SAVI, OSAVI,", "SIPI, VARI, NDVIgb"], GROUP_COLORS.Satellite);
+  card(310, 20, 270, 104, "Soil properties", ["Sand, silt, clay, OM, carbon, pH", "five layers, 0 to 120 cm", "(left out in two of the four models)"], GROUP_COLORS.Soil);
+  card(600, 20, 270, 104, "Climate", ["Precipitation, 3 to 10 day rain,", "ET, soil and air temperature,", "net radiation"], GROUP_COLORS.Climate);
+  card(890, 20, 290, 104, "Topography", ["Elevation from a field DEM"], GROUP_COLORS.Topography);
   [155, 445, 735, 1035].forEach((x) => el("path", { d: `M ${x} 126 C ${x} 160, 470 150, 470 186`, class: "flow" }, svg));
   el("rect", { x: 250, y: 186, width: 440, height: 64, rx: 32, fill: "#2B2019" }, svg);
-  const pt = el("text", { x: 470, y: 224, "text-anchor": "middle", class: "m-bar" }, svg);
-  pt.textContent = "Integrate   →   Clean   →   SHAP feature selection";
+  el("text", { x: 470, y: 224, "text-anchor": "middle", class: "m-bar" }, svg).textContent = "Integrate   →   Clean   →   SHAP feature selection";
   el("path", { d: "M 470 252 L 470 300", class: "flow" }, svg);
-  // model node
   el("circle", { cx: 470, cy: 350, r: 50, fill: "#fff", stroke: "#2F9BDB", "stroke-width": 3 }, svg);
-  const mt = el("text", { x: 470, y: 346, "text-anchor": "middle", class: "m-title" }, svg); mt.textContent = "XGBoost";
-  const ms = el("text", { x: 470, y: 366, "text-anchor": "middle", class: "m-text" }, svg); ms.textContent = "one per depth";
-  // in-situ target column on the left
+  el("text", { x: 470, y: 346, "text-anchor": "middle", class: "m-title" }, svg).textContent = "XGBoost";
+  el("text", { x: 470, y: 366, "text-anchor": "middle", class: "m-text" }, svg).textContent = "one per depth";
   const depths = [30, 60, 90, 120, 150, 180];
   depths.forEach((d, i) => {
     el("rect", { x: 70, y: 290 + i * 38, width: 70, height: 36, fill: LAYER_COLORS[i] }, svg);
-    const t = el("text", { x: 60, y: 313 + i * 38, "text-anchor": "end", class: "m-text" }, svg); t.textContent = `${d} cm`;
+    el("text", { x: 60, y: 313 + i * 38, "text-anchor": "end", class: "m-text" }, svg).textContent = `${d} cm`;
     el("path", { d: `M 142 ${308 + i * 38} L 418 350`, stroke: "#C9BBA6", "stroke-width": 1.2, fill: "none" }, svg);
   });
-  const it = el("text", { x: 70, y: 278, class: "m-title" }, svg); it.textContent = "Measured soil moisture";
-  // stacked plates on the right
+  el("text", { x: 70, y: 278, class: "m-title" }, svg).textContent = "Measured soil moisture";
   const plates = [];
   depths.forEach((d, i) => {
-    const y = 285 + i * 42, g = el("g", { class: "plate", id: `plate-${i}` }, svg);
+    const y = 285 + i * 42, g = el("g", { class: "plate" }, svg);
     el("path", { d: `M 760 ${y} l 150 -26 l 150 26 l -150 26 z`, fill: LAYER_COLORS[i], stroke: "rgba(0,0,0,.15)" }, g);
     el("path", { d: `M 760 ${y} l 150 -26 l 150 26 l -150 26 z`, fill: "url(#grain)" }, g);
-    const t = el("text", { x: 1080, y: y + 5, class: "plate-label" }, svg); t.textContent = `${d} cm`;
-    el("path", { d: `M 520 350 C 640 350, 640 ${y}, 752 ${y}`, class: "flow", id: `out-${i}` }, svg);
+    el("text", { x: 1080, y: y + 5, class: "plate-label" }, svg).textContent = `${d} cm`;
+    el("path", { d: `M 520 350 C 640 350, 640 ${y}, 752 ${y}`, class: "flow" }, svg);
     plates.push(g);
   });
-  // feedback loop: from plate i back to model input
-  el("path", { d: "M 910 540 L 470 540 L 470 402", class: "feedback", id: "loop" }, svg);
+  el("path", { d: "M 910 540 L 470 540 L 470 402", class: "feedback" }, svg);
   depths.slice(0, -1).forEach((d, i) => el("path", { d: `M 1060 ${285 + i * 42} C 1150 ${285 + i * 42}, 1150 540, 910 540`, stroke: "rgba(47,155,219,.25)", "stroke-width": 1.5, fill: "none" }, svg));
-  const lt = el("text", { x: 690, y: 532, "text-anchor": "middle", class: "m-loop" }, svg);
-  lt.textContent = "Predicted moisture of the layer above becomes an input for the next depth";
+  el("text", { x: 690, y: 532, "text-anchor": "middle", class: "m-loop" }, svg).textContent = "Predicted moisture of the layer above becomes an input for the next depth";
   const pulse = el("circle", { r: 7, fill: "#2F9BDB", filter: "url(#glow)" }, svg);
-  // orchestrate: light plate i, pulse travels from plate i back into the model, then plate i+1 lights
   let i = 0;
   const loop = el("path", { d: "", fill: "none" }, svg);
   async function cycle() {
     plates.forEach((p) => p.classList.remove("lit")); plates[i].classList.add("lit");
-    if (i < depths.length - 1 && !REDUCED) {
+    if (i < depths.length - 1) {
       const y = 285 + i * 42;
       loop.setAttribute("d", `M 1060 ${y} C 1150 ${y}, 1150 540, 910 540 L 470 540 L 470 402`);
       await travel(pulse, loop, 1500);
     } else { await sleep(900); }
-    i = (i + 1) % depths.length; setTimeout(cycle, REDUCED ? 3000 : 250);
+    i = (i + 1) % depths.length; setTimeout(cycle, 250);
   }
   if (!REDUCED) cycle(); else plates.forEach((p) => p.classList.add("lit"));
 }
@@ -566,64 +802,73 @@ function buildMethod() {
 /* ---------------- results ---------------- */
 function buildResults() {
   const m = state.meta, depths = m.depths;
-  const gain = $("#gain");
-  depths.forEach((d) => {
-    const ind = m.metrics[d].independent.holdout.r2, chn = m.metrics[d].chained.holdout.r2, delta = chn - ind;
-    const row = document.createElement("div"); row.className = "gain-row";
-    row.innerHTML = `<span class="d">${d.slice(1)} cm</span>
-      <div class="bars"><div><span class="bar ind" data-w="${ind}"></span><span class="bar-val">${ind.toFixed(2)}</span></div>
-      <div><span class="bar chn" data-w="${chn}"></span><span class="bar-val">${chn.toFixed(2)}</span></div></div>
-      <span class="delta ${delta >= 0 ? "up" : "down"}">${d === depths[0] ? "start" : (delta >= 0 ? "+" : "−") + Math.abs(delta).toFixed(3)}</span>`;
-    gain.appendChild(row);
-  });
-  gain.querySelectorAll(".bar").forEach((b) => { b.style.display = "inline-block"; });
-
-  const groups = ["Upper layer", "PlanetScope", "Weather", "Soil", "Terrain"];
-  const drv = $("#drivers");
-  depths.forEach((d) => {
-    const share = Object.fromEntries(groups.map((g) => [g, 0])), top = [];
-    m.drivers[d].forEach((r) => {
-      const g = r.feature === m.upper_col ? "Upper layer" : m.input_meta[r.feature].group; share[g] += r.share_pct;
-      if (top.length < 3) top.push(r.feature === m.upper_col ? "layer above" : (m.input_meta[r.feature].label));
-    });
-    const row = document.createElement("div");
-    row.innerHTML = `<div class="drv-row"><span class="d" style="font:600 15px var(--display)">${d.slice(1)} cm</span>
-      <div class="stack">${groups.map((g) => `<span title="${g} ${share[g].toFixed(0)}%" data-w="${share[g]}" style="background:${GROUP_COLORS[g]}"></span>`).join("")}</div></div>
-      <div class="top-feats">Top inputs: ${top.join(", ")}</div>`;
-    drv.appendChild(row);
-  });
-  $("#drv-key").innerHTML = groups.map((g) => `<span><i style="background:${GROUP_COLORS[g]}"></i>${g}</span>`).join("");
-
-  const schemes = [["holdout", "Hold-out test"], ["cv", "Cross-validation"], ["year", `Unseen year (${m.metrics[depths[0]].chained.year ? "2021" : ""})`], ["fields", "Unseen fields"]];
-  const color = (r2) => { const t = Math.max(0, Math.min(1, r2)); return `rgba(47,155,219,${0.12 + 0.75 * t})`; };
-  let html = `<thead><tr><th>Test</th>${depths.map((d) => `<th style="text-align:center">${d.slice(1)} cm</th>`).join("")}</tr></thead><tbody>`;
-  schemes.forEach(([k, label]) => {
-    if (!m.metrics[depths[0]].chained[k]) return;
-    html += `<tr><th>${label}</th>${depths.map((d) => { const r = m.metrics[d].chained[k].r2; return `<td style="background:${color(r)}">${r.toFixed(2)}</td>`; }).join("")}</tr>`;
-  });
-  $("#val").innerHTML = html + "</tbody>";
-  $("#val-note").textContent = "Random hold-out mixes dates and access tubes from the same fields, which flatters every model. Predicting a whole year or a whole field the models never saw is much harder, especially at depth, where moisture depends on local soil the inputs only partly capture. These harder tests are the honest guide to new sites.";
-
-  // animate bars when results come into view
+  $("#res-legend").innerHTML = m.models.map((md) =>
+    `<span><i class="sw ${md.uses_upper_layer ? "" : "striped"}" style="--c:${COLORS.dark[md.variant]}"></i>${md.label}</span>`).join("");
+  $("#compare").innerHTML = depths.map((d) => `<div class="cmp-row"><span class="d">${d.slice(1)} cm</span><div class="bars">${
+    m.models.map((md) => { const r = m.metrics[md.key][d].holdout.r2;
+      return `<div data-key="${md.key}"><span class="bar ${md.uses_upper_layer ? "" : "striped"}" style="--c:${COLORS.dark[md.variant]}" data-w="${r}"></span><span class="bar-val">${r.toFixed(2)}</span></div>`; }).join("")
+  }</div></div>`).join("");
+  $("#drv-key").innerHTML = m.groups.map((g) => `<span><i style="background:${GROUP_COLORS[g]}"></i>${g}</span>`).join("");
   const io = new IntersectionObserver((es) => es.forEach((e) => { if (!e.isIntersecting) return;
-    document.querySelectorAll("#gain .bar").forEach((b) => (b.style.width = `${Math.max(0, b.dataset.w) * 78}%`));
-    document.querySelectorAll("#drivers .stack span").forEach((s) => (s.style.width = `${s.dataset.w}%`)); io.disconnect(); }), { threshold: 0.2 });
+    state.resultsSeen = true; growBars(); io.disconnect(); }), { threshold: 0.15 });
   io.observe($("#results"));
 }
+function growBars() {
+  if (!state.resultsSeen) return;
+  document.querySelectorAll("#compare .bar").forEach((b) => (b.style.width = `${Math.max(0, b.dataset.w) * 80}%`));
+  document.querySelectorAll("#drivers .stack span").forEach((s) => (s.style.width = `${s.dataset.w}%`));
+}
+function renderModelResults() {
+  const m = state.meta, depths = m.depths, md = model(), drv = m.drivers[md.key];
+  document.querySelectorAll("#compare .bars div").forEach((b) => b.classList.toggle("sel", b.dataset.key === md.key));
+  $("#drv-model").textContent = md.label.toLowerCase();
+  $("#val-model").textContent = md.label.toLowerCase();
+  $("#drivers").innerHTML = depths.map((d) => {
+    const share = Object.fromEntries(m.groups.map((g) => [g, 0])), top = [];
+    drv[d].forEach((r) => {
+      const g = r.feature === m.upper_col ? "Upper layer" : m.input_meta[r.feature].group; share[g] += r.share_pct;
+      if (top.length < 3) top.push(r.feature === m.upper_col ? "layer above" : prettyLabel(r.feature));
+    });
+    return `<div class="drv-row"><span class="d" style="font:600 15px var(--display)">${d.slice(1)} cm</span>
+      <div class="stack">${m.groups.filter((g) => share[g] > 0).map((g) => `<span title="${g} ${share[g].toFixed(0)}%" data-w="${share[g]}" style="background:${GROUP_COLORS[g]}"></span>`).join("")}</div></div>
+      <div class="top-feats">Top inputs: ${top.join(", ")}</div>`;
+  }).join("");
+  const schemes = [["holdout", "Hold-out test"], ["cv", "Cross-validation"], ["year", "Unseen year (2021)"], ["fields", "Unseen fields"]];
+  const color = (r2) => `rgba(47,155,219,${0.1 + 0.75 * Math.max(0, Math.min(1, r2))})`;
+  let html = `<thead><tr><th>Test</th>${depths.map((d) => `<th style="text-align:center">${d.slice(1)} cm</th>`).join("")}</tr></thead><tbody>`;
+  schemes.forEach(([k, label]) => {
+    if (!m.metrics[md.key][depths[0]][k]) return;
+    html += `<tr><th>${label}</th>${depths.map((d) => { const r = m.metrics[md.key][d][k].r2; return `<td style="background:${color(r)}">${r.toFixed(2)}</td>`; }).join("")}</tr>`;
+  });
+  $("#val").innerHTML = html + "</tbody>";
+  const f = (k) => depths.slice(1).reduce((s, d) => s + m.metrics[k][d].fields.r2, 0) / (depths.length - 1);
+  $("#val-note").textContent = `Random hold-out mixes dates and access tubes from the same fields, which flatters every model. Predicting a whole year or a whole field the models never saw is much harder, especially at depth. Soil properties matter most here: below 30 cm, on unseen fields, the models that know the soil average R² ${f("with_soil_chained").toFixed(2)}, against ${f("no_soil_chained").toFixed(2)} for the same chain without them.`;
+  requestAnimationFrame(growBars);
+}
 
-/* ---------------- depth gauge ---------------- */
+/* ---------------- depth gauge + live strip ---------------- */
 function gauge() {
   const max = document.documentElement.scrollHeight - innerHeight, k = max > 0 ? scrollY / max : 0;
   $("#gauge-dot").style.top = `calc(${k * 100}% - 7px)`;
   $("#gauge-label").textContent = `${Math.round(k * 180)} cm`;
 }
 addEventListener("scroll", gauge, { passive: true });
+function setupStrip() {
+  const seen = { inputs: false, result: false };
+  const update = () => $("#strip").classList.toggle("show", seen.inputs && !seen.result);
+  new IntersectionObserver((es) => es.forEach((e) => { seen[e.target.id] = e.isIntersecting; update(); }), { threshold: 0.12 })
+    .observe($("#inputs"));
+  new IntersectionObserver((es) => es.forEach((e) => { seen.result = e.isIntersecting; update(); }), { threshold: 0.35 })
+    .observe($("#column"));
+}
 
 /* ---------------- start ---------------- */
 (async function init() {
   try { state.meta = await (await fetch("/meta")).json(); }
   catch { $("#status").textContent = "The model list could not be loaded. Refresh in a minute."; return; }
-  buildColumn(); buildControls(); setupRain(); buildMethod(); buildResults(); gauge();
+  state.model = state.meta.default_model;
+  buildHero(); buildControls(); buildColumn(); setupRain(); buildLegend(); buildMethod(); buildResults(); setupStrip(); gauge();
+  setModel(state.model);
   applyPreset("Typical day", true);
 })();
 </script>

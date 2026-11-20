@@ -32,6 +32,15 @@ def test_first_layer_is_identical_in_both_modes():
     assert np.allclose(out["S30_independent"], out["S30_chained"])
 
 
+def test_no_soil_chain_ignores_soil_inputs():
+    df = synthetic()
+    chain = fit_chain(df, P, "no_soil")
+    X = df[all_features(P)]
+    soil = [f for f in X.columns if f.startswith(("Sand", "Silt", "Clay", "OM", "Carbon", "pH"))]
+    shuffled = X.assign(**{f: X[f].sample(frac=1, random_state=1).values for f in soil})
+    assert np.allclose(chain.predict(X).values, chain.predict(shuffled).values)
+
+
 def test_chained_models_use_the_layer_above():
     chain = fit_chain(synthetic(), P)
     for d in P["depths"][1:]:
@@ -42,6 +51,6 @@ def test_save_and_load_give_same_predictions(tmp_path):
     df = synthetic()
     chain = fit_chain(df, P)
     chain.save(tmp_path)
-    again = Chain.load(tmp_path, P["depths"], P["features"])
+    again = Chain.load(tmp_path, P["depths"], P["features"]["with_soil"])
     X = df[all_features(P)]
     assert np.allclose(chain.predict(X).values, again.predict(X).values)

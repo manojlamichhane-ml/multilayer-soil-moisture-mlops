@@ -21,11 +21,17 @@ def load_params():
         return yaml.safe_load(f)
 
 
-def all_features(params):
-    """Union of the inputs used by any depth, in a stable order."""
+# The four served models: (key, soil-properties variant, chain kind)
+MODEL_KEYS = [("with_soil_chained", "with_soil", "chained"), ("with_soil_independent", "with_soil", "independent"),
+              ("no_soil_chained", "no_soil", "chained"), ("no_soil_independent", "no_soil", "independent")]
+
+
+def all_features(params, variant=None):
+    """Union of the inputs used by any depth (of one variant, or of all), in a stable order."""
     out = []
-    for feats in params["features"].values():
-        out += [f for f in feats if f not in out]
+    for v in [variant] if variant else params["variants"]:
+        for feats in params["features"][v].values():
+            out += [f for f in feats if f not in out]
     return out
 
 

@@ -1,5 +1,5 @@
 {
-  "created": "2026-11-19T18:25:38",
+  "created": "2026-11-19T20:04:16",
   "chain_mode": "strict",
   "depths": [
     "S30",
@@ -10,71 +10,216 @@
     "S180"
   ],
   "upper_col": "SM layer above",
+  "variants": [
+    "with_soil",
+    "no_soil"
+  ],
+  "models": [
+    {
+      "key": "with_soil_chained",
+      "variant": "with_soil",
+      "kind": "chained",
+      "label": "Soil properties + layer above",
+      "short": "Full chain",
+      "note": "The model in the paper",
+      "color": "#C4621B",
+      "uses_soil": true,
+      "uses_upper_layer": true
+    },
+    {
+      "key": "with_soil_independent",
+      "variant": "with_soil",
+      "kind": "independent",
+      "label": "Soil properties, each layer alone",
+      "short": "Soil, no chain",
+      "note": "Every depth predicted on its own",
+      "color": "#C4621B",
+      "uses_soil": true,
+      "uses_upper_layer": false
+    },
+    {
+      "key": "no_soil_chained",
+      "variant": "no_soil",
+      "kind": "chained",
+      "label": "Layer above, no soil properties",
+      "short": "Chain, no soil",
+      "note": "Satellite, climate and elevation, plus the layer above",
+      "color": "#1F78B4",
+      "uses_soil": false,
+      "uses_upper_layer": true
+    },
+    {
+      "key": "no_soil_independent",
+      "variant": "no_soil",
+      "kind": "independent",
+      "label": "Satellite and climate only",
+      "short": "Surface inputs only",
+      "note": "No soil properties, no layer above",
+      "color": "#1F78B4",
+      "uses_soil": false,
+      "uses_upper_layer": false
+    }
+  ],
+  "default_model": "with_soil_chained",
   "features": {
-    "S30": [
-      "10-day antecedent Pcp",
-      "Ts",
-      "Blue",
-      "7-day antecedent Pcp",
-      "VARI",
-      "Sand (90-120 cm)",
-      "NDVIgb",
-      "NIR",
-      "pH (15-30 cm)",
-      "Tmax",
-      "Silt (60-90 cm)"
-    ],
-    "S60": [
-      "Clay (30-60 cm)",
-      "Rn",
-      "Ts",
-      "OM (0-15 cm)",
-      "ETo",
-      "Tmin",
-      "Clay (90-120 cm)",
-      "OM (15-30 cm)",
-      "Silt (60-90 cm)",
-      "SIPI"
-    ],
-    "S90": [
-      "Rn",
-      "Clay (90-120 cm)",
-      "Ts",
-      "Clay (60-90 cm)",
-      "Elevation"
-    ],
-    "S120": [
-      "Clay (60-90 cm)",
-      "Sand (15-30 cm)",
-      "Ts",
-      "Rn",
-      "Carbon (15-30 cm)",
-      "Tmin",
-      "Sand (60-90 cm)",
-      "Clay (90-120 cm)",
-      "Silt (0-15 cm)",
-      "Sand (30-60 cm)"
-    ],
-    "S150": [
-      "Silt (60-90 cm)",
-      "Carbon (15-30 cm)",
-      "pH (15-30 cm)",
-      "OM (15-30 cm)",
-      "Clay (30-60 cm)",
-      "Silt (90-120 cm)",
-      "Tmin"
-    ],
-    "S180": [
-      "Silt (30-60 cm)",
-      "Silt (90-120 cm)",
-      "OM (15-30 cm)",
-      "Clay (60-90 cm)",
-      "Clay (15-30 cm)",
-      "Elevation",
-      "pH (0-15 cm)",
-      "Clay (90-120 cm)",
-      "Ts"
-    ]
+    "with_soil": {
+      "S30": [
+        "10-day antecedent Pcp",
+        "Ts",
+        "Blue",
+        "7-day antecedent Pcp",
+        "VARI",
+        "Sand (90-120 cm)",
+        "NDVIgb",
+        "NIR",
+        "pH (15-30 cm)",
+        "Tmax",
+        "Silt (60-90 cm)"
+      ],
+      "S60": [
+        "Clay (30-60 cm)",
+        "Rn",
+        "Ts",
+        "OM (0-15 cm)",
+        "ETo",
+        "Tmin",
+        "Clay (90-120 cm)",
+        "OM (15-30 cm)",
+        "Silt (60-90 cm)",
+        "SIPI"
+      ],
+      "S90": [
+        "Rn",
+        "Clay (90-120 cm)",
+        "Ts",
+        "Clay (60-90 cm)",
+        "Elevation"
+      ],
+      "S120": [
+        "Clay (60-90 cm)",
+        "Sand (15-30 cm)",
+        "Ts",
+        "Rn",
+        "Carbon (15-30 cm)",
+        "Tmin",
+        "Sand (60-90 cm)",
+        "Clay (90-120 cm)",
+        "Silt (0-15 cm)",
+        "Sand (30-60 cm)"
+      ],
+      "S150": [
+        "Silt (60-90 cm)",
+        "Carbon (15-30 cm)",
+        "pH (15-30 cm)",
+        "OM (15-30 cm)",
+        "Clay (30-60 cm)",
+        "Silt (90-120 cm)",
+        "Tmin"
+      ],
+      "S180": [
+        "Silt (30-60 cm)",
+        "Silt (90-120 cm)",
+        "OM (15-30 cm)",
+        "Clay (60-90 cm)",
+        "Clay (15-30 cm)",
+        "Elevation",
+        "pH (0-15 cm)",
+        "Clay (90-120 cm)",
+        "Ts"
+      ]
+    },
+    "no_soil": {
+      "S30": [
+        "10-day antecedent Pcp",
+        "7-day antecedent Pcp",
+        "Ts",
+        "Tmax",
+        "Tmin",
+        "Rn",
+        "ETo",
+        "Blue",
+        "NIR",
+        "VARI",
+        "NDVIgb",
+        "SIPI",
+        "Elevation"
+      ],
+      "S60": [
+        "10-day antecedent Pcp",
+        "7-day antecedent Pcp",
+        "Ts",
+        "Tmax",
+        "Tmin",
+        "Rn",
+        "ETo",
+        "Blue",
+        "NIR",
+        "VARI",
+        "NDVIgb",
+        "SIPI",
+        "Elevation"
+      ],
+      "S90": [
+        "10-day antecedent Pcp",
+        "7-day antecedent Pcp",
+        "Ts",
+        "Tmax",
+        "Tmin",
+        "Rn",
+        "ETo",
+        "Blue",
+        "NIR",
+        "VARI",
+        "NDVIgb",
+        "SIPI",
+        "Elevation"
+      ],
+      "S120": [
+        "10-day antecedent Pcp",
+        "7-day antecedent Pcp",
+        "Ts",
+        "Tmax",
+        "Tmin",
+        "Rn",
+        "ETo",
+        "Blue",
+        "NIR",
+        "VARI",
+        "NDVIgb",
+        "SIPI",
+        "Elevation"
+      ],
+      "S150": [
+        "10-day antecedent Pcp",
+        "7-day antecedent Pcp",
+        "Ts",
+        "Tmax",
+        "Tmin",
+        "Rn",
+        "ETo",
+        "Blue",
+        "NIR",
+        "VARI",
+        "NDVIgb",
+        "SIPI",
+        "Elevation"
+      ],
+      "S180": [
+        "10-day antecedent Pcp",
+        "7-day antecedent Pcp",
+        "Ts",
+        "Tmax",
+        "Tmin",
+        "Rn",
+        "ETo",
+        "Blue",
+        "NIR",
+        "VARI",
+        "NDVIgb",
+        "SIPI",
+        "Elevation"
+      ]
+    }
   },
   "inputs": [
     "10-day antecedent Pcp",
@@ -110,7 +255,7 @@
   ],
   "input_meta": {
     "10-day antecedent Pcp": {
-      "group": "Weather",
+      "group": "Climate",
       "unit": "mm",
       "limits": [
         0,
@@ -124,7 +269,7 @@
       "default": 6.6
     },
     "Ts": {
-      "group": "Weather",
+      "group": "Climate",
       "unit": "\u00b0C",
       "limits": [
         -40,
@@ -138,7 +283,7 @@
       "default": 23.36
     },
     "Blue": {
-      "group": "PlanetScope",
+      "group": "Satellite",
       "unit": "",
       "limits": [
         0,
@@ -152,7 +297,7 @@
       "default": 0.0802
     },
     "7-day antecedent Pcp": {
-      "group": "Weather",
+      "group": "Climate",
       "unit": "mm",
       "limits": [
         0,
@@ -166,7 +311,7 @@
       "default": 0.76
     },
     "VARI": {
-      "group": "PlanetScope",
+      "group": "Satellite",
       "unit": "",
       "limits": [
         -2,
@@ -194,7 +339,7 @@
       "default": 54.6891
     },
     "NDVIgb": {
-      "group": "PlanetScope",
+      "group": "Satellite",
       "unit": "",
       "limits": [
         -1,
@@ -208,7 +353,7 @@
       "default": 0.2212
     },
     "NIR": {
-      "group": "PlanetScope",
+      "group": "Satellite",
       "unit": "",
       "limits": [
         0,
@@ -236,7 +381,7 @@
       "default": 7.5526
     },
     "Tmax": {
-      "group": "Weather",
+      "group": "Climate",
       "unit": "\u00b0C",
       "limits": [
         -40,
@@ -278,7 +423,7 @@
       "default": 30.4729
     },
     "Rn": {
-      "group": "Weather",
+      "group": "Climate",
       "unit": "MJ/m\u00b2/day",
       "limits": [
         -10,
@@ -306,7 +451,7 @@
       "default": 2.0082
     },
     "ETo": {
-      "group": "Weather",
+      "group": "Climate",
       "unit": "mm/day",
       "limits": [
         0,
@@ -320,7 +465,7 @@
       "default": 6.8536
     },
     "Tmin": {
-      "group": "Weather",
+      "group": "Climate",
       "unit": "\u00b0C",
       "limits": [
         -50,
@@ -362,7 +507,7 @@
       "default": 1.8862
     },
     "SIPI": {
-      "group": "PlanetScope",
+      "group": "Satellite",
       "unit": "",
       "limits": [
         -2,
@@ -390,7 +535,7 @@
       "default": 25.7808
     },
     "Elevation": {
-      "group": "Terrain",
+      "group": "Topography",
       "unit": "m",
       "limits": [
         0,
@@ -699,8 +844,8 @@
     ]
   },
   "metrics": {
-    "S30": {
-      "independent": {
+    "with_soil_independent": {
+      "S30": {
         "holdout": {
           "r2": 0.804,
           "rmse": 0.0262,
@@ -732,41 +877,7 @@
           "n": 1116
         }
       },
-      "chained": {
-        "holdout": {
-          "r2": 0.804,
-          "rmse": 0.0262,
-          "rrmse_pct": 13.73,
-          "n": 279
-        },
-        "holdout_in_sample": {
-          "r2": 0.804,
-          "rmse": 0.0262,
-          "rrmse_pct": 13.73,
-          "n": 279
-        },
-        "cv": {
-          "r2": 0.72,
-          "rmse": 0.0312,
-          "rrmse_pct": 16.49,
-          "n": 837
-        },
-        "year": {
-          "r2": 0.181,
-          "rmse": 0.0567,
-          "rrmse_pct": 29.28,
-          "n": 508
-        },
-        "fields": {
-          "r2": 0.488,
-          "rmse": 0.0423,
-          "rrmse_pct": 22.28,
-          "n": 1116
-        }
-      }
-    },
-    "S60": {
-      "independent": {
+      "S60": {
         "holdout": {
           "r2": 0.83,
           "rmse": 0.0246,
@@ -798,41 +909,7 @@
           "n": 1116
         }
       },
-      "chained": {
-        "holdout": {
-          "r2": 0.803,
-          "rmse": 0.0265,
-          "rrmse_pct": 12.08,
-          "n": 279
-        },
-        "holdout_in_sample": {
-          "r2": 0.807,
-          "rmse": 0.0262,
-          "rrmse_pct": 11.94,
-          "n": 279
-        },
-        "cv": {
-          "r2": 0.81,
-          "rmse": 0.026,
-          "rrmse_pct": 12.21,
-          "n": 837
-        },
-        "year": {
-          "r2": 0.23,
-          "rmse": 0.0558,
-          "rrmse_pct": 24.34,
-          "n": 508
-        },
-        "fields": {
-          "r2": 0.348,
-          "rmse": 0.0483,
-          "rrmse_pct": 22.46,
-          "n": 1116
-        }
-      }
-    },
-    "S90": {
-      "independent": {
+      "S90": {
         "holdout": {
           "r2": 0.822,
           "rmse": 0.0272,
@@ -864,41 +941,7 @@
           "n": 1116
         }
       },
-      "chained": {
-        "holdout": {
-          "r2": 0.84,
-          "rmse": 0.0258,
-          "rrmse_pct": 14.05,
-          "n": 279
-        },
-        "holdout_in_sample": {
-          "r2": 0.845,
-          "rmse": 0.0254,
-          "rrmse_pct": 13.82,
-          "n": 279
-        },
-        "cv": {
-          "r2": 0.802,
-          "rmse": 0.0276,
-          "rrmse_pct": 15.58,
-          "n": 837
-        },
-        "year": {
-          "r2": 0.267,
-          "rmse": 0.0567,
-          "rrmse_pct": 27.96,
-          "n": 508
-        },
-        "fields": {
-          "r2": 0.273,
-          "rmse": 0.0535,
-          "rrmse_pct": 29.89,
-          "n": 1116
-        }
-      }
-    },
-    "S120": {
-      "independent": {
+      "S120": {
         "holdout": {
           "r2": 0.899,
           "rmse": 0.0198,
@@ -930,41 +973,7 @@
           "n": 1116
         }
       },
-      "chained": {
-        "holdout": {
-          "r2": 0.897,
-          "rmse": 0.0199,
-          "rrmse_pct": 11.73,
-          "n": 279
-        },
-        "holdout_in_sample": {
-          "r2": 0.902,
-          "rmse": 0.0194,
-          "rrmse_pct": 11.44,
-          "n": 279
-        },
-        "cv": {
-          "r2": 0.849,
-          "rmse": 0.0236,
-          "rrmse_pct": 14.13,
-          "n": 837
-        },
-        "year": {
-          "r2": 0.459,
-          "rmse": 0.0473,
-          "rrmse_pct": 25.07,
-          "n": 508
-        },
-        "fields": {
-          "r2": 0.253,
-          "rmse": 0.0527,
-          "rrmse_pct": 31.45,
-          "n": 1116
-        }
-      }
-    },
-    "S150": {
-      "independent": {
+      "S150": {
         "holdout": {
           "r2": 0.883,
           "rmse": 0.0214,
@@ -996,41 +1005,7 @@
           "n": 1116
         }
       },
-      "chained": {
-        "holdout": {
-          "r2": 0.903,
-          "rmse": 0.0194,
-          "rrmse_pct": 11.84,
-          "n": 279
-        },
-        "holdout_in_sample": {
-          "r2": 0.917,
-          "rmse": 0.018,
-          "rrmse_pct": 10.97,
-          "n": 279
-        },
-        "cv": {
-          "r2": 0.851,
-          "rmse": 0.0224,
-          "rrmse_pct": 13.61,
-          "n": 837
-        },
-        "year": {
-          "r2": 0.533,
-          "rmse": 0.0425,
-          "rrmse_pct": 23.52,
-          "n": 508
-        },
-        "fields": {
-          "r2": 0.062,
-          "rmse": 0.0573,
-          "rrmse_pct": 34.83,
-          "n": 1116
-        }
-      }
-    },
-    "S180": {
-      "independent": {
+      "S180": {
         "holdout": {
           "r2": 0.842,
           "rmse": 0.0233,
@@ -1061,8 +1036,170 @@
           "rrmse_pct": 32.61,
           "n": 873
         }
+      }
+    },
+    "with_soil_chained": {
+      "S30": {
+        "holdout": {
+          "r2": 0.804,
+          "rmse": 0.0262,
+          "rrmse_pct": 13.73,
+          "n": 279
+        },
+        "holdout_in_sample": {
+          "r2": 0.804,
+          "rmse": 0.0262,
+          "rrmse_pct": 13.73,
+          "n": 279
+        },
+        "cv": {
+          "r2": 0.72,
+          "rmse": 0.0312,
+          "rrmse_pct": 16.49,
+          "n": 837
+        },
+        "year": {
+          "r2": 0.181,
+          "rmse": 0.0567,
+          "rrmse_pct": 29.28,
+          "n": 508
+        },
+        "fields": {
+          "r2": 0.488,
+          "rmse": 0.0423,
+          "rrmse_pct": 22.28,
+          "n": 1116
+        }
       },
-      "chained": {
+      "S60": {
+        "holdout": {
+          "r2": 0.803,
+          "rmse": 0.0265,
+          "rrmse_pct": 12.08,
+          "n": 279
+        },
+        "holdout_in_sample": {
+          "r2": 0.807,
+          "rmse": 0.0262,
+          "rrmse_pct": 11.94,
+          "n": 279
+        },
+        "cv": {
+          "r2": 0.81,
+          "rmse": 0.026,
+          "rrmse_pct": 12.21,
+          "n": 837
+        },
+        "year": {
+          "r2": 0.23,
+          "rmse": 0.0558,
+          "rrmse_pct": 24.34,
+          "n": 508
+        },
+        "fields": {
+          "r2": 0.348,
+          "rmse": 0.0483,
+          "rrmse_pct": 22.46,
+          "n": 1116
+        }
+      },
+      "S90": {
+        "holdout": {
+          "r2": 0.84,
+          "rmse": 0.0258,
+          "rrmse_pct": 14.05,
+          "n": 279
+        },
+        "holdout_in_sample": {
+          "r2": 0.845,
+          "rmse": 0.0254,
+          "rrmse_pct": 13.82,
+          "n": 279
+        },
+        "cv": {
+          "r2": 0.802,
+          "rmse": 0.0276,
+          "rrmse_pct": 15.58,
+          "n": 837
+        },
+        "year": {
+          "r2": 0.267,
+          "rmse": 0.0567,
+          "rrmse_pct": 27.96,
+          "n": 508
+        },
+        "fields": {
+          "r2": 0.273,
+          "rmse": 0.0535,
+          "rrmse_pct": 29.89,
+          "n": 1116
+        }
+      },
+      "S120": {
+        "holdout": {
+          "r2": 0.897,
+          "rmse": 0.0199,
+          "rrmse_pct": 11.73,
+          "n": 279
+        },
+        "holdout_in_sample": {
+          "r2": 0.902,
+          "rmse": 0.0194,
+          "rrmse_pct": 11.44,
+          "n": 279
+        },
+        "cv": {
+          "r2": 0.849,
+          "rmse": 0.0236,
+          "rrmse_pct": 14.13,
+          "n": 837
+        },
+        "year": {
+          "r2": 0.459,
+          "rmse": 0.0473,
+          "rrmse_pct": 25.07,
+          "n": 508
+        },
+        "fields": {
+          "r2": 0.253,
+          "rmse": 0.0527,
+          "rrmse_pct": 31.45,
+          "n": 1116
+        }
+      },
+      "S150": {
+        "holdout": {
+          "r2": 0.903,
+          "rmse": 0.0194,
+          "rrmse_pct": 11.84,
+          "n": 279
+        },
+        "holdout_in_sample": {
+          "r2": 0.917,
+          "rmse": 0.018,
+          "rrmse_pct": 10.97,
+          "n": 279
+        },
+        "cv": {
+          "r2": 0.851,
+          "rmse": 0.0224,
+          "rrmse_pct": 13.61,
+          "n": 837
+        },
+        "year": {
+          "r2": 0.533,
+          "rmse": 0.0425,
+          "rrmse_pct": 23.52,
+          "n": 508
+        },
+        "fields": {
+          "r2": 0.062,
+          "rmse": 0.0573,
+          "rrmse_pct": 34.83,
+          "n": 1116
+        }
+      },
+      "S180": {
         "holdout": {
           "r2": 0.86,
           "rmse": 0.0219,
@@ -1094,286 +1231,1639 @@
           "n": 873
         }
       }
+    },
+    "no_soil_independent": {
+      "S30": {
+        "holdout": {
+          "r2": 0.757,
+          "rmse": 0.0291,
+          "rrmse_pct": 15.28,
+          "n": 279
+        },
+        "holdout_in_sample": {
+          "r2": 0.757,
+          "rmse": 0.0291,
+          "rrmse_pct": 15.28,
+          "n": 279
+        },
+        "cv": {
+          "r2": 0.713,
+          "rmse": 0.0316,
+          "rrmse_pct": 16.69,
+          "n": 837
+        },
+        "year": {
+          "r2": 0.257,
+          "rmse": 0.054,
+          "rrmse_pct": 27.89,
+          "n": 508
+        },
+        "fields": {
+          "r2": 0.485,
+          "rmse": 0.0424,
+          "rrmse_pct": 22.35,
+          "n": 1116
+        }
+      },
+      "S60": {
+        "holdout": {
+          "r2": 0.709,
+          "rmse": 0.0322,
+          "rrmse_pct": 14.68,
+          "n": 279
+        },
+        "holdout_in_sample": {
+          "r2": 0.709,
+          "rmse": 0.0322,
+          "rrmse_pct": 14.68,
+          "n": 279
+        },
+        "cv": {
+          "r2": 0.674,
+          "rmse": 0.0341,
+          "rrmse_pct": 15.99,
+          "n": 837
+        },
+        "year": {
+          "r2": 0.175,
+          "rmse": 0.0578,
+          "rrmse_pct": 25.21,
+          "n": 508
+        },
+        "fields": {
+          "r2": 0.004,
+          "rmse": 0.0596,
+          "rrmse_pct": 27.76,
+          "n": 1116
+        }
+      },
+      "S90": {
+        "holdout": {
+          "r2": 0.745,
+          "rmse": 0.0326,
+          "rrmse_pct": 17.76,
+          "n": 279
+        },
+        "holdout_in_sample": {
+          "r2": 0.745,
+          "rmse": 0.0326,
+          "rrmse_pct": 17.76,
+          "n": 279
+        },
+        "cv": {
+          "r2": 0.68,
+          "rmse": 0.0351,
+          "rrmse_pct": 19.79,
+          "n": 837
+        },
+        "year": {
+          "r2": 0.181,
+          "rmse": 0.06,
+          "rrmse_pct": 29.55,
+          "n": 508
+        },
+        "fields": {
+          "r2": -0.031,
+          "rmse": 0.0637,
+          "rrmse_pct": 35.6,
+          "n": 1116
+        }
+      },
+      "S120": {
+        "holdout": {
+          "r2": 0.779,
+          "rmse": 0.0292,
+          "rrmse_pct": 17.18,
+          "n": 279
+        },
+        "holdout_in_sample": {
+          "r2": 0.779,
+          "rmse": 0.0292,
+          "rrmse_pct": 17.18,
+          "n": 279
+        },
+        "cv": {
+          "r2": 0.72,
+          "rmse": 0.0321,
+          "rrmse_pct": 19.23,
+          "n": 837
+        },
+        "year": {
+          "r2": 0.145,
+          "rmse": 0.0595,
+          "rrmse_pct": 31.52,
+          "n": 508
+        },
+        "fields": {
+          "r2": -0.308,
+          "rmse": 0.0697,
+          "rrmse_pct": 41.61,
+          "n": 1116
+        }
+      },
+      "S150": {
+        "holdout": {
+          "r2": 0.649,
+          "rmse": 0.037,
+          "rrmse_pct": 22.55,
+          "n": 279
+        },
+        "holdout_in_sample": {
+          "r2": 0.649,
+          "rmse": 0.037,
+          "rrmse_pct": 22.55,
+          "n": 279
+        },
+        "cv": {
+          "r2": 0.558,
+          "rmse": 0.0386,
+          "rrmse_pct": 23.43,
+          "n": 837
+        },
+        "year": {
+          "r2": 0.185,
+          "rmse": 0.0561,
+          "rrmse_pct": 31.06,
+          "n": 508
+        },
+        "fields": {
+          "r2": -0.301,
+          "rmse": 0.0676,
+          "rrmse_pct": 41.03,
+          "n": 1116
+        }
+      },
+      "S180": {
+        "holdout": {
+          "r2": 0.653,
+          "rmse": 0.0345,
+          "rrmse_pct": 19.44,
+          "n": 219
+        },
+        "holdout_in_sample": {
+          "r2": 0.653,
+          "rmse": 0.0345,
+          "rrmse_pct": 19.44,
+          "n": 219
+        },
+        "cv": {
+          "r2": 0.588,
+          "rmse": 0.037,
+          "rrmse_pct": 20.74,
+          "n": 654
+        },
+        "year": {
+          "r2": 0.19,
+          "rmse": 0.0545,
+          "rrmse_pct": 28.68,
+          "n": 394
+        },
+        "fields": {
+          "r2": -0.232,
+          "rmse": 0.0643,
+          "rrmse_pct": 36.06,
+          "n": 873
+        }
+      }
+    },
+    "no_soil_chained": {
+      "S30": {
+        "holdout": {
+          "r2": 0.757,
+          "rmse": 0.0291,
+          "rrmse_pct": 15.28,
+          "n": 279
+        },
+        "holdout_in_sample": {
+          "r2": 0.757,
+          "rmse": 0.0291,
+          "rrmse_pct": 15.28,
+          "n": 279
+        },
+        "cv": {
+          "r2": 0.713,
+          "rmse": 0.0316,
+          "rrmse_pct": 16.69,
+          "n": 837
+        },
+        "year": {
+          "r2": 0.257,
+          "rmse": 0.054,
+          "rrmse_pct": 27.89,
+          "n": 508
+        },
+        "fields": {
+          "r2": 0.485,
+          "rmse": 0.0424,
+          "rrmse_pct": 22.35,
+          "n": 1116
+        }
+      },
+      "S60": {
+        "holdout": {
+          "r2": 0.715,
+          "rmse": 0.0318,
+          "rrmse_pct": 14.51,
+          "n": 279
+        },
+        "holdout_in_sample": {
+          "r2": 0.708,
+          "rmse": 0.0322,
+          "rrmse_pct": 14.69,
+          "n": 279
+        },
+        "cv": {
+          "r2": 0.645,
+          "rmse": 0.0356,
+          "rrmse_pct": 16.68,
+          "n": 837
+        },
+        "year": {
+          "r2": 0.144,
+          "rmse": 0.0589,
+          "rrmse_pct": 25.67,
+          "n": 508
+        },
+        "fields": {
+          "r2": 0.051,
+          "rmse": 0.0582,
+          "rrmse_pct": 27.1,
+          "n": 1116
+        }
+      },
+      "S90": {
+        "holdout": {
+          "r2": 0.756,
+          "rmse": 0.0319,
+          "rrmse_pct": 17.36,
+          "n": 279
+        },
+        "holdout_in_sample": {
+          "r2": 0.756,
+          "rmse": 0.0319,
+          "rrmse_pct": 17.38,
+          "n": 279
+        },
+        "cv": {
+          "r2": 0.658,
+          "rmse": 0.0363,
+          "rrmse_pct": 20.46,
+          "n": 837
+        },
+        "year": {
+          "r2": 0.098,
+          "rmse": 0.0629,
+          "rrmse_pct": 31.01,
+          "n": 508
+        },
+        "fields": {
+          "r2": -0.071,
+          "rmse": 0.0649,
+          "rrmse_pct": 36.27,
+          "n": 1116
+        }
+      },
+      "S120": {
+        "holdout": {
+          "r2": 0.77,
+          "rmse": 0.0298,
+          "rrmse_pct": 17.55,
+          "n": 279
+        },
+        "holdout_in_sample": {
+          "r2": 0.758,
+          "rmse": 0.0306,
+          "rrmse_pct": 18.01,
+          "n": 279
+        },
+        "cv": {
+          "r2": 0.671,
+          "rmse": 0.0347,
+          "rrmse_pct": 20.84,
+          "n": 837
+        },
+        "year": {
+          "r2": 0.082,
+          "rmse": 0.0617,
+          "rrmse_pct": 32.67,
+          "n": 508
+        },
+        "fields": {
+          "r2": -0.379,
+          "rmse": 0.0716,
+          "rrmse_pct": 42.73,
+          "n": 1116
+        }
+      },
+      "S150": {
+        "holdout": {
+          "r2": 0.746,
+          "rmse": 0.0315,
+          "rrmse_pct": 19.18,
+          "n": 279
+        },
+        "holdout_in_sample": {
+          "r2": 0.761,
+          "rmse": 0.0306,
+          "rrmse_pct": 18.6,
+          "n": 279
+        },
+        "cv": {
+          "r2": 0.592,
+          "rmse": 0.0371,
+          "rrmse_pct": 22.49,
+          "n": 837
+        },
+        "year": {
+          "r2": 0.185,
+          "rmse": 0.0561,
+          "rrmse_pct": 31.05,
+          "n": 508
+        },
+        "fields": {
+          "r2": -0.428,
+          "rmse": 0.0708,
+          "rrmse_pct": 42.98,
+          "n": 1116
+        }
+      },
+      "S180": {
+        "holdout": {
+          "r2": 0.679,
+          "rmse": 0.0332,
+          "rrmse_pct": 18.7,
+          "n": 219
+        },
+        "holdout_in_sample": {
+          "r2": 0.723,
+          "rmse": 0.0308,
+          "rrmse_pct": 17.37,
+          "n": 219
+        },
+        "cv": {
+          "r2": 0.593,
+          "rmse": 0.0368,
+          "rrmse_pct": 20.61,
+          "n": 654
+        },
+        "year": {
+          "r2": 0.152,
+          "rmse": 0.0557,
+          "rrmse_pct": 29.34,
+          "n": 394
+        },
+        "fields": {
+          "r2": -0.444,
+          "rmse": 0.0696,
+          "rrmse_pct": 39.03,
+          "n": 873
+        }
+      }
     }
   },
   "gain": [
     {
+      "variant": "with_soil",
       "depth": "S60",
       "rmse_reduction_pct": -7.7,
       "r2_change": -0.027
     },
     {
+      "variant": "with_soil",
       "depth": "S90",
       "rmse_reduction_pct": 5.1,
       "r2_change": 0.018
     },
     {
+      "variant": "with_soil",
       "depth": "S120",
       "rmse_reduction_pct": -0.5,
       "r2_change": -0.002
     },
     {
+      "variant": "with_soil",
       "depth": "S150",
       "rmse_reduction_pct": 9.3,
       "r2_change": 0.02
     },
     {
+      "variant": "with_soil",
       "depth": "S180",
       "rmse_reduction_pct": 6.0,
       "r2_change": 0.018
+    },
+    {
+      "variant": "no_soil",
+      "depth": "S60",
+      "rmse_reduction_pct": 1.2,
+      "r2_change": 0.006
+    },
+    {
+      "variant": "no_soil",
+      "depth": "S90",
+      "rmse_reduction_pct": 2.1,
+      "r2_change": 0.011
+    },
+    {
+      "variant": "no_soil",
+      "depth": "S120",
+      "rmse_reduction_pct": -2.1,
+      "r2_change": -0.009
+    },
+    {
+      "variant": "no_soil",
+      "depth": "S150",
+      "rmse_reduction_pct": 14.9,
+      "r2_change": 0.097
+    },
+    {
+      "variant": "no_soil",
+      "depth": "S180",
+      "rmse_reduction_pct": 3.8,
+      "r2_change": 0.026
     }
   ],
   "drivers": {
-    "S30": [
-      {
-        "feature": "Ts",
-        "share_pct": 14.8
-      },
-      {
-        "feature": "10-day antecedent Pcp",
-        "share_pct": 13.6
-      },
-      {
-        "feature": "Blue",
-        "share_pct": 10.1
-      },
-      {
-        "feature": "pH (15-30 cm)",
-        "share_pct": 9.8
-      },
-      {
-        "feature": "Sand (90-120 cm)",
-        "share_pct": 9.1
-      },
-      {
-        "feature": "7-day antecedent Pcp",
-        "share_pct": 8.6
-      },
-      {
-        "feature": "VARI",
-        "share_pct": 7.8
-      },
-      {
-        "feature": "NIR",
-        "share_pct": 7.0
-      },
-      {
-        "feature": "Silt (60-90 cm)",
-        "share_pct": 6.8
-      },
-      {
-        "feature": "Tmax",
-        "share_pct": 6.4
-      },
-      {
-        "feature": "NDVIgb",
-        "share_pct": 6.1
-      }
-    ],
-    "S60": [
-      {
-        "feature": "Clay (30-60 cm)",
-        "share_pct": 19.1
-      },
-      {
-        "feature": "SM layer above",
-        "share_pct": 16.4
-      },
-      {
-        "feature": "Rn",
-        "share_pct": 11.7
-      },
-      {
-        "feature": "OM (0-15 cm)",
-        "share_pct": 10.2
-      },
-      {
-        "feature": "OM (15-30 cm)",
-        "share_pct": 10.1
-      },
-      {
-        "feature": "Clay (90-120 cm)",
-        "share_pct": 8.2
-      },
-      {
-        "feature": "ETo",
-        "share_pct": 6.3
-      },
-      {
-        "feature": "Ts",
-        "share_pct": 5.7
-      },
-      {
-        "feature": "SIPI",
-        "share_pct": 4.7
-      },
-      {
-        "feature": "Silt (60-90 cm)",
-        "share_pct": 3.9
-      },
-      {
-        "feature": "Tmin",
-        "share_pct": 3.7
-      }
-    ],
-    "S90": [
-      {
-        "feature": "SM layer above",
-        "share_pct": 29.0
-      },
-      {
-        "feature": "Elevation",
-        "share_pct": 19.8
-      },
-      {
-        "feature": "Clay (60-90 cm)",
-        "share_pct": 15.4
-      },
-      {
-        "feature": "Clay (90-120 cm)",
-        "share_pct": 14.1
-      },
-      {
-        "feature": "Ts",
-        "share_pct": 12.4
-      },
-      {
-        "feature": "Rn",
-        "share_pct": 9.4
-      }
-    ],
-    "S120": [
-      {
-        "feature": "SM layer above",
-        "share_pct": 19.2
-      },
-      {
-        "feature": "Carbon (15-30 cm)",
-        "share_pct": 12.9
-      },
-      {
-        "feature": "Sand (60-90 cm)",
-        "share_pct": 12.9
-      },
-      {
-        "feature": "Clay (60-90 cm)",
-        "share_pct": 9.7
-      },
-      {
-        "feature": "Sand (15-30 cm)",
-        "share_pct": 7.7
-      },
-      {
-        "feature": "Clay (90-120 cm)",
-        "share_pct": 7.2
-      },
-      {
-        "feature": "Silt (0-15 cm)",
-        "share_pct": 7.1
-      },
-      {
-        "feature": "Ts",
-        "share_pct": 6.6
-      },
-      {
-        "feature": "Tmin",
-        "share_pct": 6.6
-      },
-      {
-        "feature": "Rn",
-        "share_pct": 5.1
-      },
-      {
-        "feature": "Sand (30-60 cm)",
-        "share_pct": 5.0
-      }
-    ],
-    "S150": [
-      {
-        "feature": "SM layer above",
-        "share_pct": 27.5
-      },
-      {
-        "feature": "Silt (60-90 cm)",
-        "share_pct": 17.3
-      },
-      {
-        "feature": "OM (15-30 cm)",
-        "share_pct": 12.6
-      },
-      {
-        "feature": "pH (15-30 cm)",
-        "share_pct": 10.3
-      },
-      {
-        "feature": "Clay (30-60 cm)",
-        "share_pct": 8.3
-      },
-      {
-        "feature": "Carbon (15-30 cm)",
-        "share_pct": 8.1
-      },
-      {
-        "feature": "Silt (90-120 cm)",
-        "share_pct": 8.1
-      },
-      {
-        "feature": "Tmin",
-        "share_pct": 7.9
-      }
-    ],
-    "S180": [
-      {
-        "feature": "SM layer above",
-        "share_pct": 31.1
-      },
-      {
-        "feature": "Silt (30-60 cm)",
-        "share_pct": 15.0
-      },
-      {
-        "feature": "Clay (60-90 cm)",
-        "share_pct": 9.2
-      },
-      {
-        "feature": "Silt (90-120 cm)",
-        "share_pct": 8.4
-      },
-      {
-        "feature": "Clay (15-30 cm)",
-        "share_pct": 7.7
-      },
-      {
-        "feature": "Clay (90-120 cm)",
-        "share_pct": 7.1
-      },
-      {
-        "feature": "Ts",
-        "share_pct": 6.9
-      },
-      {
-        "feature": "OM (15-30 cm)",
-        "share_pct": 6.1
-      },
-      {
-        "feature": "Elevation",
-        "share_pct": 4.5
-      },
-      {
-        "feature": "pH (0-15 cm)",
-        "share_pct": 4.1
-      }
-    ]
+    "with_soil_independent": {
+      "S30": [
+        {
+          "feature": "Ts",
+          "share_pct": 14.8
+        },
+        {
+          "feature": "10-day antecedent Pcp",
+          "share_pct": 13.6
+        },
+        {
+          "feature": "Blue",
+          "share_pct": 10.1
+        },
+        {
+          "feature": "pH (15-30 cm)",
+          "share_pct": 9.8
+        },
+        {
+          "feature": "Sand (90-120 cm)",
+          "share_pct": 9.1
+        },
+        {
+          "feature": "7-day antecedent Pcp",
+          "share_pct": 8.6
+        },
+        {
+          "feature": "VARI",
+          "share_pct": 7.8
+        },
+        {
+          "feature": "NIR",
+          "share_pct": 7.0
+        },
+        {
+          "feature": "Silt (60-90 cm)",
+          "share_pct": 6.8
+        },
+        {
+          "feature": "Tmax",
+          "share_pct": 6.4
+        },
+        {
+          "feature": "NDVIgb",
+          "share_pct": 6.1
+        }
+      ],
+      "S60": [
+        {
+          "feature": "Clay (30-60 cm)",
+          "share_pct": 17.6
+        },
+        {
+          "feature": "Rn",
+          "share_pct": 15.3
+        },
+        {
+          "feature": "OM (0-15 cm)",
+          "share_pct": 13.2
+        },
+        {
+          "feature": "OM (15-30 cm)",
+          "share_pct": 10.6
+        },
+        {
+          "feature": "Ts",
+          "share_pct": 10.4
+        },
+        {
+          "feature": "ETo",
+          "share_pct": 8.8
+        },
+        {
+          "feature": "Clay (90-120 cm)",
+          "share_pct": 7.5
+        },
+        {
+          "feature": "SIPI",
+          "share_pct": 6.4
+        },
+        {
+          "feature": "Tmin",
+          "share_pct": 5.2
+        },
+        {
+          "feature": "Silt (60-90 cm)",
+          "share_pct": 4.9
+        }
+      ],
+      "S90": [
+        {
+          "feature": "Clay (90-120 cm)",
+          "share_pct": 21.7
+        },
+        {
+          "feature": "Elevation",
+          "share_pct": 21.1
+        },
+        {
+          "feature": "Ts",
+          "share_pct": 20.6
+        },
+        {
+          "feature": "Clay (60-90 cm)",
+          "share_pct": 18.9
+        },
+        {
+          "feature": "Rn",
+          "share_pct": 17.6
+        }
+      ],
+      "S120": [
+        {
+          "feature": "Ts",
+          "share_pct": 12.2
+        },
+        {
+          "feature": "Clay (60-90 cm)",
+          "share_pct": 12.0
+        },
+        {
+          "feature": "Sand (60-90 cm)",
+          "share_pct": 11.5
+        },
+        {
+          "feature": "Silt (0-15 cm)",
+          "share_pct": 10.6
+        },
+        {
+          "feature": "Sand (15-30 cm)",
+          "share_pct": 10.3
+        },
+        {
+          "feature": "Tmin",
+          "share_pct": 9.2
+        },
+        {
+          "feature": "Rn",
+          "share_pct": 9.1
+        },
+        {
+          "feature": "Clay (90-120 cm)",
+          "share_pct": 9.1
+        },
+        {
+          "feature": "Sand (30-60 cm)",
+          "share_pct": 8.1
+        },
+        {
+          "feature": "Carbon (15-30 cm)",
+          "share_pct": 7.9
+        }
+      ],
+      "S150": [
+        {
+          "feature": "Silt (60-90 cm)",
+          "share_pct": 29.7
+        },
+        {
+          "feature": "OM (15-30 cm)",
+          "share_pct": 14.9
+        },
+        {
+          "feature": "Tmin",
+          "share_pct": 12.2
+        },
+        {
+          "feature": "Silt (90-120 cm)",
+          "share_pct": 11.4
+        },
+        {
+          "feature": "Carbon (15-30 cm)",
+          "share_pct": 11.3
+        },
+        {
+          "feature": "Clay (30-60 cm)",
+          "share_pct": 10.5
+        },
+        {
+          "feature": "pH (15-30 cm)",
+          "share_pct": 9.9
+        }
+      ],
+      "S180": [
+        {
+          "feature": "Silt (30-60 cm)",
+          "share_pct": 22.9
+        },
+        {
+          "feature": "Ts",
+          "share_pct": 13.7
+        },
+        {
+          "feature": "Silt (90-120 cm)",
+          "share_pct": 13.6
+        },
+        {
+          "feature": "Clay (15-30 cm)",
+          "share_pct": 12.1
+        },
+        {
+          "feature": "Clay (60-90 cm)",
+          "share_pct": 9.8
+        },
+        {
+          "feature": "Clay (90-120 cm)",
+          "share_pct": 8.9
+        },
+        {
+          "feature": "OM (15-30 cm)",
+          "share_pct": 8.3
+        },
+        {
+          "feature": "pH (0-15 cm)",
+          "share_pct": 5.5
+        },
+        {
+          "feature": "Elevation",
+          "share_pct": 5.1
+        }
+      ]
+    },
+    "with_soil_chained": {
+      "S30": [
+        {
+          "feature": "Ts",
+          "share_pct": 14.8
+        },
+        {
+          "feature": "10-day antecedent Pcp",
+          "share_pct": 13.6
+        },
+        {
+          "feature": "Blue",
+          "share_pct": 10.1
+        },
+        {
+          "feature": "pH (15-30 cm)",
+          "share_pct": 9.8
+        },
+        {
+          "feature": "Sand (90-120 cm)",
+          "share_pct": 9.1
+        },
+        {
+          "feature": "7-day antecedent Pcp",
+          "share_pct": 8.6
+        },
+        {
+          "feature": "VARI",
+          "share_pct": 7.8
+        },
+        {
+          "feature": "NIR",
+          "share_pct": 7.0
+        },
+        {
+          "feature": "Silt (60-90 cm)",
+          "share_pct": 6.8
+        },
+        {
+          "feature": "Tmax",
+          "share_pct": 6.4
+        },
+        {
+          "feature": "NDVIgb",
+          "share_pct": 6.1
+        }
+      ],
+      "S60": [
+        {
+          "feature": "Clay (30-60 cm)",
+          "share_pct": 19.1
+        },
+        {
+          "feature": "SM layer above",
+          "share_pct": 16.4
+        },
+        {
+          "feature": "Rn",
+          "share_pct": 11.7
+        },
+        {
+          "feature": "OM (0-15 cm)",
+          "share_pct": 10.2
+        },
+        {
+          "feature": "OM (15-30 cm)",
+          "share_pct": 10.1
+        },
+        {
+          "feature": "Clay (90-120 cm)",
+          "share_pct": 8.2
+        },
+        {
+          "feature": "ETo",
+          "share_pct": 6.3
+        },
+        {
+          "feature": "Ts",
+          "share_pct": 5.7
+        },
+        {
+          "feature": "SIPI",
+          "share_pct": 4.7
+        },
+        {
+          "feature": "Silt (60-90 cm)",
+          "share_pct": 3.9
+        },
+        {
+          "feature": "Tmin",
+          "share_pct": 3.7
+        }
+      ],
+      "S90": [
+        {
+          "feature": "SM layer above",
+          "share_pct": 29.0
+        },
+        {
+          "feature": "Elevation",
+          "share_pct": 19.8
+        },
+        {
+          "feature": "Clay (60-90 cm)",
+          "share_pct": 15.4
+        },
+        {
+          "feature": "Clay (90-120 cm)",
+          "share_pct": 14.1
+        },
+        {
+          "feature": "Ts",
+          "share_pct": 12.4
+        },
+        {
+          "feature": "Rn",
+          "share_pct": 9.4
+        }
+      ],
+      "S120": [
+        {
+          "feature": "SM layer above",
+          "share_pct": 19.2
+        },
+        {
+          "feature": "Carbon (15-30 cm)",
+          "share_pct": 12.9
+        },
+        {
+          "feature": "Sand (60-90 cm)",
+          "share_pct": 12.9
+        },
+        {
+          "feature": "Clay (60-90 cm)",
+          "share_pct": 9.7
+        },
+        {
+          "feature": "Sand (15-30 cm)",
+          "share_pct": 7.7
+        },
+        {
+          "feature": "Clay (90-120 cm)",
+          "share_pct": 7.2
+        },
+        {
+          "feature": "Silt (0-15 cm)",
+          "share_pct": 7.1
+        },
+        {
+          "feature": "Ts",
+          "share_pct": 6.6
+        },
+        {
+          "feature": "Tmin",
+          "share_pct": 6.6
+        },
+        {
+          "feature": "Rn",
+          "share_pct": 5.1
+        },
+        {
+          "feature": "Sand (30-60 cm)",
+          "share_pct": 5.0
+        }
+      ],
+      "S150": [
+        {
+          "feature": "SM layer above",
+          "share_pct": 27.5
+        },
+        {
+          "feature": "Silt (60-90 cm)",
+          "share_pct": 17.3
+        },
+        {
+          "feature": "OM (15-30 cm)",
+          "share_pct": 12.6
+        },
+        {
+          "feature": "pH (15-30 cm)",
+          "share_pct": 10.3
+        },
+        {
+          "feature": "Clay (30-60 cm)",
+          "share_pct": 8.3
+        },
+        {
+          "feature": "Carbon (15-30 cm)",
+          "share_pct": 8.1
+        },
+        {
+          "feature": "Silt (90-120 cm)",
+          "share_pct": 8.1
+        },
+        {
+          "feature": "Tmin",
+          "share_pct": 7.9
+        }
+      ],
+      "S180": [
+        {
+          "feature": "SM layer above",
+          "share_pct": 31.1
+        },
+        {
+          "feature": "Silt (30-60 cm)",
+          "share_pct": 15.0
+        },
+        {
+          "feature": "Clay (60-90 cm)",
+          "share_pct": 9.2
+        },
+        {
+          "feature": "Silt (90-120 cm)",
+          "share_pct": 8.4
+        },
+        {
+          "feature": "Clay (15-30 cm)",
+          "share_pct": 7.7
+        },
+        {
+          "feature": "Clay (90-120 cm)",
+          "share_pct": 7.1
+        },
+        {
+          "feature": "Ts",
+          "share_pct": 6.9
+        },
+        {
+          "feature": "OM (15-30 cm)",
+          "share_pct": 6.1
+        },
+        {
+          "feature": "Elevation",
+          "share_pct": 4.5
+        },
+        {
+          "feature": "pH (0-15 cm)",
+          "share_pct": 4.1
+        }
+      ]
+    },
+    "no_soil_independent": {
+      "S30": [
+        {
+          "feature": "Elevation",
+          "share_pct": 15.3
+        },
+        {
+          "feature": "10-day antecedent Pcp",
+          "share_pct": 12.6
+        },
+        {
+          "feature": "Ts",
+          "share_pct": 12.4
+        },
+        {
+          "feature": "7-day antecedent Pcp",
+          "share_pct": 9.9
+        },
+        {
+          "feature": "NIR",
+          "share_pct": 7.3
+        },
+        {
+          "feature": "SIPI",
+          "share_pct": 7.2
+        },
+        {
+          "feature": "VARI",
+          "share_pct": 6.7
+        },
+        {
+          "feature": "Blue",
+          "share_pct": 6.5
+        },
+        {
+          "feature": "NDVIgb",
+          "share_pct": 5.0
+        },
+        {
+          "feature": "Tmin",
+          "share_pct": 4.7
+        },
+        {
+          "feature": "ETo",
+          "share_pct": 4.5
+        },
+        {
+          "feature": "Tmax",
+          "share_pct": 4.0
+        },
+        {
+          "feature": "Rn",
+          "share_pct": 3.9
+        }
+      ],
+      "S60": [
+        {
+          "feature": "Elevation",
+          "share_pct": 27.1
+        },
+        {
+          "feature": "Rn",
+          "share_pct": 10.1
+        },
+        {
+          "feature": "NIR",
+          "share_pct": 8.3
+        },
+        {
+          "feature": "NDVIgb",
+          "share_pct": 8.3
+        },
+        {
+          "feature": "Blue",
+          "share_pct": 7.6
+        },
+        {
+          "feature": "VARI",
+          "share_pct": 6.9
+        },
+        {
+          "feature": "Tmin",
+          "share_pct": 6.1
+        },
+        {
+          "feature": "Ts",
+          "share_pct": 5.7
+        },
+        {
+          "feature": "SIPI",
+          "share_pct": 5.0
+        },
+        {
+          "feature": "7-day antecedent Pcp",
+          "share_pct": 4.9
+        },
+        {
+          "feature": "ETo",
+          "share_pct": 4.8
+        },
+        {
+          "feature": "10-day antecedent Pcp",
+          "share_pct": 2.7
+        },
+        {
+          "feature": "Tmax",
+          "share_pct": 2.5
+        }
+      ],
+      "S90": [
+        {
+          "feature": "Elevation",
+          "share_pct": 32.1
+        },
+        {
+          "feature": "Rn",
+          "share_pct": 11.9
+        },
+        {
+          "feature": "Ts",
+          "share_pct": 9.5
+        },
+        {
+          "feature": "Tmin",
+          "share_pct": 7.7
+        },
+        {
+          "feature": "VARI",
+          "share_pct": 6.9
+        },
+        {
+          "feature": "ETo",
+          "share_pct": 6.1
+        },
+        {
+          "feature": "Blue",
+          "share_pct": 5.6
+        },
+        {
+          "feature": "NDVIgb",
+          "share_pct": 4.9
+        },
+        {
+          "feature": "NIR",
+          "share_pct": 4.7
+        },
+        {
+          "feature": "10-day antecedent Pcp",
+          "share_pct": 3.7
+        },
+        {
+          "feature": "SIPI",
+          "share_pct": 3.7
+        },
+        {
+          "feature": "7-day antecedent Pcp",
+          "share_pct": 1.7
+        },
+        {
+          "feature": "Tmax",
+          "share_pct": 1.5
+        }
+      ],
+      "S120": [
+        {
+          "feature": "Elevation",
+          "share_pct": 45.8
+        },
+        {
+          "feature": "Rn",
+          "share_pct": 6.4
+        },
+        {
+          "feature": "Ts",
+          "share_pct": 6.2
+        },
+        {
+          "feature": "Blue",
+          "share_pct": 6.1
+        },
+        {
+          "feature": "ETo",
+          "share_pct": 5.4
+        },
+        {
+          "feature": "SIPI",
+          "share_pct": 5.2
+        },
+        {
+          "feature": "VARI",
+          "share_pct": 5.0
+        },
+        {
+          "feature": "Tmin",
+          "share_pct": 4.9
+        },
+        {
+          "feature": "NIR",
+          "share_pct": 4.2
+        },
+        {
+          "feature": "10-day antecedent Pcp",
+          "share_pct": 3.9
+        },
+        {
+          "feature": "NDVIgb",
+          "share_pct": 3.7
+        },
+        {
+          "feature": "Tmax",
+          "share_pct": 1.9
+        },
+        {
+          "feature": "7-day antecedent Pcp",
+          "share_pct": 1.3
+        }
+      ],
+      "S150": [
+        {
+          "feature": "Elevation",
+          "share_pct": 41.7
+        },
+        {
+          "feature": "Blue",
+          "share_pct": 7.8
+        },
+        {
+          "feature": "Ts",
+          "share_pct": 7.4
+        },
+        {
+          "feature": "SIPI",
+          "share_pct": 7.3
+        },
+        {
+          "feature": "VARI",
+          "share_pct": 5.2
+        },
+        {
+          "feature": "Rn",
+          "share_pct": 4.9
+        },
+        {
+          "feature": "NIR",
+          "share_pct": 4.8
+        },
+        {
+          "feature": "ETo",
+          "share_pct": 4.7
+        },
+        {
+          "feature": "10-day antecedent Pcp",
+          "share_pct": 4.2
+        },
+        {
+          "feature": "NDVIgb",
+          "share_pct": 4.1
+        },
+        {
+          "feature": "Tmin",
+          "share_pct": 3.1
+        },
+        {
+          "feature": "Tmax",
+          "share_pct": 2.8
+        },
+        {
+          "feature": "7-day antecedent Pcp",
+          "share_pct": 2.1
+        }
+      ],
+      "S180": [
+        {
+          "feature": "Elevation",
+          "share_pct": 47.3
+        },
+        {
+          "feature": "VARI",
+          "share_pct": 7.1
+        },
+        {
+          "feature": "Blue",
+          "share_pct": 6.5
+        },
+        {
+          "feature": "Ts",
+          "share_pct": 5.8
+        },
+        {
+          "feature": "NIR",
+          "share_pct": 5.0
+        },
+        {
+          "feature": "NDVIgb",
+          "share_pct": 4.8
+        },
+        {
+          "feature": "10-day antecedent Pcp",
+          "share_pct": 4.2
+        },
+        {
+          "feature": "SIPI",
+          "share_pct": 4.1
+        },
+        {
+          "feature": "ETo",
+          "share_pct": 3.7
+        },
+        {
+          "feature": "Rn",
+          "share_pct": 3.6
+        },
+        {
+          "feature": "Tmin",
+          "share_pct": 3.1
+        },
+        {
+          "feature": "Tmax",
+          "share_pct": 2.7
+        },
+        {
+          "feature": "7-day antecedent Pcp",
+          "share_pct": 2.1
+        }
+      ]
+    },
+    "no_soil_chained": {
+      "S30": [
+        {
+          "feature": "Elevation",
+          "share_pct": 15.3
+        },
+        {
+          "feature": "10-day antecedent Pcp",
+          "share_pct": 12.6
+        },
+        {
+          "feature": "Ts",
+          "share_pct": 12.4
+        },
+        {
+          "feature": "7-day antecedent Pcp",
+          "share_pct": 9.9
+        },
+        {
+          "feature": "NIR",
+          "share_pct": 7.3
+        },
+        {
+          "feature": "SIPI",
+          "share_pct": 7.2
+        },
+        {
+          "feature": "VARI",
+          "share_pct": 6.7
+        },
+        {
+          "feature": "Blue",
+          "share_pct": 6.5
+        },
+        {
+          "feature": "NDVIgb",
+          "share_pct": 5.0
+        },
+        {
+          "feature": "Tmin",
+          "share_pct": 4.7
+        },
+        {
+          "feature": "ETo",
+          "share_pct": 4.5
+        },
+        {
+          "feature": "Tmax",
+          "share_pct": 4.0
+        },
+        {
+          "feature": "Rn",
+          "share_pct": 3.9
+        }
+      ],
+      "S60": [
+        {
+          "feature": "Elevation",
+          "share_pct": 26.4
+        },
+        {
+          "feature": "SM layer above",
+          "share_pct": 16.2
+        },
+        {
+          "feature": "Rn",
+          "share_pct": 10.4
+        },
+        {
+          "feature": "VARI",
+          "share_pct": 6.3
+        },
+        {
+          "feature": "NIR",
+          "share_pct": 5.7
+        },
+        {
+          "feature": "Ts",
+          "share_pct": 5.5
+        },
+        {
+          "feature": "Blue",
+          "share_pct": 4.9
+        },
+        {
+          "feature": "SIPI",
+          "share_pct": 4.9
+        },
+        {
+          "feature": "Tmin",
+          "share_pct": 4.5
+        },
+        {
+          "feature": "NDVIgb",
+          "share_pct": 4.4
+        },
+        {
+          "feature": "10-day antecedent Pcp",
+          "share_pct": 3.4
+        },
+        {
+          "feature": "ETo",
+          "share_pct": 3.0
+        },
+        {
+          "feature": "Tmax",
+          "share_pct": 2.3
+        },
+        {
+          "feature": "7-day antecedent Pcp",
+          "share_pct": 2.0
+        }
+      ],
+      "S90": [
+        {
+          "feature": "SM layer above",
+          "share_pct": 26.8
+        },
+        {
+          "feature": "Elevation",
+          "share_pct": 26.3
+        },
+        {
+          "feature": "VARI",
+          "share_pct": 6.2
+        },
+        {
+          "feature": "Ts",
+          "share_pct": 6.0
+        },
+        {
+          "feature": "NIR",
+          "share_pct": 5.1
+        },
+        {
+          "feature": "SIPI",
+          "share_pct": 5.0
+        },
+        {
+          "feature": "Tmin",
+          "share_pct": 4.4
+        },
+        {
+          "feature": "Blue",
+          "share_pct": 3.9
+        },
+        {
+          "feature": "NDVIgb",
+          "share_pct": 3.6
+        },
+        {
+          "feature": "ETo",
+          "share_pct": 3.4
+        },
+        {
+          "feature": "Rn",
+          "share_pct": 3.3
+        },
+        {
+          "feature": "Tmax",
+          "share_pct": 2.4
+        },
+        {
+          "feature": "10-day antecedent Pcp",
+          "share_pct": 2.1
+        },
+        {
+          "feature": "7-day antecedent Pcp",
+          "share_pct": 1.3
+        }
+      ],
+      "S120": [
+        {
+          "feature": "Elevation",
+          "share_pct": 36.1
+        },
+        {
+          "feature": "SM layer above",
+          "share_pct": 18.8
+        },
+        {
+          "feature": "Ts",
+          "share_pct": 5.8
+        },
+        {
+          "feature": "NDVIgb",
+          "share_pct": 5.5
+        },
+        {
+          "feature": "Blue",
+          "share_pct": 4.9
+        },
+        {
+          "feature": "Rn",
+          "share_pct": 4.2
+        },
+        {
+          "feature": "NIR",
+          "share_pct": 4.2
+        },
+        {
+          "feature": "VARI",
+          "share_pct": 4.2
+        },
+        {
+          "feature": "SIPI",
+          "share_pct": 4.0
+        },
+        {
+          "feature": "Tmin",
+          "share_pct": 3.4
+        },
+        {
+          "feature": "10-day antecedent Pcp",
+          "share_pct": 2.7
+        },
+        {
+          "feature": "ETo",
+          "share_pct": 2.5
+        },
+        {
+          "feature": "Tmax",
+          "share_pct": 2.3
+        },
+        {
+          "feature": "7-day antecedent Pcp",
+          "share_pct": 1.3
+        }
+      ],
+      "S150": [
+        {
+          "feature": "Elevation",
+          "share_pct": 34.2
+        },
+        {
+          "feature": "SM layer above",
+          "share_pct": 22.5
+        },
+        {
+          "feature": "Blue",
+          "share_pct": 5.9
+        },
+        {
+          "feature": "SIPI",
+          "share_pct": 5.7
+        },
+        {
+          "feature": "VARI",
+          "share_pct": 5.0
+        },
+        {
+          "feature": "NIR",
+          "share_pct": 4.6
+        },
+        {
+          "feature": "NDVIgb",
+          "share_pct": 4.3
+        },
+        {
+          "feature": "Ts",
+          "share_pct": 3.9
+        },
+        {
+          "feature": "Tmin",
+          "share_pct": 3.3
+        },
+        {
+          "feature": "Tmax",
+          "share_pct": 2.9
+        },
+        {
+          "feature": "10-day antecedent Pcp",
+          "share_pct": 2.5
+        },
+        {
+          "feature": "Rn",
+          "share_pct": 2.3
+        },
+        {
+          "feature": "ETo",
+          "share_pct": 1.9
+        },
+        {
+          "feature": "7-day antecedent Pcp",
+          "share_pct": 1.0
+        }
+      ],
+      "S180": [
+        {
+          "feature": "SM layer above",
+          "share_pct": 29.4
+        },
+        {
+          "feature": "Elevation",
+          "share_pct": 28.8
+        },
+        {
+          "feature": "VARI",
+          "share_pct": 5.5
+        },
+        {
+          "feature": "Ts",
+          "share_pct": 5.2
+        },
+        {
+          "feature": "SIPI",
+          "share_pct": 4.5
+        },
+        {
+          "feature": "Blue",
+          "share_pct": 4.2
+        },
+        {
+          "feature": "NDVIgb",
+          "share_pct": 4.2
+        },
+        {
+          "feature": "NIR",
+          "share_pct": 3.9
+        },
+        {
+          "feature": "ETo",
+          "share_pct": 2.9
+        },
+        {
+          "feature": "Tmax",
+          "share_pct": 2.5
+        },
+        {
+          "feature": "10-day antecedent Pcp",
+          "share_pct": 2.4
+        },
+        {
+          "feature": "Tmin",
+          "share_pct": 2.4
+        },
+        {
+          "feature": "Rn",
+          "share_pct": 2.4
+        },
+        {
+          "feature": "7-day antecedent Pcp",
+          "share_pct": 1.6
+        }
+      ]
+    }
   },
+  "groups": [
+    "Upper layer",
+    "Satellite",
+    "Climate",
+    "Soil",
+    "Topography"
+  ],
   "quality_gate": {
     "min_test_r2": 0.6,
+    "model": "with_soil_chained",
     "passes": {
-      "S30": true,
-      "S60": true,
-      "S90": true,
-      "S120": true,
-      "S150": true,
-      "S180": true
+      "with_soil_chained": {
+        "S30": true,
+        "S60": true,
+        "S90": true,
+        "S120": true,
+        "S150": true,
+        "S180": true
+      },
+      "with_soil_independent": {
+        "S30": true,
+        "S60": true,
+        "S90": true,
+        "S120": true,
+        "S150": true,
+        "S180": true
+      },
+      "no_soil_chained": {
+        "S30": true,
+        "S60": true,
+        "S90": true,
+        "S120": true,
+        "S150": true,
+        "S180": true
+      },
+      "no_soil_independent": {
+        "S30": true,
+        "S60": true,
+        "S90": true,
+        "S120": true,
+        "S150": true,
+        "S180": true
+      }
     }
   },
   "n_rows": {

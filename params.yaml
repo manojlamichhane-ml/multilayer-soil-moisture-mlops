@@ -1,5 +1,5 @@
 # =====================================================================
-# Multi-layer root-zone soil moisture: every setting lives here.
+# Multilayer soil moisture: every setting lives here.
 # Change a value, run `dvc repro`, and only affected stages re-run.
 # =====================================================================
 
@@ -19,20 +19,36 @@ split:
   random_state: 10          # the split seed used in the paper for most depths
   cv_folds: 5
 
-# SHAP-selected inputs for each depth (from the paper, notebook 04)
-features:
-  S30:  ["10-day antecedent Pcp", "Ts", "Blue", "7-day antecedent Pcp", "VARI", "Sand (90-120 cm)",
-         "NDVIgb", "NIR", "pH (15-30 cm)", "Tmax", "Silt (60-90 cm)"]
-  S60:  ["Clay (30-60 cm)", "Rn", "Ts", "OM (0-15 cm)", "ETo", "Tmin", "Clay (90-120 cm)",
-         "OM (15-30 cm)", "Silt (60-90 cm)", "SIPI"]
-  S90:  ["Rn", "Clay (90-120 cm)", "Ts", "Clay (60-90 cm)", "Elevation"]
-  S120: ["Clay (60-90 cm)", "Sand (15-30 cm)", "Ts", "Rn", "Carbon (15-30 cm)", "Tmin",
-         "Sand (60-90 cm)", "Clay (90-120 cm)", "Silt (0-15 cm)", "Sand (30-60 cm)"]
-  S150: ["Silt (60-90 cm)", "Carbon (15-30 cm)", "pH (15-30 cm)", "OM (15-30 cm)", "Clay (30-60 cm)",
-         "Silt (90-120 cm)", "Tmin"]
-  S180: ["Silt (30-60 cm)", "Silt (90-120 cm)", "OM (15-30 cm)", "Clay (60-90 cm)", "Clay (15-30 cm)",
-         "Elevation", "pH (0-15 cm)", "Clay (90-120 cm)", "Ts"]
+# Four model versions are trained and served:
+#   soil properties : used (with_soil) or not used (no_soil)
+#   layer above     : used (chained)   or not used (independent)
+variants: [with_soil, no_soil]
 
+# Inputs for each depth.
+#   with_soil : the SHAP-selected sets from the paper (notebook 04)
+#   no_soil   : the paper's satellite, climate and terrain inputs, no soil properties
+features:
+  with_soil:
+    S30:  ["10-day antecedent Pcp", "Ts", "Blue", "7-day antecedent Pcp", "VARI", "Sand (90-120 cm)",
+           "NDVIgb", "NIR", "pH (15-30 cm)", "Tmax", "Silt (60-90 cm)"]
+    S60:  ["Clay (30-60 cm)", "Rn", "Ts", "OM (0-15 cm)", "ETo", "Tmin", "Clay (90-120 cm)",
+           "OM (15-30 cm)", "Silt (60-90 cm)", "SIPI"]
+    S90:  ["Rn", "Clay (90-120 cm)", "Ts", "Clay (60-90 cm)", "Elevation"]
+    S120: ["Clay (60-90 cm)", "Sand (15-30 cm)", "Ts", "Rn", "Carbon (15-30 cm)", "Tmin",
+           "Sand (60-90 cm)", "Clay (90-120 cm)", "Silt (0-15 cm)", "Sand (30-60 cm)"]
+    S150: ["Silt (60-90 cm)", "Carbon (15-30 cm)", "pH (15-30 cm)", "OM (15-30 cm)", "Clay (30-60 cm)",
+           "Silt (90-120 cm)", "Tmin"]
+    S180: ["Silt (30-60 cm)", "Silt (90-120 cm)", "OM (15-30 cm)", "Clay (60-90 cm)", "Clay (15-30 cm)",
+           "Elevation", "pH (0-15 cm)", "Clay (90-120 cm)", "Ts"]
+
+  no_soil:
+    S30:  &no_soil ["10-day antecedent Pcp", "7-day antecedent Pcp", "Ts", "Tmax", "Tmin", "Rn", "ETo",
+                    "Blue", "NIR", "VARI", "NDVIgb", "SIPI", "Elevation"]
+    S60:  *no_soil
+    S90:  *no_soil
+    S120: *no_soil
+    S150: *no_soil
+    S180: *no_soil
 # XGBoost settings (from the paper, notebook 05).
 # [n_estimators, max_depth, subsample, colsample_bytree, min_child_weight]
 hyperparameters:
@@ -53,6 +69,6 @@ evaluation:
   test_year: 2021           # leave-one-year-out test, as in the paper
   run_field_holdout: true   # leave-one-field-out for every depth (slower)
 
-# A depth model is only served if its hold-out R² reaches this value
+# The paper's model (soil properties + layer above) must reach this hold-out R² at every depth
 quality_gate:
   min_test_r2: 0.60

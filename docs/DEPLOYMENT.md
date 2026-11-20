@@ -36,7 +36,7 @@ pytest -v
 ```
 - `git init` turns the folder into a Git project (DVC needs it). DVC itself is already set up (the `.dvc` folder).
 - `dvc status` should say `Data and pipelines are up to date.`: the models were trained from your data and their fingerprints are in `dvc.lock`.
-- `pytest -v` should end with `24 passed`.
+- `pytest -v` should end with `33 passed`.
 
 To retrain everything yourself (about 1.5 minutes): `dvc repro --force`. This also fills your local MLflow logbook; view it with `mlflow ui --backend-store-uri sqlite:///mlflow.db`.
 
@@ -102,8 +102,8 @@ Click **Deploy Web Service**.
 ### 3.3 Wait for “Your service is live”
 The log shows Docker installing Python 3.12 and the packages (2–4 minutes). Then open:
 
-- the app: `https://multilayer-soil-moisture.onrender.com`
-- the API docs: `https://multilayer-soil-moisture.onrender.com/docs`
+- the app: `https://multilayer-soil-moisture-mlops.onrender.com`
+- the API docs: `https://multilayer-soil-moisture-mlops.onrender.com/docs`
 
 If Render gave a different address (for example with a suffix), update the two links at the top of `README.md`, then commit and push.
 

@@ -1,6 +1,11 @@
-depth,rmse_reduction_pct,r2_change
-S60,-7.7,-0.027
-S90,5.1,0.018
-S120,-0.5,-0.002
-S150,9.3,0.02
-S180,6.0,0.018
+variant,depth,rmse_reduction_pct,r2_change
+with_soil,S60,-7.7,-0.027
+with_soil,S90,5.1,0.018
+with_soil,S120,-0.5,-0.002
+with_soil,S150,9.3,0.02
+with_soil,S180,6.0,0.018
+no_soil,S60,1.2,0.006
+no_soil,S90,2.1,0.011
+no_soil,S120,-2.1,-0.009
+no_soil,S150,14.9,0.097
+no_soil,S180,3.8,0.026
