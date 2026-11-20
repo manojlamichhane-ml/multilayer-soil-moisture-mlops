@@ -1,6 +1,6 @@
 {
-  "created": "2026-11-19T20:25:14",
-  "chain_mode": "strict",
+  "created": "2026-11-19T20:51:27",
+  "chain_mode": "paper",
   "depths": [
     "S30",
     "S60",
@@ -852,17 +852,17 @@
           "rrmse_pct": 13.73,
           "n": 279
         },
-        "holdout_in_sample": {
+        "cv": {
+          "r2": 0.7196,
+          "rmse": 0.0311,
+          "rrmse_pct": 16.444,
+          "n": 837
+        },
+        "holdout_strict": {
           "r2": 0.804,
           "rmse": 0.0262,
           "rrmse_pct": 13.73,
           "n": 279
-        },
-        "cv": {
-          "r2": 0.72,
-          "rmse": 0.0312,
-          "rrmse_pct": 16.49,
-          "n": 837
         },
         "year": {
           "r2": 0.181,
@@ -884,17 +884,17 @@
           "rrmse_pct": 11.23,
           "n": 279
         },
-        "holdout_in_sample": {
+        "cv": {
+          "r2": 0.8382,
+          "rmse": 0.0238,
+          "rrmse_pct": 11.178,
+          "n": 837
+        },
+        "holdout_strict": {
           "r2": 0.83,
           "rmse": 0.0246,
           "rrmse_pct": 11.23,
           "n": 279
-        },
-        "cv": {
-          "r2": 0.839,
-          "rmse": 0.0239,
-          "rrmse_pct": 11.23,
-          "n": 837
         },
         "year": {
           "r2": 0.209,
@@ -916,17 +916,17 @@
           "rrmse_pct": 14.84,
           "n": 279
         },
-        "holdout_in_sample": {
+        "cv": {
+          "r2": 0.7936,
+          "rmse": 0.0278,
+          "rrmse_pct": 15.704,
+          "n": 837
+        },
+        "holdout_strict": {
           "r2": 0.822,
           "rmse": 0.0272,
           "rrmse_pct": 14.84,
           "n": 279
-        },
-        "cv": {
-          "r2": 0.796,
-          "rmse": 0.028,
-          "rrmse_pct": 15.81,
-          "n": 837
         },
         "year": {
           "r2": 0.242,
@@ -948,17 +948,17 @@
           "rrmse_pct": 11.65,
           "n": 279
         },
-        "holdout_in_sample": {
+        "cv": {
+          "r2": 0.8566,
+          "rmse": 0.0227,
+          "rrmse_pct": 13.61,
+          "n": 837
+        },
+        "holdout_strict": {
           "r2": 0.899,
           "rmse": 0.0198,
           "rrmse_pct": 11.65,
           "n": 279
-        },
-        "cv": {
-          "r2": 0.858,
-          "rmse": 0.0228,
-          "rrmse_pct": 13.67,
-          "n": 837
         },
         "year": {
           "r2": 0.444,
@@ -980,17 +980,17 @@
           "rrmse_pct": 13.05,
           "n": 279
         },
-        "holdout_in_sample": {
+        "cv": {
+          "r2": 0.8392,
+          "rmse": 0.023,
+          "rrmse_pct": 13.962,
+          "n": 837
+        },
+        "holdout_strict": {
           "r2": 0.883,
           "rmse": 0.0214,
           "rrmse_pct": 13.05,
           "n": 279
-        },
-        "cv": {
-          "r2": 0.842,
-          "rmse": 0.0231,
-          "rrmse_pct": 14.01,
-          "n": 837
         },
         "year": {
           "r2": 0.496,
@@ -1007,22 +1007,22 @@
       },
       "S180": {
         "holdout": {
-          "r2": 0.842,
-          "rmse": 0.0233,
-          "rrmse_pct": 13.12,
-          "n": 219
-        },
-        "holdout_in_sample": {
-          "r2": 0.842,
-          "rmse": 0.0233,
-          "rrmse_pct": 13.12,
+          "r2": 0.795,
+          "rmse": 0.0242,
+          "rrmse_pct": 13.47,
           "n": 219
         },
         "cv": {
-          "r2": 0.88,
-          "rmse": 0.02,
-          "rrmse_pct": 11.18,
+          "r2": 0.8738,
+          "rmse": 0.0209,
+          "rrmse_pct": 11.792,
           "n": 654
+        },
+        "holdout_strict": {
+          "r2": 0.842,
+          "rmse": 0.0233,
+          "rrmse_pct": 13.12,
+          "n": 219
         },
         "year": {
           "r2": 0.65,
@@ -1046,17 +1046,17 @@
           "rrmse_pct": 13.73,
           "n": 279
         },
-        "holdout_in_sample": {
+        "cv": {
+          "r2": 0.7196,
+          "rmse": 0.0311,
+          "rrmse_pct": 16.444,
+          "n": 837
+        },
+        "holdout_strict": {
           "r2": 0.804,
           "rmse": 0.0262,
           "rrmse_pct": 13.73,
           "n": 279
-        },
-        "cv": {
-          "r2": 0.72,
-          "rmse": 0.0312,
-          "rrmse_pct": 16.49,
-          "n": 837
         },
         "year": {
           "r2": 0.181,
@@ -1073,161 +1073,161 @@
       },
       "S60": {
         "holdout": {
-          "r2": 0.803,
-          "rmse": 0.0265,
-          "rrmse_pct": 12.08,
-          "n": 279
-        },
-        "holdout_in_sample": {
           "r2": 0.807,
           "rmse": 0.0262,
           "rrmse_pct": 11.94,
           "n": 279
         },
         "cv": {
-          "r2": 0.81,
-          "rmse": 0.026,
-          "rrmse_pct": 12.21,
+          "r2": 0.8244,
+          "rmse": 0.0248,
+          "rrmse_pct": 11.666,
           "n": 837
         },
+        "holdout_strict": {
+          "r2": 0.803,
+          "rmse": 0.0265,
+          "rrmse_pct": 12.08,
+          "n": 279
+        },
         "year": {
-          "r2": 0.23,
-          "rmse": 0.0558,
-          "rrmse_pct": 24.34,
+          "r2": 0.203,
+          "rmse": 0.0568,
+          "rrmse_pct": 24.77,
           "n": 508
         },
         "fields": {
-          "r2": 0.348,
-          "rmse": 0.0483,
-          "rrmse_pct": 22.46,
+          "r2": 0.38,
+          "rmse": 0.0471,
+          "rrmse_pct": 21.9,
           "n": 1116
         }
       },
       "S90": {
         "holdout": {
+          "r2": 0.876,
+          "rmse": 0.0222,
+          "rrmse_pct": 12.47,
+          "n": 279
+        },
+        "cv": {
+          "r2": 0.8728,
+          "rmse": 0.0222,
+          "rrmse_pct": 12.396,
+          "n": 837
+        },
+        "holdout_strict": {
           "r2": 0.84,
           "rmse": 0.0258,
           "rrmse_pct": 14.05,
           "n": 279
         },
-        "holdout_in_sample": {
-          "r2": 0.845,
-          "rmse": 0.0254,
-          "rrmse_pct": 13.82,
-          "n": 279
-        },
-        "cv": {
-          "r2": 0.802,
-          "rmse": 0.0276,
-          "rrmse_pct": 15.58,
-          "n": 837
-        },
         "year": {
-          "r2": 0.267,
-          "rmse": 0.0567,
-          "rrmse_pct": 27.96,
+          "r2": 0.196,
+          "rmse": 0.0594,
+          "rrmse_pct": 29.27,
           "n": 508
         },
         "fields": {
-          "r2": 0.273,
-          "rmse": 0.0535,
-          "rrmse_pct": 29.89,
+          "r2": 0.298,
+          "rmse": 0.0525,
+          "rrmse_pct": 29.37,
           "n": 1116
         }
       },
       "S120": {
         "holdout": {
+          "r2": 0.934,
+          "rmse": 0.0159,
+          "rrmse_pct": 9.38,
+          "n": 279
+        },
+        "cv": {
+          "r2": 0.895,
+          "rmse": 0.0194,
+          "rrmse_pct": 11.644,
+          "n": 837
+        },
+        "holdout_strict": {
           "r2": 0.897,
           "rmse": 0.0199,
           "rrmse_pct": 11.73,
           "n": 279
         },
-        "holdout_in_sample": {
-          "r2": 0.902,
-          "rmse": 0.0194,
-          "rrmse_pct": 11.44,
-          "n": 279
-        },
-        "cv": {
-          "r2": 0.849,
-          "rmse": 0.0236,
-          "rrmse_pct": 14.13,
-          "n": 837
-        },
         "year": {
-          "r2": 0.459,
-          "rmse": 0.0473,
-          "rrmse_pct": 25.07,
+          "r2": 0.426,
+          "rmse": 0.0487,
+          "rrmse_pct": 25.83,
           "n": 508
         },
         "fields": {
-          "r2": 0.253,
-          "rmse": 0.0527,
-          "rrmse_pct": 31.45,
+          "r2": 0.217,
+          "rmse": 0.0539,
+          "rrmse_pct": 32.19,
           "n": 1116
         }
       },
       "S150": {
         "holdout": {
+          "r2": 0.933,
+          "rmse": 0.0161,
+          "rrmse_pct": 9.83,
+          "n": 279
+        },
+        "cv": {
+          "r2": 0.9184,
+          "rmse": 0.0164,
+          "rrmse_pct": 9.932,
+          "n": 837
+        },
+        "holdout_strict": {
           "r2": 0.903,
           "rmse": 0.0194,
           "rrmse_pct": 11.84,
           "n": 279
         },
-        "holdout_in_sample": {
-          "r2": 0.917,
-          "rmse": 0.018,
-          "rrmse_pct": 10.97,
-          "n": 279
-        },
-        "cv": {
-          "r2": 0.851,
-          "rmse": 0.0224,
-          "rrmse_pct": 13.61,
-          "n": 837
-        },
         "year": {
-          "r2": 0.533,
-          "rmse": 0.0425,
-          "rrmse_pct": 23.52,
+          "r2": 0.507,
+          "rmse": 0.0437,
+          "rrmse_pct": 24.16,
           "n": 508
         },
         "fields": {
-          "r2": 0.062,
-          "rmse": 0.0573,
-          "rrmse_pct": 34.83,
+          "r2": 0.011,
+          "rmse": 0.0589,
+          "rrmse_pct": 35.77,
           "n": 1116
         }
       },
       "S180": {
         "holdout": {
+          "r2": 0.846,
+          "rmse": 0.0209,
+          "rrmse_pct": 11.65,
+          "n": 219
+        },
+        "cv": {
+          "r2": 0.9092,
+          "rmse": 0.0177,
+          "rrmse_pct": 10.0,
+          "n": 654
+        },
+        "holdout_strict": {
           "r2": 0.86,
           "rmse": 0.0219,
           "rrmse_pct": 12.35,
           "n": 219
         },
-        "holdout_in_sample": {
-          "r2": 0.854,
-          "rmse": 0.0224,
-          "rrmse_pct": 12.62,
-          "n": 219
-        },
-        "cv": {
-          "r2": 0.865,
-          "rmse": 0.0212,
-          "rrmse_pct": 11.86,
-          "n": 654
-        },
         "year": {
-          "r2": 0.637,
-          "rmse": 0.0365,
-          "rrmse_pct": 19.2,
+          "r2": 0.64,
+          "rmse": 0.0363,
+          "rrmse_pct": 19.12,
           "n": 394
         },
         "fields": {
-          "r2": -0.083,
-          "rmse": 0.0603,
-          "rrmse_pct": 33.8,
+          "r2": -0.049,
+          "rmse": 0.0593,
+          "rrmse_pct": 33.27,
           "n": 873
         }
       }
@@ -1240,17 +1240,17 @@
           "rrmse_pct": 15.28,
           "n": 279
         },
-        "holdout_in_sample": {
+        "cv": {
+          "r2": 0.7128,
+          "rmse": 0.0315,
+          "rrmse_pct": 16.636,
+          "n": 837
+        },
+        "holdout_strict": {
           "r2": 0.757,
           "rmse": 0.0291,
           "rrmse_pct": 15.28,
           "n": 279
-        },
-        "cv": {
-          "r2": 0.713,
-          "rmse": 0.0316,
-          "rrmse_pct": 16.69,
-          "n": 837
         },
         "year": {
           "r2": 0.257,
@@ -1272,17 +1272,17 @@
           "rrmse_pct": 14.68,
           "n": 279
         },
-        "holdout_in_sample": {
+        "cv": {
+          "r2": 0.6722,
+          "rmse": 0.034,
+          "rrmse_pct": 15.952,
+          "n": 837
+        },
+        "holdout_strict": {
           "r2": 0.709,
           "rmse": 0.0322,
           "rrmse_pct": 14.68,
           "n": 279
-        },
-        "cv": {
-          "r2": 0.674,
-          "rmse": 0.0341,
-          "rrmse_pct": 15.99,
-          "n": 837
         },
         "year": {
           "r2": 0.175,
@@ -1304,17 +1304,17 @@
           "rrmse_pct": 17.76,
           "n": 279
         },
-        "holdout_in_sample": {
+        "cv": {
+          "r2": 0.676,
+          "rmse": 0.035,
+          "rrmse_pct": 19.752,
+          "n": 837
+        },
+        "holdout_strict": {
           "r2": 0.745,
           "rmse": 0.0326,
           "rrmse_pct": 17.76,
           "n": 279
-        },
-        "cv": {
-          "r2": 0.68,
-          "rmse": 0.0351,
-          "rrmse_pct": 19.79,
-          "n": 837
         },
         "year": {
           "r2": 0.181,
@@ -1336,17 +1336,17 @@
           "rrmse_pct": 17.18,
           "n": 279
         },
-        "holdout_in_sample": {
+        "cv": {
+          "r2": 0.7176,
+          "rmse": 0.032,
+          "rrmse_pct": 19.194,
+          "n": 837
+        },
+        "holdout_strict": {
           "r2": 0.779,
           "rmse": 0.0292,
           "rrmse_pct": 17.18,
           "n": 279
-        },
-        "cv": {
-          "r2": 0.72,
-          "rmse": 0.0321,
-          "rrmse_pct": 19.23,
-          "n": 837
         },
         "year": {
           "r2": 0.145,
@@ -1368,17 +1368,17 @@
           "rrmse_pct": 22.55,
           "n": 279
         },
-        "holdout_in_sample": {
+        "cv": {
+          "r2": 0.55,
+          "rmse": 0.0386,
+          "rrmse_pct": 23.466,
+          "n": 837
+        },
+        "holdout_strict": {
           "r2": 0.649,
           "rmse": 0.037,
           "rrmse_pct": 22.55,
           "n": 279
-        },
-        "cv": {
-          "r2": 0.558,
-          "rmse": 0.0386,
-          "rrmse_pct": 23.43,
-          "n": 837
         },
         "year": {
           "r2": 0.185,
@@ -1395,22 +1395,22 @@
       },
       "S180": {
         "holdout": {
-          "r2": 0.653,
-          "rmse": 0.0345,
-          "rrmse_pct": 19.44,
-          "n": 219
-        },
-        "holdout_in_sample": {
-          "r2": 0.653,
-          "rmse": 0.0345,
-          "rrmse_pct": 19.44,
+          "r2": 0.67,
+          "rmse": 0.0307,
+          "rrmse_pct": 17.07,
           "n": 219
         },
         "cv": {
-          "r2": 0.588,
-          "rmse": 0.037,
-          "rrmse_pct": 20.74,
+          "r2": 0.6228,
+          "rmse": 0.0362,
+          "rrmse_pct": 20.356,
           "n": 654
+        },
+        "holdout_strict": {
+          "r2": 0.653,
+          "rmse": 0.0345,
+          "rrmse_pct": 19.44,
+          "n": 219
         },
         "year": {
           "r2": 0.19,
@@ -1434,17 +1434,17 @@
           "rrmse_pct": 15.28,
           "n": 279
         },
-        "holdout_in_sample": {
+        "cv": {
+          "r2": 0.7128,
+          "rmse": 0.0315,
+          "rrmse_pct": 16.636,
+          "n": 837
+        },
+        "holdout_strict": {
           "r2": 0.757,
           "rmse": 0.0291,
           "rrmse_pct": 15.28,
           "n": 279
-        },
-        "cv": {
-          "r2": 0.713,
-          "rmse": 0.0316,
-          "rrmse_pct": 16.69,
-          "n": 837
         },
         "year": {
           "r2": 0.257,
@@ -1461,161 +1461,161 @@
       },
       "S60": {
         "holdout": {
-          "r2": 0.715,
-          "rmse": 0.0318,
-          "rrmse_pct": 14.51,
-          "n": 279
-        },
-        "holdout_in_sample": {
           "r2": 0.708,
           "rmse": 0.0322,
           "rrmse_pct": 14.69,
           "n": 279
         },
         "cv": {
-          "r2": 0.645,
-          "rmse": 0.0356,
-          "rrmse_pct": 16.68,
+          "r2": 0.6688,
+          "rmse": 0.0342,
+          "rrmse_pct": 16.034,
           "n": 837
         },
+        "holdout_strict": {
+          "r2": 0.715,
+          "rmse": 0.0318,
+          "rrmse_pct": 14.51,
+          "n": 279
+        },
         "year": {
-          "r2": 0.144,
-          "rmse": 0.0589,
-          "rrmse_pct": 25.67,
+          "r2": 0.132,
+          "rmse": 0.0593,
+          "rrmse_pct": 25.85,
           "n": 508
         },
         "fields": {
-          "r2": 0.051,
-          "rmse": 0.0582,
-          "rrmse_pct": 27.1,
+          "r2": 0.038,
+          "rmse": 0.0586,
+          "rrmse_pct": 27.29,
           "n": 1116
         }
       },
       "S90": {
         "holdout": {
+          "r2": 0.802,
+          "rmse": 0.028,
+          "rrmse_pct": 15.73,
+          "n": 279
+        },
+        "cv": {
+          "r2": 0.7494,
+          "rmse": 0.0311,
+          "rrmse_pct": 17.348,
+          "n": 837
+        },
+        "holdout_strict": {
           "r2": 0.756,
           "rmse": 0.0319,
           "rrmse_pct": 17.36,
           "n": 279
         },
-        "holdout_in_sample": {
-          "r2": 0.756,
-          "rmse": 0.0319,
-          "rrmse_pct": 17.38,
-          "n": 279
-        },
-        "cv": {
-          "r2": 0.658,
-          "rmse": 0.0363,
-          "rrmse_pct": 20.46,
-          "n": 837
-        },
         "year": {
-          "r2": 0.098,
-          "rmse": 0.0629,
-          "rrmse_pct": 31.01,
+          "r2": 0.115,
+          "rmse": 0.0623,
+          "rrmse_pct": 30.7,
           "n": 508
         },
         "fields": {
-          "r2": -0.071,
-          "rmse": 0.0649,
-          "rrmse_pct": 36.27,
+          "r2": 0.005,
+          "rmse": 0.0625,
+          "rrmse_pct": 34.96,
           "n": 1116
         }
       },
       "S120": {
         "holdout": {
+          "r2": 0.796,
+          "rmse": 0.028,
+          "rrmse_pct": 16.51,
+          "n": 279
+        },
+        "cv": {
+          "r2": 0.7262,
+          "rmse": 0.0315,
+          "rrmse_pct": 18.868,
+          "n": 837
+        },
+        "holdout_strict": {
           "r2": 0.77,
           "rmse": 0.0298,
           "rrmse_pct": 17.55,
           "n": 279
         },
-        "holdout_in_sample": {
-          "r2": 0.758,
-          "rmse": 0.0306,
-          "rrmse_pct": 18.01,
-          "n": 279
-        },
-        "cv": {
-          "r2": 0.671,
-          "rmse": 0.0347,
-          "rrmse_pct": 20.84,
-          "n": 837
-        },
         "year": {
-          "r2": 0.082,
-          "rmse": 0.0617,
-          "rrmse_pct": 32.67,
+          "r2": 0.12,
+          "rmse": 0.0604,
+          "rrmse_pct": 31.98,
           "n": 508
         },
         "fields": {
-          "r2": -0.379,
-          "rmse": 0.0716,
-          "rrmse_pct": 42.73,
+          "r2": -0.319,
+          "rmse": 0.07,
+          "rrmse_pct": 41.79,
           "n": 1116
         }
       },
       "S150": {
         "holdout": {
+          "r2": 0.772,
+          "rmse": 0.0298,
+          "rrmse_pct": 18.17,
+          "n": 279
+        },
+        "cv": {
+          "r2": 0.7598,
+          "rmse": 0.0283,
+          "rrmse_pct": 17.186,
+          "n": 837
+        },
+        "holdout_strict": {
           "r2": 0.746,
           "rmse": 0.0315,
           "rrmse_pct": 19.18,
           "n": 279
         },
-        "holdout_in_sample": {
-          "r2": 0.761,
-          "rmse": 0.0306,
-          "rrmse_pct": 18.6,
-          "n": 279
-        },
-        "cv": {
-          "r2": 0.592,
-          "rmse": 0.0371,
-          "rrmse_pct": 22.49,
-          "n": 837
-        },
         "year": {
-          "r2": 0.185,
-          "rmse": 0.0561,
-          "rrmse_pct": 31.05,
+          "r2": 0.13,
+          "rmse": 0.058,
+          "rrmse_pct": 32.09,
           "n": 508
         },
         "fields": {
-          "r2": -0.428,
-          "rmse": 0.0708,
-          "rrmse_pct": 42.98,
+          "r2": -0.411,
+          "rmse": 0.0703,
+          "rrmse_pct": 42.72,
           "n": 1116
         }
       },
       "S180": {
         "holdout": {
+          "r2": 0.712,
+          "rmse": 0.0287,
+          "rrmse_pct": 15.96,
+          "n": 219
+        },
+        "cv": {
+          "r2": 0.7616,
+          "rmse": 0.0288,
+          "rrmse_pct": 16.186,
+          "n": 654
+        },
+        "holdout_strict": {
           "r2": 0.679,
           "rmse": 0.0332,
           "rrmse_pct": 18.7,
           "n": 219
         },
-        "holdout_in_sample": {
-          "r2": 0.723,
-          "rmse": 0.0308,
-          "rrmse_pct": 17.37,
-          "n": 219
-        },
-        "cv": {
-          "r2": 0.593,
-          "rmse": 0.0368,
-          "rrmse_pct": 20.61,
-          "n": 654
-        },
         "year": {
-          "r2": 0.152,
-          "rmse": 0.0557,
-          "rrmse_pct": 29.34,
+          "r2": 0.116,
+          "rmse": 0.0569,
+          "rrmse_pct": 29.95,
           "n": 394
         },
         "fields": {
-          "r2": -0.444,
-          "rmse": 0.0696,
-          "rrmse_pct": 39.03,
+          "r2": -0.386,
+          "rmse": 0.0682,
+          "rrmse_pct": 38.24,
           "n": 873
         }
       }
@@ -1625,62 +1625,62 @@
     {
       "variant": "with_soil",
       "depth": "S60",
-      "rmse_reduction_pct": -7.7,
-      "r2_change": -0.027
+      "rmse_reduction_pct": -6.5,
+      "r2_change": -0.023
     },
     {
       "variant": "with_soil",
       "depth": "S90",
-      "rmse_reduction_pct": 5.1,
-      "r2_change": 0.018
+      "rmse_reduction_pct": 18.4,
+      "r2_change": 0.054
     },
     {
       "variant": "with_soil",
       "depth": "S120",
-      "rmse_reduction_pct": -0.5,
-      "r2_change": -0.002
+      "rmse_reduction_pct": 19.7,
+      "r2_change": 0.035
     },
     {
       "variant": "with_soil",
       "depth": "S150",
-      "rmse_reduction_pct": 9.3,
-      "r2_change": 0.02
+      "rmse_reduction_pct": 24.8,
+      "r2_change": 0.05
     },
     {
       "variant": "with_soil",
       "depth": "S180",
-      "rmse_reduction_pct": 6.0,
-      "r2_change": 0.018
+      "rmse_reduction_pct": 13.6,
+      "r2_change": 0.051
     },
     {
       "variant": "no_soil",
       "depth": "S60",
-      "rmse_reduction_pct": 1.2,
-      "r2_change": 0.006
+      "rmse_reduction_pct": 0.0,
+      "r2_change": -0.001
     },
     {
       "variant": "no_soil",
       "depth": "S90",
-      "rmse_reduction_pct": 2.1,
-      "r2_change": 0.011
+      "rmse_reduction_pct": 14.1,
+      "r2_change": 0.057
     },
     {
       "variant": "no_soil",
       "depth": "S120",
-      "rmse_reduction_pct": -2.1,
-      "r2_change": -0.009
+      "rmse_reduction_pct": 4.1,
+      "r2_change": 0.017
     },
     {
       "variant": "no_soil",
       "depth": "S150",
-      "rmse_reduction_pct": 14.9,
-      "r2_change": 0.097
+      "rmse_reduction_pct": 19.5,
+      "r2_change": 0.123
     },
     {
       "variant": "no_soil",
       "depth": "S180",
-      "rmse_reduction_pct": 3.8,
-      "r2_change": 0.026
+      "rmse_reduction_pct": 6.5,
+      "r2_change": 0.042
     }
   ],
   "drivers": {
@@ -1870,39 +1870,39 @@
       "S180": [
         {
           "feature": "Silt (30-60 cm)",
-          "share_pct": 22.9
-        },
-        {
-          "feature": "Ts",
-          "share_pct": 13.7
-        },
-        {
-          "feature": "Silt (90-120 cm)",
-          "share_pct": 13.6
+          "share_pct": 22.7
         },
         {
           "feature": "Clay (15-30 cm)",
-          "share_pct": 12.1
+          "share_pct": 14.8
+        },
+        {
+          "feature": "Ts",
+          "share_pct": 13.2
         },
         {
           "feature": "Clay (60-90 cm)",
-          "share_pct": 9.8
+          "share_pct": 11.7
         },
         {
           "feature": "Clay (90-120 cm)",
-          "share_pct": 8.9
+          "share_pct": 9.8
+        },
+        {
+          "feature": "Silt (90-120 cm)",
+          "share_pct": 9.7
         },
         {
           "feature": "OM (15-30 cm)",
-          "share_pct": 8.3
+          "share_pct": 8.7
         },
         {
           "feature": "pH (0-15 cm)",
-          "share_pct": 5.5
+          "share_pct": 5.2
         },
         {
           "feature": "Elevation",
-          "share_pct": 5.1
+          "share_pct": 4.3
         }
       ]
     },
@@ -1956,195 +1956,195 @@
       "S60": [
         {
           "feature": "Clay (30-60 cm)",
-          "share_pct": 19.1
+          "share_pct": 19.0
         },
         {
           "feature": "SM layer above",
-          "share_pct": 16.4
+          "share_pct": 18.0
         },
         {
           "feature": "Rn",
-          "share_pct": 11.7
-        },
-        {
-          "feature": "OM (0-15 cm)",
-          "share_pct": 10.2
+          "share_pct": 10.7
         },
         {
           "feature": "OM (15-30 cm)",
+          "share_pct": 10.7
+        },
+        {
+          "feature": "OM (0-15 cm)",
           "share_pct": 10.1
         },
         {
           "feature": "Clay (90-120 cm)",
-          "share_pct": 8.2
+          "share_pct": 8.1
         },
         {
           "feature": "ETo",
-          "share_pct": 6.3
+          "share_pct": 6.0
         },
         {
           "feature": "Ts",
-          "share_pct": 5.7
+          "share_pct": 5.5
         },
         {
           "feature": "SIPI",
-          "share_pct": 4.7
-        },
-        {
-          "feature": "Silt (60-90 cm)",
-          "share_pct": 3.9
+          "share_pct": 4.4
         },
         {
           "feature": "Tmin",
-          "share_pct": 3.7
+          "share_pct": 4.0
+        },
+        {
+          "feature": "Silt (60-90 cm)",
+          "share_pct": 3.6
         }
       ],
       "S90": [
         {
           "feature": "SM layer above",
-          "share_pct": 29.0
+          "share_pct": 32.3
         },
         {
           "feature": "Elevation",
-          "share_pct": 19.8
+          "share_pct": 17.8
         },
         {
           "feature": "Clay (60-90 cm)",
-          "share_pct": 15.4
+          "share_pct": 16.6
         },
         {
           "feature": "Clay (90-120 cm)",
-          "share_pct": 14.1
+          "share_pct": 15.2
         },
         {
           "feature": "Ts",
-          "share_pct": 12.4
+          "share_pct": 9.7
         },
         {
           "feature": "Rn",
-          "share_pct": 9.4
+          "share_pct": 8.4
         }
       ],
       "S120": [
         {
           "feature": "SM layer above",
-          "share_pct": 19.2
-        },
-        {
-          "feature": "Carbon (15-30 cm)",
-          "share_pct": 12.9
+          "share_pct": 26.0
         },
         {
           "feature": "Sand (60-90 cm)",
-          "share_pct": 12.9
+          "share_pct": 12.3
+        },
+        {
+          "feature": "Carbon (15-30 cm)",
+          "share_pct": 11.9
         },
         {
           "feature": "Clay (60-90 cm)",
-          "share_pct": 9.7
+          "share_pct": 9.3
         },
         {
           "feature": "Sand (15-30 cm)",
-          "share_pct": 7.7
-        },
-        {
-          "feature": "Clay (90-120 cm)",
-          "share_pct": 7.2
+          "share_pct": 7.9
         },
         {
           "feature": "Silt (0-15 cm)",
           "share_pct": 7.1
         },
         {
-          "feature": "Ts",
+          "feature": "Clay (90-120 cm)",
           "share_pct": 6.6
+        },
+        {
+          "feature": "Ts",
+          "share_pct": 5.4
         },
         {
           "feature": "Tmin",
-          "share_pct": 6.6
-        },
-        {
-          "feature": "Rn",
-          "share_pct": 5.1
+          "share_pct": 5.3
         },
         {
           "feature": "Sand (30-60 cm)",
-          "share_pct": 5.0
+          "share_pct": 4.4
+        },
+        {
+          "feature": "Rn",
+          "share_pct": 3.9
         }
       ],
       "S150": [
         {
           "feature": "SM layer above",
-          "share_pct": 27.5
+          "share_pct": 35.8
         },
         {
           "feature": "Silt (60-90 cm)",
-          "share_pct": 17.3
+          "share_pct": 13.5
         },
         {
           "feature": "OM (15-30 cm)",
-          "share_pct": 12.6
+          "share_pct": 11.4
         },
         {
           "feature": "pH (15-30 cm)",
-          "share_pct": 10.3
-        },
-        {
-          "feature": "Clay (30-60 cm)",
-          "share_pct": 8.3
-        },
-        {
-          "feature": "Carbon (15-30 cm)",
-          "share_pct": 8.1
+          "share_pct": 10.1
         },
         {
           "feature": "Silt (90-120 cm)",
-          "share_pct": 8.1
+          "share_pct": 8.5
+        },
+        {
+          "feature": "Clay (30-60 cm)",
+          "share_pct": 7.9
+        },
+        {
+          "feature": "Carbon (15-30 cm)",
+          "share_pct": 6.9
         },
         {
           "feature": "Tmin",
-          "share_pct": 7.9
+          "share_pct": 5.8
         }
       ],
       "S180": [
         {
           "feature": "SM layer above",
-          "share_pct": 31.1
+          "share_pct": 40.9
         },
         {
           "feature": "Silt (30-60 cm)",
-          "share_pct": 15.0
+          "share_pct": 11.1
         },
         {
           "feature": "Clay (60-90 cm)",
-          "share_pct": 9.2
-        },
-        {
-          "feature": "Silt (90-120 cm)",
-          "share_pct": 8.4
-        },
-        {
-          "feature": "Clay (15-30 cm)",
-          "share_pct": 7.7
-        },
-        {
-          "feature": "Clay (90-120 cm)",
-          "share_pct": 7.1
-        },
-        {
-          "feature": "Ts",
-          "share_pct": 6.9
+          "share_pct": 9.4
         },
         {
           "feature": "OM (15-30 cm)",
-          "share_pct": 6.1
+          "share_pct": 8.2
         },
         {
-          "feature": "Elevation",
+          "feature": "Clay (15-30 cm)",
+          "share_pct": 6.8
+        },
+        {
+          "feature": "Clay (90-120 cm)",
+          "share_pct": 6.5
+        },
+        {
+          "feature": "Ts",
+          "share_pct": 5.0
+        },
+        {
+          "feature": "Silt (90-120 cm)",
           "share_pct": 4.5
         },
         {
+          "feature": "Elevation",
+          "share_pct": 4.4
+        },
+        {
           "feature": "pH (0-15 cm)",
-          "share_pct": 4.1
+          "share_pct": 3.3
         }
       ]
     },
@@ -2422,55 +2422,55 @@
       "S180": [
         {
           "feature": "Elevation",
-          "share_pct": 47.3
-        },
-        {
-          "feature": "VARI",
-          "share_pct": 7.1
-        },
-        {
-          "feature": "Blue",
-          "share_pct": 6.5
-        },
-        {
-          "feature": "Ts",
-          "share_pct": 5.8
-        },
-        {
-          "feature": "NIR",
-          "share_pct": 5.0
-        },
-        {
-          "feature": "NDVIgb",
-          "share_pct": 4.8
-        },
-        {
-          "feature": "10-day antecedent Pcp",
-          "share_pct": 4.2
+          "share_pct": 47.0
         },
         {
           "feature": "SIPI",
+          "share_pct": 7.5
+        },
+        {
+          "feature": "VARI",
+          "share_pct": 6.7
+        },
+        {
+          "feature": "Ts",
+          "share_pct": 6.3
+        },
+        {
+          "feature": "Blue",
+          "share_pct": 5.6
+        },
+        {
+          "feature": "NDVIgb",
           "share_pct": 4.1
         },
         {
-          "feature": "ETo",
-          "share_pct": 3.7
+          "feature": "NIR",
+          "share_pct": 4.0
         },
         {
-          "feature": "Rn",
-          "share_pct": 3.6
-        },
-        {
-          "feature": "Tmin",
-          "share_pct": 3.1
-        },
-        {
-          "feature": "Tmax",
-          "share_pct": 2.7
+          "feature": "10-day antecedent Pcp",
+          "share_pct": 3.5
         },
         {
           "feature": "7-day antecedent Pcp",
-          "share_pct": 2.1
+          "share_pct": 3.3
+        },
+        {
+          "feature": "Tmax",
+          "share_pct": 3.3
+        },
+        {
+          "feature": "ETo",
+          "share_pct": 3.2
+        },
+        {
+          "feature": "Tmin",
+          "share_pct": 2.8
+        },
+        {
+          "feature": "Rn",
+          "share_pct": 2.7
         }
       ]
     },
@@ -2532,291 +2532,291 @@
       "S60": [
         {
           "feature": "Elevation",
-          "share_pct": 26.4
+          "share_pct": 25.8
         },
         {
           "feature": "SM layer above",
-          "share_pct": 16.2
+          "share_pct": 14.5
         },
         {
           "feature": "Rn",
-          "share_pct": 10.4
-        },
-        {
-          "feature": "VARI",
-          "share_pct": 6.3
+          "share_pct": 9.3
         },
         {
           "feature": "NIR",
-          "share_pct": 5.7
-        },
-        {
-          "feature": "Ts",
-          "share_pct": 5.5
+          "share_pct": 6.8
         },
         {
           "feature": "Blue",
-          "share_pct": 4.9
+          "share_pct": 6.2
+        },
+        {
+          "feature": "VARI",
+          "share_pct": 5.6
+        },
+        {
+          "feature": "Ts",
+          "share_pct": 5.3
+        },
+        {
+          "feature": "NDVIgb",
+          "share_pct": 5.2
+        },
+        {
+          "feature": "Tmin",
+          "share_pct": 5.0
         },
         {
           "feature": "SIPI",
           "share_pct": 4.9
         },
         {
-          "feature": "Tmin",
-          "share_pct": 4.5
-        },
-        {
-          "feature": "NDVIgb",
-          "share_pct": 4.4
-        },
-        {
           "feature": "10-day antecedent Pcp",
-          "share_pct": 3.4
+          "share_pct": 3.2
+        },
+        {
+          "feature": "7-day antecedent Pcp",
+          "share_pct": 3.2
         },
         {
           "feature": "ETo",
-          "share_pct": 3.0
+          "share_pct": 2.7
         },
         {
           "feature": "Tmax",
           "share_pct": 2.3
-        },
-        {
-          "feature": "7-day antecedent Pcp",
-          "share_pct": 2.0
         }
       ],
       "S90": [
         {
           "feature": "SM layer above",
-          "share_pct": 26.8
+          "share_pct": 34.4
         },
         {
           "feature": "Elevation",
-          "share_pct": 26.3
-        },
-        {
-          "feature": "VARI",
-          "share_pct": 6.2
-        },
-        {
-          "feature": "Ts",
-          "share_pct": 6.0
-        },
-        {
-          "feature": "NIR",
-          "share_pct": 5.1
-        },
-        {
-          "feature": "SIPI",
-          "share_pct": 5.0
-        },
-        {
-          "feature": "Tmin",
-          "share_pct": 4.4
-        },
-        {
-          "feature": "Blue",
-          "share_pct": 3.9
-        },
-        {
-          "feature": "NDVIgb",
-          "share_pct": 3.6
-        },
-        {
-          "feature": "ETo",
-          "share_pct": 3.4
-        },
-        {
-          "feature": "Rn",
-          "share_pct": 3.3
-        },
-        {
-          "feature": "Tmax",
-          "share_pct": 2.4
-        },
-        {
-          "feature": "10-day antecedent Pcp",
-          "share_pct": 2.1
-        },
-        {
-          "feature": "7-day antecedent Pcp",
-          "share_pct": 1.3
-        }
-      ],
-      "S120": [
-        {
-          "feature": "Elevation",
-          "share_pct": 36.1
-        },
-        {
-          "feature": "SM layer above",
-          "share_pct": 18.8
+          "share_pct": 29.6
         },
         {
           "feature": "Ts",
           "share_pct": 5.8
         },
         {
-          "feature": "NDVIgb",
-          "share_pct": 5.5
+          "feature": "Blue",
+          "share_pct": 4.4
         },
         {
-          "feature": "Blue",
-          "share_pct": 4.9
+          "feature": "VARI",
+          "share_pct": 4.2
+        },
+        {
+          "feature": "SIPI",
+          "share_pct": 3.6
+        },
+        {
+          "feature": "NIR",
+          "share_pct": 3.5
         },
         {
           "feature": "Rn",
-          "share_pct": 4.2
-        },
-        {
-          "feature": "NIR",
-          "share_pct": 4.2
-        },
-        {
-          "feature": "VARI",
-          "share_pct": 4.2
-        },
-        {
-          "feature": "SIPI",
-          "share_pct": 4.0
-        },
-        {
-          "feature": "Tmin",
-          "share_pct": 3.4
-        },
-        {
-          "feature": "10-day antecedent Pcp",
-          "share_pct": 2.7
-        },
-        {
-          "feature": "ETo",
-          "share_pct": 2.5
-        },
-        {
-          "feature": "Tmax",
-          "share_pct": 2.3
-        },
-        {
-          "feature": "7-day antecedent Pcp",
-          "share_pct": 1.3
-        }
-      ],
-      "S150": [
-        {
-          "feature": "Elevation",
-          "share_pct": 34.2
-        },
-        {
-          "feature": "SM layer above",
-          "share_pct": 22.5
-        },
-        {
-          "feature": "Blue",
-          "share_pct": 5.9
-        },
-        {
-          "feature": "SIPI",
-          "share_pct": 5.7
-        },
-        {
-          "feature": "VARI",
-          "share_pct": 5.0
-        },
-        {
-          "feature": "NIR",
-          "share_pct": 4.6
-        },
-        {
-          "feature": "NDVIgb",
-          "share_pct": 4.3
-        },
-        {
-          "feature": "Ts",
-          "share_pct": 3.9
-        },
-        {
-          "feature": "Tmin",
-          "share_pct": 3.3
-        },
-        {
-          "feature": "Tmax",
           "share_pct": 2.9
         },
         {
-          "feature": "10-day antecedent Pcp",
+          "feature": "Tmin",
+          "share_pct": 2.7
+        },
+        {
+          "feature": "NDVIgb",
           "share_pct": 2.5
         },
         {
+          "feature": "ETo",
+          "share_pct": 2.4
+        },
+        {
+          "feature": "10-day antecedent Pcp",
+          "share_pct": 1.5
+        },
+        {
+          "feature": "Tmax",
+          "share_pct": 1.4
+        },
+        {
+          "feature": "7-day antecedent Pcp",
+          "share_pct": 0.9
+        }
+      ],
+      "S120": [
+        {
+          "feature": "Elevation",
+          "share_pct": 33.7
+        },
+        {
+          "feature": "SM layer above",
+          "share_pct": 27.0
+        },
+        {
+          "feature": "NDVIgb",
+          "share_pct": 5.3
+        },
+        {
+          "feature": "NIR",
+          "share_pct": 4.4
+        },
+        {
+          "feature": "SIPI",
+          "share_pct": 4.1
+        },
+        {
+          "feature": "Blue",
+          "share_pct": 4.0
+        },
+        {
+          "feature": "VARI",
+          "share_pct": 3.4
+        },
+        {
+          "feature": "Ts",
+          "share_pct": 3.3
+        },
+        {
           "feature": "Rn",
-          "share_pct": 2.3
+          "share_pct": 3.3
+        },
+        {
+          "feature": "Tmin",
+          "share_pct": 3.1
         },
         {
           "feature": "ETo",
+          "share_pct": 2.5
+        },
+        {
+          "feature": "Tmax",
+          "share_pct": 2.4
+        },
+        {
+          "feature": "10-day antecedent Pcp",
           "share_pct": 1.9
         },
         {
           "feature": "7-day antecedent Pcp",
-          "share_pct": 1.0
+          "share_pct": 1.4
+        }
+      ],
+      "S150": [
+        {
+          "feature": "SM layer above",
+          "share_pct": 37.5
+        },
+        {
+          "feature": "Elevation",
+          "share_pct": 32.1
+        },
+        {
+          "feature": "SIPI",
+          "share_pct": 4.7
+        },
+        {
+          "feature": "VARI",
+          "share_pct": 3.8
+        },
+        {
+          "feature": "Blue",
+          "share_pct": 3.7
+        },
+        {
+          "feature": "NIR",
+          "share_pct": 3.5
+        },
+        {
+          "feature": "NDVIgb",
+          "share_pct": 2.8
+        },
+        {
+          "feature": "Ts",
+          "share_pct": 2.6
+        },
+        {
+          "feature": "Rn",
+          "share_pct": 2.1
+        },
+        {
+          "feature": "10-day antecedent Pcp",
+          "share_pct": 1.8
+        },
+        {
+          "feature": "Tmax",
+          "share_pct": 1.6
+        },
+        {
+          "feature": "ETo",
+          "share_pct": 1.6
+        },
+        {
+          "feature": "Tmin",
+          "share_pct": 1.5
+        },
+        {
+          "feature": "7-day antecedent Pcp",
+          "share_pct": 0.9
         }
       ],
       "S180": [
         {
           "feature": "SM layer above",
-          "share_pct": 29.4
+          "share_pct": 45.8
         },
         {
           "feature": "Elevation",
-          "share_pct": 28.8
+          "share_pct": 24.2
         },
         {
           "feature": "VARI",
-          "share_pct": 5.5
-        },
-        {
-          "feature": "Ts",
-          "share_pct": 5.2
+          "share_pct": 4.8
         },
         {
           "feature": "SIPI",
-          "share_pct": 4.5
+          "share_pct": 4.2
         },
         {
-          "feature": "Blue",
-          "share_pct": 4.2
+          "feature": "Ts",
+          "share_pct": 3.7
         },
         {
           "feature": "NDVIgb",
-          "share_pct": 4.2
+          "share_pct": 3.3
+        },
+        {
+          "feature": "Blue",
+          "share_pct": 2.7
         },
         {
           "feature": "NIR",
-          "share_pct": 3.9
-        },
-        {
-          "feature": "ETo",
-          "share_pct": 2.9
-        },
-        {
-          "feature": "Tmax",
-          "share_pct": 2.5
-        },
-        {
-          "feature": "10-day antecedent Pcp",
-          "share_pct": 2.4
-        },
-        {
-          "feature": "Tmin",
-          "share_pct": 2.4
+          "share_pct": 2.7
         },
         {
           "feature": "Rn",
-          "share_pct": 2.4
+          "share_pct": 2.2
+        },
+        {
+          "feature": "10-day antecedent Pcp",
+          "share_pct": 1.8
+        },
+        {
+          "feature": "Tmin",
+          "share_pct": 1.6
+        },
+        {
+          "feature": "Tmax",
+          "share_pct": 1.2
         },
         {
           "feature": "7-day antecedent Pcp",
-          "share_pct": 1.6
+          "share_pct": 0.9
+        },
+        {
+          "feature": "ETo",
+          "share_pct": 0.9
         }
       ]
     }

@@ -44,34 +44,14 @@ a{color:inherit;text-underline-offset:3px}
 .top nav{display:flex;gap:22px;font-size:14px}
 
 /* hero */
-.hero{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:56px;align-items:start}
-h1{margin:0;font:800 clamp(3rem,7.4vw,6.2rem)/.9 var(--display);letter-spacing:-.045em;color:var(--ink)}
+.hero{display:block}
+h1{margin:0;font:800 clamp(2.4rem,5.4vw,4.8rem)/1 var(--display);letter-spacing:-.04em;color:var(--ink);white-space:nowrap}
+@media (max-width:640px){h1{white-space:normal}}
 .subtitle{display:block;margin:18px 0 30px;font:300 clamp(1.45rem,2.7vw,2.25rem)/1.12 var(--display);letter-spacing:-.015em;color:var(--clay)}
-.summary{font-size:1.13rem;line-height:1.7;color:#3E352D;max-width:60ch;margin:0 0 22px}
+.summary{font-size:1.13rem;line-height:1.7;color:#3E352D;margin:0 0 22px}
 .term{font-weight:600;color:var(--ink);background-image:linear-gradient(var(--c),var(--c));background-size:100% 3px;background-position:0 100%;background-repeat:no-repeat;padding-bottom:1px}
 .facts{display:flex;flex-wrap:wrap;gap:8px 26px;font-size:14px;color:var(--ink-soft);margin:0;padding:0;list-style:none}
 .facts b{font:800 1.35rem/1 var(--display);color:var(--ink);margin-right:6px;font-variant-numeric:tabular-nums}
-
-/* model picker */
-.picker{background:rgba(255,255,255,.62);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.8);border-radius:22px;padding:22px 22px 18px;box-shadow:0 24px 50px -28px rgba(43,32,25,.35)}
-.picker h2{font:600 1.3rem var(--display);margin:0 0 4px}
-.picker .hint{font-size:13.5px;color:var(--ink-soft);margin:0 0 16px}
-.matrix{display:grid;grid-template-columns:auto 1fr 1fr;gap:8px;align-items:stretch}
-.axis{font:600 12.5px var(--ui);color:var(--ink-soft);display:flex;align-items:flex-end;justify-content:center;text-align:center;padding:0 4px 2px}
-.axis.row{justify-content:flex-start;align-items:center;text-align:left;width:76px;line-height:1.3}
-.cell{position:relative;text-align:left;border:1.5px solid var(--rule);background:#fff;border-radius:14px;padding:12px 12px 10px;cursor:pointer;font:inherit;color:var(--ink);transition:border-color .2s,background .2s,transform .2s}
-.cell:hover{border-color:#B9AC99;transform:translateY(-1px)}
-.cell[aria-checked=true]{background:var(--ink);border-color:var(--ink);color:#fff}
-.cell .nm{display:block;font:600 15px/1.2 var(--display)}
-.cell .paper{display:inline-block;font:600 10.5px var(--ui);color:var(--clay);margin-top:3px}
-.cell[aria-checked=true] .paper{color:#F2B98A}
-.cell .r2{display:block;font-size:12.5px;color:var(--ink-soft);margin-top:6px;font-variant-numeric:tabular-nums}
-.cell[aria-checked=true] .r2{color:#CFC3B3}
-.spark{display:flex;align-items:flex-end;gap:3px;height:26px;margin-top:8px}
-.spark i{flex:1;border-radius:2px 2px 0 0;background:var(--c)}
-.spark.striped i{background:repeating-linear-gradient(135deg,var(--c) 0 3px,transparent 3px 5px);box-shadow:inset 0 0 0 1px var(--c)}
-.chosen{margin:14px 0 0;font-size:13.5px;color:var(--ink-soft);min-height:2.6em}
-.chosen strong{color:var(--ink)}
 
 /* ---------- try it ---------- */
 .lab{background:linear-gradient(180deg,var(--sky) 0%,var(--sky-2) 60%,#D6CDB8 100%);padding:76px 0 84px}
@@ -257,14 +237,6 @@ footer a{color:var(--paper-ink)}
         <ul class="facts" id="facts"></ul>
       </div>
 
-      <div class="picker">
-        <h2 id="pick-title">Choose a model</h2>
-        <p class="hint">Two questions: does it know the soil, and does it use the upper-layer SM (the predicted soil moisture of the layer above)? Bars show hold-out R² from 30 to 180 cm.</p>
-        <div class="matrix" role="radiogroup" aria-labelledby="pick-title" id="matrix">
-          <span></span><span class="axis">With upper-layer SM</span><span class="axis">Without upper-layer SM</span>
-        </div>
-        <p class="chosen" id="chosen" aria-live="polite"></p>
-      </div>
     </div>
 
   </div>
@@ -335,7 +307,7 @@ footer a{color:var(--paper-ink)}
           </div>
           <div class="profile-wrap" aria-labelledby="prof-title">
             <h3 id="prof-title">Moisture profile</h3>
-            <p class="sub">All four models for the same conditions. Bold is the one you chose; click a name to switch.</p>
+            <p class="sub">All four models for the same conditions. Click a name to choose the model shown in the soil column; it is drawn in bold.</p>
             <div class="legend" id="legend"></div>
             <svg id="profile" viewBox="0 0 330 330" role="img" aria-label="Soil moisture against depth for four models"></svg>
           </div>
@@ -353,7 +325,7 @@ footer a{color:var(--paper-ink)}
   <div class="wrap">
     <div class="section-head">
       <h2 class="big">What each piece of information buys you</h2>
-      <p>Scores on observations the models never saw. During training, the layer-above input is an out-of-fold prediction, so the chain is judged exactly as it will run on new data.</p>
+      <p>Scores on observations each model never saw, following the paper: every model is tested on its own random 25% of the data, and the predicted moisture of the layer above is passed to the next depth.</p>
     </div>
     <div class="res-grid">
       <div>
@@ -431,33 +403,10 @@ function buildHero() {
   $("#facts").innerHTML = [[n.total.toLocaleString(), "measurements"], [n.fields, "fields"],
     [`${n.years[0]}–${String(n.years.at(-1)).slice(2)}`, "seasons"], [m.depths.length, "depths"]]
     .map(([a, b]) => `<li><b>${a}</b>${b}</li>`).join("");
-  const mx = $("#matrix");
-  [["with_soil", "With soil properties"], ["no_soil", "Without soil properties"]].forEach(([v, lab]) => {
-    const a = document.createElement("span"); a.className = "axis row"; a.textContent = lab; mx.appendChild(a);
-    ["chained", "independent"].forEach((k) => {
-      const md = model(`${v}_${k}`), c = COLORS.light[v];
-      const b = document.createElement("button"); b.type = "button"; b.className = "cell"; b.setAttribute("role", "radio");
-      b.dataset.key = md.key;
-      b.innerHTML = `<span class="nm">${md.short}</span>${md.key === m.default_model ? '<span class="paper">The paper’s model</span>' : ""}
-        <span class="r2">mean R² ${meanR2(md.key).toFixed(2)}</span>
-        <span class="spark ${k === "independent" ? "striped" : ""}" style="--c:${c}" aria-hidden="true">${m.depths.map((d) =>
-          `<i style="height:${Math.max(8, (m.metrics[md.key][d].holdout.r2 - 0.4) / 0.6 * 100)}%"></i>`).join("")}</span>`;
-      b.addEventListener("click", () => setModel(md.key));
-      b.addEventListener("keydown", (e) => {
-        const keys = m.models.map((x) => x.key), i = keys.indexOf(md.key);
-        const move = { ArrowRight: 1, ArrowDown: 2, ArrowLeft: -1, ArrowUp: -2 }[e.key];
-        if (move) { e.preventDefault(); const nk = keys[(i + move + 4) % 4]; setModel(nk); mx.querySelector(`[data-key=${nk}]`).focus(); }
-      });
-      mx.appendChild(b);
-    });
-  });
 }
 function setModel(key) {
   state.model = key;
   const md = model();
-  document.querySelectorAll("#matrix .cell").forEach((c) => {
-    const on = c.dataset.key === key; c.setAttribute("aria-checked", on); c.tabIndex = on ? 0 : -1; });
-  $("#chosen").innerHTML = `<strong>${md.label}.</strong> ${md.note}. Mean hold-out R² ${meanR2(key).toFixed(2)} across six depths.`;
   document.querySelectorAll(".group").forEach((g) => {
     const off = g.dataset.group === "Soil" && !md.uses_soil;
     g.classList.toggle("off", off);

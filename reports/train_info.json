@@ -1,5 +1,5 @@
 {
-  "chain_mode": "strict",
+  "chain_mode": "paper",
   "variants": [
     "with_soil",
     "no_soil"
@@ -9,5 +9,5 @@
   "n_test": 279,
   "n_train_180": 654,
   "n_test_180": 219,
-  "seconds": 6.3
+  "seconds": 10.3
 }

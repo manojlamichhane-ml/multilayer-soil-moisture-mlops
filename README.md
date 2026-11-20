@@ -33,43 +33,43 @@ The "without soil" versions use the paper's 13 satellite, climate and elevation 
 | | |
 |---|---|
 | **Settings in one file** | `params.yaml`: inputs for both versions (with and without soil), XGBoost settings, split, chain mode, quality gate |
-| **Leak-free chaining** | During training, the "layer above" input is an *out-of-fold* prediction, so each model learns from the same kind of input it will receive in use. `chain_mode: in_sample` reproduces the published setup for comparison |
-| **One shared split** | All depths use the same 75/25 split, so no test row is seen by any model in the chain |
-| **Four validation tests** | Hold-out, 5-fold CV (chain refit per fold), unseen year (2021), and unseen fields (18 refits) |
+| **The published protocol** | `chain_mode: paper` reproduces notebook 05 exactly: each model has its own 75/25 split (seed 10; 40 for the 90 cm chained model), and the upper model's prediction for every row is fed to the next depth. `chain_mode: strict` is a leak-free alternative with out-of-fold feeds and one shared split |
+| **Four validation tests** | Hold-out and 5-fold CV as in the paper, plus unseen year (2021) and unseen fields (18 refits) |
 | **Pipeline** | DVC: `dvc repro` runs train → evaluate, skipping unchanged stages |
 | **Tracking** | MLflow logs every model × depth × test |
 | **Quality gate** | The paper's model must reach hold-out R² ≥ 0.60 at every depth |
 | **Tests + CI** | 33 pytest checks (leakage, no-soil inputs, chain logic, API, registry) on every push via GitHub Actions |
 | **Serving** | FastAPI app with a model picker and an animated soil-profile interface, in a Docker container on Render |
 
-## Results (`strict` mode)
+## Results (published protocol)
 
 Hold-out R² for the four models:
 
 | Depth | Soil + chain (paper) | Soil, no chain | Chain, no soil | No soil, no chain |
 |---|---|---|---|---|
 | 30 cm | 0.80 | 0.80 | 0.76 | 0.76 |
-| 60 cm | 0.80 | 0.83 | 0.72 | 0.71 |
-| 90 cm | 0.84 | 0.82 | 0.76 | 0.75 |
-| 120 cm | 0.90 | 0.90 | 0.77 | 0.78 |
-| 150 cm | 0.90 | 0.88 | 0.75 | 0.65 |
-| 180 cm | 0.86 | 0.84 | 0.68 | 0.65 |
+| 60 cm | 0.81 | 0.83 | 0.71 | 0.71 |
+| 90 cm | 0.88 | 0.82 | 0.80 | 0.75 |
+| 120 cm | 0.93 | 0.90 | 0.80 | 0.78 |
+| 150 cm | 0.93 | 0.88 | 0.77 | 0.65 |
+| 180 cm | 0.85 | 0.80 | 0.71 | 0.67 |
 
 The paper's model under harder tests:
 
 | Depth | Cross-validation | Unseen year (2021) | Unseen fields |
 |---|---|---|---|
 | 30 cm | 0.72 | 0.18 | 0.49 |
-| 60 cm | 0.81 | 0.23 | 0.35 |
-| 90 cm | 0.80 | 0.27 | 0.27 |
-| 120 cm | 0.85 | 0.46 | 0.25 |
-| 150 cm | 0.85 | 0.53 | 0.06 |
-| 180 cm | 0.87 | 0.64 | −0.08 |
+| 60 cm | 0.82 | 0.20 | 0.38 |
+| 90 cm | 0.87 | 0.20 | 0.30 |
+| 120 cm | 0.90 | 0.43 | 0.22 |
+| 150 cm | 0.92 | 0.51 | 0.01 |
+| 180 cm | 0.91 | 0.64 | −0.05 |
 
-- **Soil properties are worth 0.08 to 0.23 R²** below 30 cm. On unseen fields the gap is far larger: without soil the chain drops below zero from 90 cm down. Without soil data, elevation becomes the main input, standing in for location.
-- Feeding the layer above **helps most when soil is missing** (150 cm: 0.75 with the chain against 0.65 without). With soil properties it helps at 90, 150 and 180 cm (R² +0.02) and is neutral at 60 and 120 cm. With leak-free training the gain is smaller than the published 10–27%.
-- From 90 cm down, in the paper's model, the **predicted layer above is the single largest driver** of each prediction (19–31%).
-- The random hold-out mixes dates and access tubes from the same fields. **Unseen years and fields are much harder**, especially at depth. Treat those columns as the realistic guide for new sites.
+- **Adding the upper-layer SM improves every depth from 90 cm down**: R² 0.82 → 0.88 at 90 cm, 0.90 → 0.93 at 120 cm, 0.88 → 0.93 at 150 cm and 0.80 → 0.85 at 180 cm. At 60 cm the 30 cm layer adds little, as in the paper.
+- **Soil properties are worth 0.07 to 0.16 R²** below 30 cm in the chained models. On unseen fields the gap is far larger: without soil the models drop below zero from 120 cm down. Without soil data, elevation becomes the main input, standing in for location.
+- The random hold-out mixes dates and access tubes from the same fields. **Unseen years and fields are much harder**, especially at depth. Treat those columns as the guide for new sites.
+
+Small differences from the published tables (for example 0.81 against 0.82 at 60 cm) come from newer library versions.
 
 <p align="center">
   <img src="reports/figures/r2_by_depth.png" width="48%">
@@ -85,7 +85,7 @@ conda create -n multilayer_SM python=3.12 -y
 conda activate multilayer_SM
 pip install -r requirements.txt
 
-dvc repro                     # train + evaluate (~3 min)
+dvc repro                     # train + evaluate (~2 min)
 dvc metrics show
 pytest -v
 mlflow ui --backend-store-uri sqlite:///mlflow.db
@@ -113,7 +113,7 @@ print(profile["compare"])          # the same profile from all four models
 ```
 params.yaml, dvc.yaml, dvc.lock    settings, pipeline, fingerprint of the last run
 src/config.py                      paths, data loading, shared split
-src/chain.py                       the six-depth model chain (fit, out-of-fold feed, predict, save/load)
+src/chain.py                       the six-depth model chain (published protocol, leak-free option, predict, save/load)
 src/train.py, src/evaluate.py      pipeline stages
 src/api.py, src/static/            web app + REST API
 models/                            22 XGBoost models in with_soil/ and no_soil/ (+ registry.json)

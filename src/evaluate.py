@@ -28,7 +28,7 @@ import numpy as np  # noqa: E402
 import pandas as pd  # noqa: E402
 import xgboost as xgb  # noqa: E402
 
-from chain import Chain, fit_chain  # noqa: E402
+from chain import Chain, fit_chain, fit_paper  # noqa: E402
 from config import (FIG_DIR, MLFLOW_URI, MODEL_KEYS, MODELS_DIR, REPORTS_DIR, UPPER_COL,  # noqa: E402
                     all_features, load_data, load_params, split_data)
 from metrics import compute_metrics  # noqa: E402
@@ -215,18 +215,25 @@ if __name__ == "__main__":
     df = load_data(params)
     train, test = split_data(df, params)
     yr = params["evaluation"]["test_year"]
-    alt_mode = "in_sample" if params["chain_mode"] == "strict" else "strict"
+    paper = params["chain_mode"] == "paper"
 
     rows, drv, chains = [], {}, {}
     for variant in params["variants"]:
         print(f"\n=== {variant} ===")
         chain = Chain.load(MODELS_DIR / variant, depths, params["features"][variant])
         chains[variant] = chain
-        res = {"holdout": score_all(test, chain.predict(test), depths)}
-        alt = fit_chain(train, params, variant, mode=alt_mode)
-        res[f"holdout_{alt_mode}"] = score_all(test, alt.predict(test), depths)
-        print("Cross-validation ...")
-        res["cv"] = score_all(train, cross_validate(train, params, variant), depths)
+        if paper:
+            # the published protocol: each model scored on its own split (same seeds as training)
+            _, ho, cvm = fit_paper(df, params, variant)
+            res = {"holdout": ho, "cv": cvm}
+            strict = fit_chain(train, params, variant, mode="strict")
+            res["holdout_strict"] = score_all(test, strict.predict(test), depths)   # leak-free reference
+        else:
+            res = {"holdout": score_all(test, chain.predict(test), depths)}
+            alt = fit_chain(train, params, variant, mode="in_sample")
+            res["holdout_in_sample"] = score_all(test, alt.predict(test), depths)
+            print("Cross-validation ...")
+            res["cv"] = score_all(train, cross_validate(train, params, variant), depths)
         print("Unseen year ...")
         p = holdout_group(df, params, variant, [df.Year == yr])
         res["year"] = score_all(df.loc[p.index], p, depths)

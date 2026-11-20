@@ -35,4 +35,4 @@ def test_every_model_has_hyperparameters():
 
 
 def test_chain_mode_is_known():
-    assert P["chain_mode"] in ("strict", "in_sample")
+    assert P["chain_mode"] in ("paper", "strict", "in_sample")
