@@ -1,0 +1,9 @@
+# Everything needed to TRAIN, track and test (your laptop + GitHub Actions). Python 3.12.
+-r requirements-api.txt
+scikit-learn==1.7.2
+pyyaml
+matplotlib
+mlflow
+dvc
+pytest
+httpx

@@ -1,0 +1,58 @@
+# =====================================================================
+# Multi-layer root-zone soil moisture: every setting lives here.
+# Change a value, run `dvc repro`, and only affected stages re-run.
+# =====================================================================
+
+data_file: data/model_input.csv
+seed: 42
+depths: [S30, S60, S90, S120, S150, S180]
+
+# How the predicted moisture of the layer above is fed to the next model
+#   strict : during training the next layer receives OUT-OF-FOLD predictions
+#            (what the chain will really see on new data). Default.
+#   paper  : the published setup (upper model predicts its own training rows,
+#            separate random split per model). Kept for comparison.
+chain_mode: strict
+
+split:
+  test_size: 0.25
+  random_state: 10          # the split seed used in the paper for most depths
+  cv_folds: 5
+
+# SHAP-selected inputs for each depth (from the paper, notebook 04)
+features:
+  S30:  ["10-day antecedent Pcp", "Ts", "Blue", "7-day antecedent Pcp", "VARI", "Sand (90-120 cm)",
+         "NDVIgb", "NIR", "pH (15-30 cm)", "Tmax", "Silt (60-90 cm)"]
+  S60:  ["Clay (30-60 cm)", "Rn", "Ts", "OM (0-15 cm)", "ETo", "Tmin", "Clay (90-120 cm)",
+         "OM (15-30 cm)", "Silt (60-90 cm)", "SIPI"]
+  S90:  ["Rn", "Clay (90-120 cm)", "Ts", "Clay (60-90 cm)", "Elevation"]
+  S120: ["Clay (60-90 cm)", "Sand (15-30 cm)", "Ts", "Rn", "Carbon (15-30 cm)", "Tmin",
+         "Sand (60-90 cm)", "Clay (90-120 cm)", "Silt (0-15 cm)", "Sand (30-60 cm)"]
+  S150: ["Silt (60-90 cm)", "Carbon (15-30 cm)", "pH (15-30 cm)", "OM (15-30 cm)", "Clay (30-60 cm)",
+         "Silt (90-120 cm)", "Tmin"]
+  S180: ["Silt (30-60 cm)", "Silt (90-120 cm)", "OM (15-30 cm)", "Clay (60-90 cm)", "Clay (15-30 cm)",
+         "Elevation", "pH (0-15 cm)", "Clay (90-120 cm)", "Ts"]
+
+# XGBoost settings (from the paper, notebook 05).
+# [n_estimators, max_depth, subsample, colsample_bytree, min_child_weight]
+hyperparameters:
+  S30:         [250, 4, 0.90, 0.54, 0.2]
+  S60_indep:   [250, 5, 0.70, 0.60, 0.9]
+  S60_chain:   [250, 6, 0.75, 0.60, 0.8]
+  S90_indep:   [250, 3, 0.80, 0.90, 0.7]
+  S90_chain:   [300, 4, 0.70, 0.95, 0.7]
+  S120_indep:  [250, 4, 0.95, 0.40, 0.7]
+  S120_chain:  [300, 4, 0.60, 0.40, 0.8]
+  S150_indep:  [200, 3, 0.90, 0.40, 0.9]
+  S150_chain:  [300, 4, 0.80, 0.50, 0.6]
+  S180_indep:  [250, 4, 0.70, 0.50, 0.9]
+  S180_chain:  [300, 3, 0.70, 0.50, 0.3]
+learning_rate: 0.1
+
+evaluation:
+  test_year: 2021           # leave-one-year-out test, as in the paper
+  run_field_holdout: true   # leave-one-field-out for every depth (slower)
+
+# A depth model is only served if its hold-out R² reaches this value
+quality_gate:
+  min_test_r2: 0.60

@@ -1,0 +1,55 @@
+# `dvc repro` runs only the stages whose inputs changed.
+stages:
+  train:
+    cmd: python src/train.py
+    deps:
+      - src/train.py
+      - src/chain.py
+      - src/config.py
+      - data/model_input.csv
+    params:
+      - seed
+      - depths
+      - chain_mode
+      - split
+      - features
+      - hyperparameters
+      - learning_rate
+    outs:
+      - models/independent:
+          cache: false
+      - models/chained:
+          cache: false
+      - reports/train_info.json:
+          cache: false
+
+  evaluate:
+    cmd: python src/evaluate.py
+    deps:
+      - src/evaluate.py
+      - src/chain.py
+      - src/config.py
+      - src/metrics.py
+      - models/independent
+      - models/chained
+      - data/model_input.csv
+    params:
+      - evaluation
+      - quality_gate
+    outs:
+      - models/registry.json:
+          cache: false
+      - reports/validation.csv:
+          cache: false
+      - reports/upper_layer_gain.csv:
+          cache: false
+    metrics:
+      - reports/metrics.json:
+          cache: false
+    plots:
+      - reports/figures/r2_by_depth.png:
+          cache: false
+      - reports/figures/validation_profile.png:
+          cache: false
+      - reports/figures/drivers_by_depth.png:
+          cache: false

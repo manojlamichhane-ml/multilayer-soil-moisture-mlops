@@ -1,0 +1,18 @@
+# Private data: never uploaded
+data/
+
+# Python environment and caches
+.venv/
+venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# MLflow logbook (stays on this computer)
+mlflow.db
+mlruns/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini

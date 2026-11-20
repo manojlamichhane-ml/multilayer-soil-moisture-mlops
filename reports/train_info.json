@@ -1,0 +1,9 @@
+{
+  "chain_mode": "strict",
+  "n_rows": 1116,
+  "n_train": 837,
+  "n_test": 279,
+  "n_train_180": 654,
+  "n_test_180": 219,
+  "seconds": 2.7
+}
