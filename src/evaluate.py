@@ -67,14 +67,14 @@ LABELS = {"Ts": "Soil temperature", "Tmax": "Max air temperature", "Tmin": "Min 
 
 # How the four models are named in the app and the figures
 MODEL_INFO = {
-    "with_soil_chained": {"label": "Soil properties + layer above", "short": "Full chain",
+    "with_soil_chained": {"label": "With soil properties and upper-layer SM", "short": "Soil + chain",
                           "note": "The model in the paper"},
-    "with_soil_independent": {"label": "Soil properties, each layer alone", "short": "Soil, no chain",
+    "with_soil_independent": {"label": "With soil properties, without upper-layer SM", "short": "Soil, no chain",
                               "note": "Every depth predicted on its own"},
-    "no_soil_chained": {"label": "Layer above, no soil properties", "short": "Chain, no soil",
+    "no_soil_chained": {"label": "Without soil properties, with upper-layer SM", "short": "Chain, no soil",
                         "note": "Satellite, climate and elevation, plus the layer above"},
-    "no_soil_independent": {"label": "Satellite and climate only", "short": "Surface inputs only",
-                            "note": "No soil properties, no layer above"},
+    "no_soil_independent": {"label": "Without soil properties and upper-layer SM", "short": "No soil, no chain",
+                            "note": "Satellite, climate and elevation only"},
 }
 # Hue = soil properties (orange used, blue not used); hatching = each layer predicted alone
 VARIANT_COLORS = {"with_soil": "#C4621B", "no_soil": "#1F78B4"}
@@ -182,8 +182,8 @@ def figures(val, drv, params):
             s = val[(val.scheme == sch) & (val.model == key)].set_index("depth").loc[depths]
             ax.plot(s.r2, cm, marker=mk, color=col, lw=2, ms=5.5, ls=ls,
                     label=lab if ls == "-" else None, alpha=1 if ls == "-" else 0.75)
-    ax.plot([], [], color="#777", ls="-", label="Soil properties + layer above")
-    ax.plot([], [], color="#777", ls=":", label="Layer above, no soil")
+    ax.plot([], [], color="#777", ls="-", label="With soil properties and upper-layer SM")
+    ax.plot([], [], color="#777", ls=":", label="Without soil properties, with upper-layer SM")
     ax.invert_yaxis(); ax.set_yticks(cm); ax.set_ylabel("Depth (cm)"); ax.set_xlabel("R²")
     ax.set_xlim(min(0, val.r2.min() - 0.05), 1)
     style(ax, "x")

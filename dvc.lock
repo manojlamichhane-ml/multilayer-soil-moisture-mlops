@@ -227,8 +227,8 @@ stages:
       size: 2117
     - path: src/evaluate.py
       hash: md5
-      md5: 88e3f52d54ae70a0ee890e44356cf5bd
-      size: 16437
+      md5: 5f5045ba45d287c5b5cbcead40c87290
+      size: 16524
     - path: src/metrics.py
       hash: md5
       md5: 73543187f71973e44d657a60738d44f9
@@ -243,20 +243,20 @@ stages:
     outs:
     - path: models/registry.json
       hash: md5
-      md5: 6914a94d1190c96140d9d994748646f0
-      size: 58067
+      md5: 8bb33f6971e66fe045dfd021d37e434b
+      size: 58120
     - path: reports/figures/drivers_by_depth.png
       hash: md5
-      md5: 97fdb532e15d15cf54e42692c1c402c7
-      size: 104495
+      md5: 4c52e0e0ae9a7b66cdab9a2822c7fb56
+      size: 98725
     - path: reports/figures/r2_by_depth.png
       hash: md5
-      md5: 4c4e2a790b3f7c39f673588b6379a0bd
-      size: 75208
+      md5: 1dfb389057c4f73b567873e3e2227982
+      size: 82895
     - path: reports/figures/validation_profile.png
       hash: md5
-      md5: 08b0e4d7fb92ab6577465975135b9acf
-      size: 135264
+      md5: f13e1ace55c2dcf87ab70f42f779820f
+      size: 136611
     - path: reports/metrics.json
       hash: md5
       md5: c05b3842129f5ff2660dd08a629cf6f3

@@ -19,10 +19,12 @@ Satellites see only the top few centimetres of soil. The model predicts volumetr
 
 Four versions are trained and served, so the value of each piece of information can be seen directly:
 
-| | Uses the layer above | Each layer alone |
+| | With upper-layer SM | Without upper-layer SM |
 |---|---|---|
-| **With soil properties** | Full chain (the paper's model) | Soil, no chain |
-| **Without soil properties** | Chain, no soil | Satellite and climate only |
+| **With soil properties** | Soil + chain (the paper's model) | Soil, no chain |
+| **Without soil properties** | Chain, no soil | No soil, no chain |
+
+SM = the predicted soil moisture of the layer above.
 
 The "without soil" versions use the paper's 13 satellite, climate and elevation inputs at every depth.
 
@@ -44,7 +46,7 @@ The "without soil" versions use the paper's 13 satellite, climate and elevation 
 
 Hold-out R² for the four models:
 
-| Depth | Full chain (paper) | Soil, no chain | Chain, no soil | Satellite and climate only |
+| Depth | Soil + chain (paper) | Soil, no chain | Chain, no soil | No soil, no chain |
 |---|---|---|---|---|
 | 30 cm | 0.80 | 0.80 | 0.76 | 0.76 |
 | 60 cm | 0.80 | 0.83 | 0.72 | 0.71 |

@@ -38,13 +38,13 @@ a{color:inherit;text-underline-offset:3px}
 .gauge-label{font:600 12px var(--ui);color:#fff;background:rgba(25,18,13,.72);padding:3px 8px;border-radius:12px;font-variant-numeric:tabular-nums;white-space:nowrap}
 
 /* ---------- surface ---------- */
-.surface{background:linear-gradient(180deg,var(--sky) 0%,var(--sky-2) 55%,#D9D2C2 82%,#CDBB9D 100%);padding:36px 0 64px}
+.surface{background:linear-gradient(180deg,var(--sky) 0%,var(--sky-2) 100%);padding:36px 0 72px}
 .top{display:flex;justify-content:space-between;align-items:baseline;gap:20px;flex-wrap:wrap;margin-bottom:46px}
 .brand{font:600 14px var(--ui);color:var(--ink-soft)}
 .top nav{display:flex;gap:22px;font-size:14px}
 
 /* hero */
-.hero{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:56px;align-items:start;margin-bottom:84px}
+.hero{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:56px;align-items:start}
 h1{margin:0;font:800 clamp(3rem,7.4vw,6.2rem)/.9 var(--display);letter-spacing:-.045em;color:var(--ink)}
 .subtitle{display:block;margin:18px 0 30px;font:300 clamp(1.45rem,2.7vw,2.25rem)/1.12 var(--display);letter-spacing:-.015em;color:var(--clay)}
 .summary{font-size:1.13rem;line-height:1.7;color:#3E352D;max-width:60ch;margin:0 0 22px}
@@ -73,73 +73,68 @@ h1{margin:0;font:800 clamp(3rem,7.4vw,6.2rem)/.9 var(--display);letter-spacing:-
 .chosen{margin:14px 0 0;font-size:13.5px;color:var(--ink-soft);min-height:2.6em}
 .chosen strong{color:var(--ink)}
 
-/* ---------- inputs ---------- */
-.block-head{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap;margin-bottom:20px}
+/* ---------- try it ---------- */
+.lab{background:linear-gradient(180deg,var(--sky) 0%,var(--sky-2) 60%,#D6CDB8 100%);padding:76px 0 84px}
+.block-head{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap;margin-bottom:22px}
 h2.mid{font:800 clamp(1.8rem,3.4vw,2.6rem)/1 var(--display);letter-spacing:-.025em;margin:0 0 8px}
-.block-head p{margin:0;color:var(--ink-soft);max-width:58ch}
+.block-head p{margin:0;color:var(--ink-soft);max-width:62ch}
 .presets{display:flex;flex-wrap:wrap;gap:6px}
 .chip{font:500 13.5px var(--ui);border:1px solid var(--rule);background:#fff;color:var(--ink);border-radius:20px;padding:7px 14px;cursor:pointer}
 .chip:hover{border-color:#B9AC99}
 .chip[aria-pressed=true]{background:var(--ink);color:#fff;border-color:var(--ink)}
-.groups{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:18px;margin-bottom:84px}
-.group[data-group=Satellite],.group[data-group=Climate]{grid-column:span 3}
-.group[data-group=Topography]{grid-column:span 2}
-.group[data-group=Soil]{grid-column:span 4}
-.group{background:rgba(255,255,255,.66);border:1px solid rgba(255,255,255,.85);border-radius:18px;padding:18px 20px 16px;border-top:5px solid var(--c);transition:opacity .35s,filter .35s;display:flex;flex-direction:column}
+.lab-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px;align-items:start}
+.groups{display:flex;flex-direction:column;gap:10px;margin:0}
+.group{background:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.85);border-left:5px solid var(--c);border-radius:12px;padding:10px 14px 6px;transition:opacity .35s,filter .35s}
 .group.off{opacity:.42;filter:saturate(.2)}
-.g-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:6px}
-.g-head h3{margin:0;font:600 1.15rem var(--display)}
-.g-head .count{font-size:13px;color:var(--ink-soft)}
-.g-desc{font-size:13px;color:var(--ink-soft);margin:0 0 6px}
-.badge{display:none;font:600 12px var(--ui);color:#fff;background:var(--ink-soft);border-radius:10px;padding:2px 9px}
+.g-head{display:flex;align-items:baseline;gap:10px;margin-bottom:2px}
+.g-head h3{margin:0;font:600 1rem var(--display)}
+.g-head .g-desc{font-size:12px;color:var(--ink-soft);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.g-head .count{font-size:12px;color:var(--ink-soft);white-space:nowrap}
+.badge{display:none;font:600 11px var(--ui);color:#fff;background:var(--ink-soft);border-radius:10px;padding:1px 8px;white-space:nowrap}
 .group.off .badge{display:inline-block}
-.ctrls{display:grid;grid-template-columns:repeat(auto-fill,minmax(var(--min,215px),1fr));gap:4px 20px}
-.ctrl{padding:9px 0 4px;border-top:1px solid rgba(214,205,191,.7)}
-.ctrl label{display:block;font-size:13px;color:var(--ink);margin-bottom:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ctrl .row{display:flex;align-items:center;gap:10px}
-.ctrl input[type=range]{flex:1;min-width:0;accent-color:var(--c);margin:0}
-.num{display:flex;align-items:center;border:1px solid var(--rule);border-radius:8px;background:#fff;padding:0 6px 0 0;flex:none;width:122px}
-.num input{width:0;flex:1;min-width:0;border:0;background:transparent;font:500 13.5px var(--ui);color:var(--ink);padding:5px 4px 5px 8px;text-align:right;font-variant-numeric:tabular-nums;-moz-appearance:textfield}
+.ctrls{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:0 18px}
+.ctrl{display:grid;grid-template-columns:86px minmax(0,1fr) 66px;align-items:center;gap:8px;padding:4px 0;border-top:1px solid rgba(214,205,191,.6)}
+.ctrl label{font-size:12.5px;line-height:1.15;color:var(--ink)}
+.ctrl label small{display:block;font-size:10.5px;color:var(--ink-soft)}
+.ctrl input[type=range]{width:100%;min-width:0;accent-color:var(--c);margin:0}
+.num input{width:100%;box-sizing:border-box;border:1px solid var(--rule);border-radius:7px;background:#fff;font:500 12.5px var(--ui);color:var(--ink);padding:4px 6px;text-align:right;font-variant-numeric:tabular-nums;-moz-appearance:textfield}
 .num input::-webkit-outer-spin-button,.num input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
-.num input:focus{outline:none}
-.num:focus-within{border-color:var(--water);box-shadow:0 0 0 3px rgba(47,155,219,.2)}
-.num .u{font-size:11.5px;color:var(--ink-soft);white-space:nowrap}
-.num.bad{border-color:#B3261E;box-shadow:0 0 0 3px rgba(179,38,30,.15)}
-.err{font-size:12px;color:#B3261E;margin-top:3px;min-height:0}
-.terrain{flex:1;min-height:120px;margin-top:12px;display:flex;flex-direction:column;justify-content:flex-end}
-.terrain svg{width:100%;height:auto;display:block}
-.terrain p{font-size:12.5px;color:var(--ink-soft);margin:8px 0 0}
+.num input:focus{outline:none;border-color:var(--water);box-shadow:0 0 0 3px rgba(47,155,219,.2)}
+.num.bad input{border-color:#B3261E;box-shadow:0 0 0 3px rgba(179,38,30,.15)}
+.err{grid-column:1/-1;font-size:11.5px;color:#B3261E;margin:-2px 0 2px}
+.err:empty{display:none}
+.err.soft{color:#7A4B0E}
 
-/* ---------- result ---------- */
-.result{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:40px;align-items:start}
+/* result side */
+.viz{position:sticky;top:14px;background:rgba(255,255,255,.62);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.8);border-radius:18px;padding:16px 18px 14px}
+.viz-top{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:14px;align-items:start}
 .column-wrap{position:relative}
-#column{width:100%;height:auto;display:block;filter:drop-shadow(0 18px 30px rgba(43,32,25,.25))}
+#column{width:100%;height:auto;display:block;filter:drop-shadow(0 12px 20px rgba(43,32,25,.22))}
 #rain{position:absolute;left:0;top:0;width:100%;pointer-events:none}
-.band-depth{font:600 15px var(--display);fill:#FFF8EC}
-.band-val{font:800 30px var(--display);fill:#fff;font-variant-numeric:tabular-nums}
-.band-unit{font:500 11px var(--ui);fill:rgba(255,248,236,.85)}
-.feed-tag{font:600 12px var(--ui)}
+.band-depth{font:600 17px var(--display);fill:#FFF8EC}
+.band-val{font:800 38px var(--display);fill:#fff;font-variant-numeric:tabular-nums}
+.band-unit{font:500 13px var(--ui);fill:rgba(255,248,236,.85)}
+.feed-tag{font:600 15px var(--ui)}
 #feeds{transition:opacity .4s}
 .wave{animation:drift 6s linear infinite}
 @keyframes drift{from{transform:translateX(0)}to{transform:translateX(-120px)}}
-.status{font-size:13.5px;color:var(--ink-soft);text-align:center;margin-top:10px;min-height:1.4em}
-.panel{background:rgba(255,255,255,.62);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.8);border-radius:18px;padding:22px}
-.panel h3{font:600 1.25rem var(--display);margin:0 0 2px}
-.panel .sub{font-size:13.5px;color:var(--ink-soft);margin:0 0 10px}
+.status{font-size:12.5px;color:var(--ink-soft);margin:8px 0 0;min-height:1.4em}
+.profile-wrap h3{font:600 1.1rem var(--display);margin:0 0 2px}
+.profile-wrap .sub{font-size:12px;color:var(--ink-soft);margin:0 0 6px;line-height:1.35}
 #profile{width:100%;height:auto;display:block}
-.legend{display:grid;grid-template-columns:1fr 1fr;gap:6px 14px;font-size:12.5px;margin:4px 0 8px}
-.key{display:flex;align-items:center;gap:8px;cursor:pointer;border:0;background:none;padding:2px 0;font:inherit;color:var(--ink-soft);text-align:left}
+.legend{display:grid;gap:2px;font-size:11.5px;margin:0 0 4px}
+.key{display:flex;align-items:center;gap:7px;cursor:pointer;border:0;background:none;padding:1px 0;font:inherit;color:var(--ink-soft);text-align:left;line-height:1.25}
 .key[aria-pressed=true]{color:var(--ink);font-weight:600}
 .key svg{flex:none}
-table.layers{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:10px;font-variant-numeric:tabular-nums}
-.layers th{font-weight:600;font-size:12px;color:var(--ink-soft);text-align:right;padding:6px 6px;border-bottom:1px solid var(--rule)}
+table.layers{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:6px;font-variant-numeric:tabular-nums}
+.layers th{font-weight:600;font-size:11.5px;color:var(--ink-soft);text-align:right;padding:4px 6px;border-bottom:1px solid var(--rule)}
 .layers th:first-child,.layers td:first-child{text-align:left}
-.layers td{text-align:right;padding:7px 6px;border-bottom:1px solid rgba(214,205,191,.6)}
-.layers td.sel,.layers th.sel{font-weight:700;color:var(--ink);background:rgba(47,155,219,.08)}
-.warn{font-size:12.5px;color:#7A4B0E;background:#F6E9D2;border-radius:8px;padding:8px 10px;margin-top:10px}
+.layers td{text-align:right;padding:4px 6px;border-bottom:1px solid rgba(214,205,191,.6)}
+.layers td.sel,.layers th.sel{font-weight:700;color:var(--ink);background:rgba(47,155,219,.09)}
+.warn{font-size:12px;color:#7A4B0E;background:#F6E9D2;border-radius:8px;padding:6px 10px;margin-top:8px}
 
 /* live strip */
-.strip{position:fixed;left:50%;bottom:18px;transform:translate(-50%,140%);z-index:30;background:rgba(30,25,20,.92);color:#fff;border-radius:16px;padding:10px 14px 10px 18px;display:flex;align-items:center;gap:18px;box-shadow:0 18px 40px -12px rgba(0,0,0,.5);transition:transform .35s cubic-bezier(.2,.8,.2,1);max-width:calc(100vw - 24px)}
+.strip{display:none;position:fixed;left:50%;bottom:18px;transform:translate(-50%,140%);z-index:30;background:rgba(30,25,20,.92);color:#fff;border-radius:16px;padding:10px 14px 10px 18px;align-items:center;gap:18px;box-shadow:0 18px 40px -12px rgba(0,0,0,.5);transition:transform .35s cubic-bezier(.2,.8,.2,1);max-width:calc(100vw - 24px)}
 .strip.show{transform:translate(-50%,0)}
 .strip .m{font:600 13px var(--display);white-space:nowrap}
 .strip ol{display:flex;gap:12px;margin:0;padding:0;list-style:none;font-variant-numeric:tabular-nums}
@@ -206,15 +201,17 @@ footer a{color:var(--paper-ink)}
 
 @media (max-width:1100px){
   .hero{grid-template-columns:1fr;gap:36px}
-  .result{grid-template-columns:1fr}
-  .column-wrap{max-width:520px;margin:0 auto;width:100%}
+  .lab-grid{grid-template-columns:1fr}
+  .viz{position:static}
+  .strip{display:flex}
   .section-head,.res-grid{grid-template-columns:1fr}
   .steps{grid-template-columns:1fr 1fr}
 }
 @media (max-width:760px){
   .wrap{padding:0 18px}
-  .groups{grid-template-columns:1fr}
-  .groups .group{grid-column:auto !important}
+  .viz-top{grid-template-columns:1fr}
+  .column-wrap{max-width:360px;margin:0 auto;width:100%}
+  .g-head .g-desc{display:none}
   .steps{grid-template-columns:1fr}
   .gauge{display:none}
   .axis.row{width:58px;font-size:11.5px}
@@ -239,7 +236,7 @@ footer a{color:var(--paper-ink)}
     <div class="top">
       <span class="brand">Lamichhane, Mehan &amp; Mankin (2025), Vadose Zone Journal</span>
       <nav aria-label="Project links">
-        <a href="#inputs">Try it</a><a href="#method">Method</a><a href="#results">Results</a>
+        <a href="#method">Method</a><a href="#lab">Try it</a><a href="#results">Results</a>
         <a href="https://doi.org/10.1002/vzj2.70047">Paper</a><a href="/docs">API</a>
       </nav>
     </div>
@@ -262,60 +259,14 @@ footer a{color:var(--paper-ink)}
 
       <div class="picker">
         <h2 id="pick-title">Choose a model</h2>
-        <p class="hint">Two questions: does it know the soil, and does it use the layer above? Bars show hold-out R² from 30 to 180 cm.</p>
+        <p class="hint">Two questions: does it know the soil, and does it use the upper-layer SM (the predicted soil moisture of the layer above)? Bars show hold-out R² from 30 to 180 cm.</p>
         <div class="matrix" role="radiogroup" aria-labelledby="pick-title" id="matrix">
-          <span></span><span class="axis">Uses layer above</span><span class="axis">Each layer alone</span>
+          <span></span><span class="axis">With upper-layer SM</span><span class="axis">Without upper-layer SM</span>
         </div>
         <p class="chosen" id="chosen" aria-live="polite"></p>
       </div>
     </div>
 
-    <!-- inputs -->
-    <div id="inputs">
-      <div class="block-head">
-        <div>
-          <h2 class="mid">Set the conditions</h2>
-          <p>Drag a slider or type a number. Start from a preset, then change anything. The profile updates as you go.</p>
-        </div>
-        <div class="presets" id="presets" role="group" aria-label="Preset conditions"></div>
-      </div>
-      <form class="groups" id="groups" novalidate></form>
-    </div>
-
-    <!-- result -->
-    <div class="result" id="result">
-      <div class="column-wrap">
-        <canvas id="rain" aria-hidden="true"></canvas>
-        <svg id="column" viewBox="0 0 440 780" role="img" aria-labelledby="col-title col-desc">
-          <title id="col-title">Predicted soil moisture in six layers</title>
-          <desc id="col-desc">A soil cross-section from the surface to 180 cm. Each layer fills with water in proportion to its predicted moisture.</desc>
-          <defs>
-            <pattern id="grain" width="14" height="14" patternUnits="userSpaceOnUse">
-              <circle cx="3" cy="4" r="1.1" fill="rgba(255,255,255,.18)"/><circle cx="10" cy="9" r="1.3" fill="rgba(0,0,0,.18)"/>
-              <circle cx="7" cy="12" r=".8" fill="rgba(0,0,0,.14)"/><circle cx="12" cy="2" r=".7" fill="rgba(255,255,255,.12)"/>
-            </pattern>
-            <linearGradient id="waterGrad" x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0" stop-color="#8FD3FF" stop-opacity=".95"/><stop offset="1" stop-color="#2F9BDB" stop-opacity=".75"/>
-            </linearGradient>
-            <filter id="glow"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-          </defs>
-          <g id="surfaceG"></g>
-          <g id="bands"></g>
-          <g id="feeds"></g>
-          <circle id="drop" r="7" fill="#8FD3FF" filter="url(#glow)" opacity="0"/>
-        </svg>
-        <p class="status" id="status" aria-live="polite"></p>
-      </div>
-
-      <div class="panel" aria-labelledby="prof-title">
-        <h3 id="prof-title">Moisture profile</h3>
-        <p class="sub">All four models for the same conditions. The bold line is the model you chose; click a name to switch.</p>
-        <div class="legend" id="legend"></div>
-        <svg id="profile" viewBox="0 0 420 340" role="img" aria-label="Soil moisture against depth for four models"></svg>
-        <table class="layers" id="layer-table"></table>
-        <div id="warnings"></div>
-      </div>
-    </div>
   </div>
 </section>
 
@@ -342,6 +293,57 @@ footer a{color:var(--paper-ink)}
       <div><strong>Feature selection</strong>For each depth, inputs are ranked by SHAP and added one by one until the test score stops improving: 5 to 11 inputs per depth.</div>
       <div><strong>Chained prediction</strong>The predicted moisture of the layer directly above is added as an input. Near the surface the sky drives moisture; deeper down, the layer above and the soil itself take over.</div>
       <div><strong>Four versions</strong>Every depth is trained with and without soil properties, and with and without the layer above. Comparing them shows what each piece of information is worth.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TRY IT ================= -->
+<section class="lab" id="lab">
+  <div class="wrap">
+    <div class="block-head">
+      <div>
+        <h2 class="mid">Try it: set the conditions</h2>
+        <p>Drag a slider or type a number. Start from a preset, then change anything. The soil column and the profile update as you go.</p>
+      </div>
+      <div class="presets" id="presets" role="group" aria-label="Preset conditions"></div>
+    </div>
+    <div class="lab-grid">
+      <form class="groups" id="groups" novalidate></form>
+
+      <div class="viz" id="result">
+        <div class="viz-top">
+          <div class="column-wrap">
+            <canvas id="rain" aria-hidden="true"></canvas>
+            <svg id="column" viewBox="0 0 440 780" role="img" aria-labelledby="col-title col-desc">
+              <title id="col-title">Predicted soil moisture in six layers</title>
+              <desc id="col-desc">A soil cross-section from the surface to 180 cm. Each layer fills with water in proportion to its predicted moisture.</desc>
+              <defs>
+                <pattern id="grain" width="14" height="14" patternUnits="userSpaceOnUse">
+                  <circle cx="3" cy="4" r="1.1" fill="rgba(255,255,255,.18)"/><circle cx="10" cy="9" r="1.3" fill="rgba(0,0,0,.18)"/>
+                  <circle cx="7" cy="12" r=".8" fill="rgba(0,0,0,.14)"/><circle cx="12" cy="2" r=".7" fill="rgba(255,255,255,.12)"/>
+                </pattern>
+                <linearGradient id="waterGrad" x1="0" x2="0" y1="0" y2="1">
+                  <stop offset="0" stop-color="#8FD3FF" stop-opacity=".95"/><stop offset="1" stop-color="#2F9BDB" stop-opacity=".75"/>
+                </linearGradient>
+                <filter id="glow"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+              </defs>
+              <g id="surfaceG"></g>
+              <g id="bands"></g>
+              <g id="feeds"></g>
+              <circle id="drop" r="7" fill="#8FD3FF" filter="url(#glow)" opacity="0"/>
+            </svg>
+          </div>
+          <div class="profile-wrap" aria-labelledby="prof-title">
+            <h3 id="prof-title">Moisture profile</h3>
+            <p class="sub">All four models for the same conditions. Bold is the one you chose; click a name to switch.</p>
+            <div class="legend" id="legend"></div>
+            <svg id="profile" viewBox="0 0 330 330" role="img" aria-label="Soil moisture against depth for four models"></svg>
+          </div>
+        </div>
+        <p class="status" id="status" aria-live="polite"></p>
+        <table class="layers" id="layer-table"></table>
+        <div id="warnings"></div>
+      </div>
     </div>
   </div>
 </section>
@@ -390,11 +392,15 @@ const REDUCED = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const LAYER_COLORS = ["#C8A97E","#B08D62","#97744D","#7E5E3C","#664A2E","#4F3722"];
 const GROUP_COLORS = {"Upper layer":"#2F9BDB","Satellite":"#5E9A45","Climate":"#D39B2A","Soil":"#A86A3D","Topography":"#7D6FA6"};
 const GROUP_LAYOUT = [
-  ["Satellite", "PlanetScope reflectance and vegetation indices at 3 m.", "215px"],
-  ["Climate", "Rain, temperature, radiation and evapotranspiration.", "215px"],
-  ["Topography", "Ground elevation from a field DEM.", "215px"],
-  ["Soil", "Lab-measured texture, organic matter and pH by depth.", "200px"],
+  ["Satellite", "PlanetScope reflectance and indices, 3 m"],
+  ["Climate", "Rain, temperature, radiation, ET"],
+  ["Topography", "Elevation from a field DEM"],
+  ["Soil", "Lab texture, organic matter and pH by depth"],
 ];
+const SHORT = {"10-day antecedent Pcp":"Rain, 10 days", "7-day antecedent Pcp":"Rain, 7 days", "Ts":"Soil temp.",
+  "Tmax":"Max air temp.", "Tmin":"Min air temp.", "Rn":"Net radiation", "ETo":"Reference ET", "Blue":"Blue",
+  "NIR":"NIR", "VARI":"VARI", "NDVIgb":"NDVIgb", "SIPI":"SIPI", "Elevation":"Elevation"};
+const UNIT_NOTE = {"Blue":"reflectance", "NIR":"reflectance", "VARI":"index", "NDVIgb":"index", "SIPI":"index"};
 const SOIL_PROPS = ["Sand","Silt","Clay","OM","Carbon","pH"];
 const SOIL_NAMES = {OM:"Organic matter", Carbon:"Organic carbon"};
 const COLORS = { light: { with_soil:"#C4621B", no_soil:"#1F78B4" }, dark: { with_soil:"#CC7834", no_soil:"#2E95D3" } };
@@ -411,6 +417,11 @@ function prettyLabel(f) {
   const m = f.match(/^(\w+) \((\d+)-(\d+) cm\)$/);
   if (m) return `${SOIL_NAMES[m[1]] || m[1]}, ${m[2]}–${m[3]} cm`;
   return state.meta.input_meta[f].label;
+}
+function compactLabel(f) {
+  const m = f.match(/^(\w+) \((\d+)-(\d+) cm\)$/), u = state.meta.input_meta[f].unit;
+  if (m) return `${m[1]}<small>${m[2]}–${m[3]} cm${u ? ", " + u : ""}</small>`;
+  return `${SHORT[f] || f}<small>${u || UNIT_NOTE[f] || ""}</small>`;
 }
 function decimals(f) { const [lo, hi] = state.meta.input_meta[f].range, s = hi - lo; return s < 1.5 ? 3 : s < 30 ? 2 : 1; }
 
@@ -473,41 +484,35 @@ function buildControls() {
     const pa = SOIL_PROPS.indexOf(a.split(" ")[0]), pb = SOIL_PROPS.indexOf(b.split(" ")[0]);
     return pa - pb || parseInt(a.match(/\((\d+)/)[1]) - parseInt(b.match(/\((\d+)/)[1]);
   });
-  GROUP_LAYOUT.forEach(([g, desc, min]) => {
+  GROUP_LAYOUT.forEach(([g, desc]) => {
     if (!groups[g]) return;
     const box = document.createElement("div"); box.className = "group"; box.dataset.group = g;
     box.setAttribute("role", "group"); box.setAttribute("aria-labelledby", `grp-${g}`);
-    box.style.setProperty("--c", GROUP_COLORS[g]); box.style.setProperty("--min", min);
-    box.innerHTML = `<div class="g-head"><h3 id="grp-${g}">${g}</h3>
-      <span><span class="badge">Not used by this model</span> <span class="count">${groups[g].length} input${groups[g].length > 1 ? "s" : ""}</span></span></div>
-      <p class="g-desc">${desc}</p><div class="ctrls"></div>`;
+    box.style.setProperty("--c", GROUP_COLORS[g]);
+    box.innerHTML = `<div class="g-head"><h3 id="grp-${g}">${g}</h3><span class="g-desc">${desc}</span>
+      <span class="badge">Not used by this model</span><span class="count">${groups[g].length}</span></div><div class="ctrls"></div>`;
     const wrap = box.querySelector(".ctrls");
     groups[g].forEach((f) => {
       const meta = m.input_meta[f], [lo, hi] = meta.range, id = idOf(f), dp = decimals(f);
       const c = document.createElement("div"); c.className = "ctrl";
-      c.innerHTML = `<label for="${id}-n" title="${prettyLabel(f)}">${prettyLabel(f)}</label>
-        <div class="row"><input type="range" id="${id}" min="${lo}" max="${hi}" step="${((hi - lo) / 400).toPrecision(2)}" aria-label="${prettyLabel(f)} slider">
-        <span class="num"><input type="number" id="${id}-n" step="any" inputmode="decimal">${meta.unit ? `<span class="u">${meta.unit}</span>` : ""}</span></div>
+      c.innerHTML = `<label for="${id}-n" title="${prettyLabel(f)}">${compactLabel(f)}</label>
+        <input type="range" id="${id}" min="${lo}" max="${hi}" step="${((hi - lo) / 400).toPrecision(2)}" aria-label="${prettyLabel(f)} slider">
+        <span class="num"><input type="number" id="${id}-n" step="any" inputmode="decimal" title="${prettyLabel(f)}${meta.unit ? " (" + meta.unit + ")" : ""}"></span>
         <div class="err" id="${id}-e" aria-live="polite"></div>`;
       wrap.appendChild(c);
       const r = c.querySelector("input[type=range]"), n = c.querySelector("input[type=number]");
       r.addEventListener("input", () => { setValue(f, parseFloat(r.value), "range"); markCustom(); schedule(); });
       n.addEventListener("input", () => {
         const v = parseFloat(n.value), [L, H] = meta.limits, box = n.parentElement, err = $(`#${CSS.escape(id)}-e`);
+        err.classList.remove("soft");
         if (n.value.trim() === "" || !isFinite(v)) { box.classList.add("bad"); err.textContent = "Enter a number."; state.valid[f] = false; return; }
-        if (v < L || v > H) { box.classList.add("bad"); err.textContent = `Must be between ${L} and ${H}.`; state.valid[f] = false; return; }
-        box.classList.remove("bad"); err.textContent = (v < lo || v > hi) ? "Outside the training range: treat with care." : "";
+        if (v < L || v > H) { box.classList.add("bad"); err.textContent = `${prettyLabel(f)} must be between ${L} and ${H}.`; state.valid[f] = false; return; }
+        box.classList.remove("bad");
+        if (v < lo || v > hi) { err.classList.add("soft"); err.textContent = "Outside the training range: treat with care."; } else err.textContent = "";
         state.valid[f] = true; setValue(f, v, "number"); markCustom(); schedule();
       });
       n.addEventListener("blur", () => { if (state.valid[f] !== false) n.value = fmt(state.values[f], dp); });
     });
-    if (g === "Topography") {
-      const t = document.createElement("div"); t.className = "terrain";
-      t.innerHTML = `<svg viewBox="0 0 300 90" aria-hidden="true"><path id="terrain-fill" fill="rgba(125,111,166,.22)" stroke="#7D6FA6" stroke-width="2"/>
-        <circle id="terrain-dot" r="6" fill="#2F9BDB" stroke="#fff" stroke-width="2"/></svg>
-        <p>The 18 fields sit within about ${(m.input_meta.Elevation.range[1] - m.input_meta.Elevation.range[0]).toFixed(0)} m of each other, so elevation mostly marks which part of the landscape a tube is in.</p>`;
-      box.appendChild(t);
-    }
     $("#groups").appendChild(box);
   });
   $("#groups").addEventListener("submit", (e) => e.preventDefault());
@@ -517,17 +522,6 @@ function setValue(f, v, from) {
   const id = idOf(f), r = $(`#${CSS.escape(id)}`), n = $(`#${CSS.escape(id)}-n`);
   if (from !== "range") r.value = v;
   if (from !== "number") { n.value = fmt(v, decimals(f)); n.parentElement.classList.remove("bad"); $(`#${CSS.escape(id)}-e`).textContent = ""; }
-  if (f === "Elevation") drawTerrain();
-}
-function drawTerrain() {
-  const [lo, hi] = state.meta.input_meta.Elevation.range, k = Math.max(0, Math.min(1, (state.values.Elevation - lo) / (hi - lo)));
-  const pts = [[0, 70], [40, 62], [80, 66], [125, 44], [170, 50], [215, 26], [255, 38], [300, 30]];
-  $("#terrain-fill").setAttribute("d", `M0 90 ` + pts.map(([x, y]) => `L${x} ${y}`).join(" ") + " L300 90 Z");
-  // place the dot on the profile at the height matching the elevation
-  const y = 70 - k * 44; let best = pts[0], bd = 1e9;
-  for (let x = 0; x <= 300; x += 2) { const i = pts.findIndex((p) => p[0] >= x), a = pts[Math.max(0, i - 1)], b = pts[i];
-    const yy = a[1] + (b[1] - a[1]) * ((x - a[0]) / ((b[0] - a[0]) || 1)); if (Math.abs(yy - y) < bd) { bd = Math.abs(yy - y); best = [x, yy]; } }
-  $("#terrain-dot").setAttribute("cx", best[0]); $("#terrain-dot").setAttribute("cy", best[1]);
 }
 function applyPreset(name, animate) {
   state.preset = name;
@@ -634,7 +628,7 @@ function setFeedTag(i, layer) {
 }
 function doneText(out) {
   return model(out.model).uses_upper_layer
-    ? "Numbers on the right arrows: how much the layer above changed the next layer's prediction."
+    ? "Numbers beside the arrows: how much the layer above changed the next layer's prediction."
     : "This model predicts each layer on its own, so nothing is passed down.";
 }
 function paint(out) {
@@ -706,7 +700,7 @@ function buildLegend() {
 }
 function drawProfile(out) {
   const svg = $("#profile"); svg.innerHTML = "";
-  const P = { l: 44, r: 404, t: 14, b: 300 };
+  const P = { l: 40, r: 318, t: 14, b: 290 };
   const all = Object.values(out.compare).flat();
   const xmin = Math.max(0, Math.floor((Math.min(...all) - 0.03) * 20) / 20), xmax = Math.ceil((Math.max(...all) + 0.03) * 20) / 20;
   const X = (v) => P.l + (v - xmin) / (xmax - xmin) * (P.r - P.l);
@@ -821,8 +815,8 @@ function growBars() {
 function renderModelResults() {
   const m = state.meta, depths = m.depths, md = model(), drv = m.drivers[md.key];
   document.querySelectorAll("#compare .bars div").forEach((b) => b.classList.toggle("sel", b.dataset.key === md.key));
-  $("#drv-model").textContent = md.label.toLowerCase();
-  $("#val-model").textContent = md.label.toLowerCase();
+  $("#drv-model").textContent = md.label;
+  $("#val-model").textContent = md.label;
   $("#drivers").innerHTML = depths.map((d) => {
     const share = Object.fromEntries(m.groups.map((g) => [g, 0])), top = [];
     drv[d].forEach((r) => {
@@ -856,8 +850,8 @@ addEventListener("scroll", gauge, { passive: true });
 function setupStrip() {
   const seen = { inputs: false, result: false };
   const update = () => $("#strip").classList.toggle("show", seen.inputs && !seen.result);
-  new IntersectionObserver((es) => es.forEach((e) => { seen[e.target.id] = e.isIntersecting; update(); }), { threshold: 0.12 })
-    .observe($("#inputs"));
+  new IntersectionObserver((es) => es.forEach((e) => { seen.inputs = e.isIntersecting; update(); }), { threshold: 0.05 })
+    .observe($("#groups"));
   new IntersectionObserver((es) => es.forEach((e) => { seen.result = e.isIntersecting; update(); }), { threshold: 0.35 })
     .observe($("#column"));
 }
